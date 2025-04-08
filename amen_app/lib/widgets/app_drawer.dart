@@ -8,44 +8,51 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Drawer(
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF1DE9B6), Color(0xFF0288D1)],
+            colors: isDark
+                ? [Colors.grey[900]!, Colors.grey[800]!]
+                : [const Color(0xFF1DE9B6), const Color(0xFF0288D1)],
           ),
         ),
         child: Column(
           children: [
             // Profile Section
-            const UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
+            UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(
                 color: Colors.transparent,
               ),
               currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(Icons.person, size: 50, color: Color(0xFF0288D1)),
+                backgroundColor: theme.colorScheme.surface,
+                child: Icon(Icons.person,
+                    size: 50, color: theme.colorScheme.primary),
               ),
               accountName: Text(
                 'John Doe',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: theme.colorScheme.onPrimary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               accountEmail: Text(
                 'john.doe@example.com',
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(
+                    color: theme.colorScheme.onPrimary.withOpacity(0.7)),
               ),
             ),
             // Menu Items
             Expanded(
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
@@ -54,51 +61,61 @@ class AppDrawer extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   children: [
                     _buildMenuItem(
+                      context,
                       icon: Icons.person_outline,
                       title: 'Profile',
                       onTap: () {},
                     ),
                     _buildMenuItem(
+                      context,
                       icon: Icons.comment_outlined,
                       title: 'Commentary',
                       onTap: () {},
                     ),
                     _buildMenuItem(
+                      context,
                       icon: Icons.settings_outlined,
                       title: 'Settings',
                       onTap: () {},
                     ),
                     _buildMenuItem(
+                      context,
                       icon: Icons.notifications_outlined,
                       title: 'Notifications',
                       onTap: () {},
                     ),
                     _buildMenuItem(
+                      context,
                       icon: Icons.front_hand_outlined,
                       title: 'My Prayer Requests',
                       onTap: () {},
                     ),
                     _buildMenuItem(
+                      context,
                       icon: Icons.check_circle_outline,
                       title: 'My Completed Devotions',
                       onTap: () {},
                     ),
                     _buildMenuItem(
+                      context,
                       icon: Icons.book_outlined,
                       title: 'Saved Notes',
                       onTap: () {},
                     ),
                     _buildMenuItem(
+                      context,
                       icon: Icons.event_outlined,
                       title: 'Joined Events',
                       onTap: () {},
                     ),
                     _buildMenuItem(
+                      context,
                       icon: Icons.language,
                       title: 'Language Selector',
                       onTap: () {},
                     ),
                     _buildSwitchMenuItem(
+                      context,
                       icon: Icons.dark_mode_outlined,
                       title: 'Dark Mode',
                       value: Provider.of<ThemeService>(context).isDarkMode,
@@ -109,19 +126,18 @@ class AppDrawer extends StatelessWidget {
                     ),
                     const Divider(),
                     _buildMenuItem(
+                      context,
                       icon: Icons.logout,
                       title: 'Logout',
                       onTap: () {
-                        final authService = Provider.of<AuthService>(
-                          context,
-                          listen: false,
-                        );
+                        final authService =
+                            Provider.of<AuthService>(context, listen: false);
                         authService.logout().then((_) {
                           Navigator.pushReplacementNamed(context, '/login');
                         });
                       },
-                      textColor: Colors.red,
-                      iconColor: Colors.red,
+                      textColor: theme.colorScheme.error,
+                      iconColor: theme.colorScheme.error,
                     ),
                   ],
                 ),
@@ -133,22 +149,24 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem({
+  Widget _buildMenuItem(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
     Color? textColor,
     Color? iconColor,
   }) {
+    final theme = Theme.of(context);
     return ListTile(
       leading: Icon(
         icon,
-        color: iconColor ?? const Color(0xFF0288D1),
+        color: iconColor ?? theme.colorScheme.primary,
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: textColor ?? Colors.black87,
+          color: textColor ?? theme.colorScheme.onSurface,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -156,27 +174,29 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildSwitchMenuItem({
+  Widget _buildSwitchMenuItem(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required bool value,
     required ValueChanged<bool> onChanged,
   }) {
+    final theme = Theme.of(context);
     return SwitchListTile(
       secondary: Icon(
         icon,
-        color: const Color(0xFF0288D1),
+        color: theme.colorScheme.primary,
       ),
       title: Text(
         title,
-        style: const TextStyle(
-          color: Colors.black87,
+        style: TextStyle(
+          color: theme.colorScheme.onSurface,
           fontWeight: FontWeight.w500,
         ),
       ),
       value: value,
       onChanged: onChanged,
-      activeColor: const Color(0xFF0288D1),
+      activeColor: theme.colorScheme.primary,
     );
   }
 }
