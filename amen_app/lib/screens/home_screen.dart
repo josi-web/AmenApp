@@ -7,15 +7,15 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  // Sample data for demonstration
   final String _verseOfTheDay =
       "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. - John 3:16";
+
   final List<Map<String, dynamic>> _upcomingEvents = [
     {
       'title': 'Bible Study',
@@ -29,12 +29,21 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
-  final List<Widget> _screens = [
-    const HomeContent(),
-    const Placeholder(), // Chat Screen
-    const Placeholder(), // Books & Notes
-    const Placeholder(), // Profile
-  ];
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      HomeContent(
+        verseOfTheDay: _verseOfTheDay,
+        upcomingEvents: _upcomingEvents,
+      ),
+      const Placeholder(), // Chat Screen
+      const Placeholder(), // Books & Notes
+      const Placeholder(), // Profile
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,22 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Books',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );
@@ -94,7 +91,14 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class HomeContent extends StatelessWidget {
-  const HomeContent({Key? key}) : super(key: key);
+  final String verseOfTheDay;
+  final List<Map<String, dynamic>> upcomingEvents;
+
+  const HomeContent({
+    Key? key,
+    required this.verseOfTheDay,
+    required this.upcomingEvents,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -128,11 +132,8 @@ class HomeContent extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Image.asset(
-                          'assets/bible_icon.png', // Make sure to add this asset
-                          height: 24,
-                          color: Colors.white,
-                        ),
+                        const Icon(Icons.menu_book,
+                            color: Colors.white, size: 24),
                         const SizedBox(width: 8),
                         Text(
                           'FTS BIBLE',
@@ -146,7 +147,8 @@ class HomeContent extends StatelessWidget {
                     ),
                     CircleAvatar(
                       radius: 20,
-                      backgroundColor: Colors.white.withOpacity(0.3),
+                      backgroundColor:
+                          Colors.white.withAlpha((0.3 * 255).toInt()),
                       child: const Icon(Icons.person, color: Colors.white),
                     ),
                   ],
@@ -162,7 +164,7 @@ class HomeContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
+                  verseOfTheDay.split(" - ").first,
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 16,
@@ -170,9 +172,9 @@ class HomeContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "John 3:16",
+                  verseOfTheDay.split(" - ").last,
                   style: GoogleFonts.poppins(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withAlpha((0.8 * 255).toInt()),
                     fontSize: 14,
                   ),
                 ),
