@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
+import '../services/theme_service.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -19,22 +20,22 @@ class AppDrawer extends StatelessWidget {
         child: Column(
           children: [
             // Profile Section
-            UserAccountsDrawerHeader(
-              decoration: const BoxDecoration(
+            const UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
                 color: Colors.transparent,
               ),
-              currentAccountPicture: const CircleAvatar(
+              currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Icon(Icons.person, size: 50, color: Color(0xFF0288D1)),
               ),
-              accountName: const Text(
+              accountName: Text(
                 'John Doe',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              accountEmail: const Text(
+              accountEmail: Text(
                 'john.doe@example.com',
                 style: TextStyle(color: Colors.white70),
               ),
@@ -100,8 +101,11 @@ class AppDrawer extends StatelessWidget {
                     _buildSwitchMenuItem(
                       icon: Icons.dark_mode_outlined,
                       title: 'Dark Mode',
-                      value: false,
-                      onChanged: (bool value) {},
+                      value: Provider.of<ThemeService>(context).isDarkMode,
+                      onChanged: (bool value) {
+                        Provider.of<ThemeService>(context, listen: false)
+                            .toggleTheme();
+                      },
                     ),
                     const Divider(),
                     _buildMenuItem(
