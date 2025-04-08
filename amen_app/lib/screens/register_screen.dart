@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:provider/provider.dart';
+import '../services/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
@@ -42,6 +44,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final Color fieldTextColor = const Color(0xFFB2EBF2); // Light Cyan
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _nameController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _register() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (!mounted) return;
+    setState(() => _isLoading = true);
+
+    try {
+      final authService = Provider.of<AuthService>(context, listen: false);
+      await authService.register(
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -74,21 +112,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 200),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 600),
                       child: Text(
-                        'Join Our Community',
+                        'Create Account',
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 32,
-                          fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     const SizedBox(height: 40),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 400),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 400),
                       child: TextFormField(
                         controller: _nameController,
                         style: TextStyle(color: fieldTextColor),
@@ -103,12 +139,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 600),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 400),
                       child: TextFormField(
                         controller: _emailController,
-                        style: TextStyle(color: fieldTextColor),
-                        decoration: _inputDecoration('Email', Icons.email),
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          labelStyle: const TextStyle(color: Colors.white70),
+                          prefixIcon:
+                              const Icon(Icons.email, color: Colors.white70),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white70),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white),
+                          ),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your email';
@@ -122,8 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 600),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 600),
                       child: TextFormField(
                         controller: _phoneController,
                         style: TextStyle(color: fieldTextColor),
@@ -134,7 +182,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 800),
                       duration: const Duration(milliseconds: 800),
                       child: Theme(
                         data: Theme.of(context).copyWith(
@@ -169,8 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 1000),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 1000),
                       child: Theme(
                         data: Theme.of(context).copyWith(
                           canvasColor: Colors.blue[800],
@@ -205,24 +251,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 800),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 200),
                       child: TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
-                        style: TextStyle(color: fieldTextColor),
-                        decoration: _passwordDecoration(
-                          'Password',
-                          _obscurePassword,
-                          () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          labelStyle: const TextStyle(color: Colors.white70),
+                          prefixIcon:
+                              const Icon(Icons.lock, color: Colors.white70),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.white70,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white70),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter a password';
+                            return 'Please enter your password';
                           }
                           if (value.length < 6) {
                             return 'Password must be at least 6 characters';
@@ -233,21 +296,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 20),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 1000),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 200),
                       child: TextFormField(
                         controller: _confirmPasswordController,
                         obscureText: _obscureConfirmPassword,
-                        style: TextStyle(color: fieldTextColor),
-                        decoration: _passwordDecoration(
-                          'Confirm Password',
-                          _obscureConfirmPassword,
-                          () {
-                            setState(() {
-                              _obscureConfirmPassword =
-                                  !_obscureConfirmPassword;
-                            });
-                          },
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Confirm Password',
+                          labelStyle: const TextStyle(color: Colors.white70),
+                          prefixIcon:
+                              const Icon(Icons.lock, color: Colors.white70),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmPassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.white70,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
+                              });
+                            },
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white70),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -261,19 +341,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    FadeInDown(
-                      delay: const Duration(milliseconds: 1200),
-                      duration: const Duration(milliseconds: 800),
+                    FadeInUp(
+                      duration: const Duration(milliseconds: 400),
                       child: SizedBox(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: _isLoading ? null : _handleRegister,
+                          onPressed: _isLoading ? null : _register,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.blue[900],
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           child: _isLoading
@@ -281,7 +360,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               : const Text(
                                   'Register',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -289,16 +368,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    FadeInDown(
-                      delay: const Duration(milliseconds: 1400),
-                      duration: const Duration(milliseconds: 800),
+                    FadeInUp(
+                      duration: const Duration(milliseconds: 600),
                       child: TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
                         child: const Text(
                           'Already have an account? Login',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white70),
                         ),
                       ),
                     ),
@@ -326,67 +404,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderSide: const BorderSide(color: Colors.white),
       ),
     );
-  }
-
-  InputDecoration _passwordDecoration(
-    String label,
-    bool isObscured,
-    VoidCallback toggleVisibility,
-  ) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: const TextStyle(color: Color(0xFFB2EBF2)),
-      prefixIcon: const Icon(Icons.lock, color: Color(0xFFB2EBF2)),
-      suffixIcon: IconButton(
-        icon: Icon(
-          isObscured ? Icons.visibility : Icons.visibility_off,
-          color: const Color(0xFFB2EBF2),
-        ),
-        onPressed: toggleVisibility,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.white30),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.white),
-      ),
-    );
-  }
-
-  Future<void> _handleRegister() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Registration successful! Welcome to our community.'),
-            backgroundColor: Colors.green,
-          ),
-        );
-
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _nameController.dispose();
-    _phoneController.dispose();
-    super.dispose();
   }
 }

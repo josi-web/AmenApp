@@ -5,6 +5,7 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/auth_service.dart';
+import 'services/theme_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,23 +16,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => AuthService(),
-      child: MaterialApp(
-        title: 'Amen App',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          textTheme: GoogleFonts.playfairDisplayTextTheme(
-            Theme.of(context).textTheme,
-          ),
-          useMaterial3: true,
-        ),
-        initialRoute: '/login',
-        routes: {
-          '/login': (context) => const LoginScreen(),
-          '/register': (context) => const RegisterScreen(),
-          '/home': (context) => const HomeScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => ThemeService()),
+      ],
+      child: Consumer<ThemeService>(
+        builder: (context, themeService, child) {
+          return MaterialApp(
+            title: 'Amen App',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              textTheme: GoogleFonts.playfairDisplayTextTheme(
+                Theme.of(context).textTheme,
+              ),
+              useMaterial3: true,
+              brightness:
+                  themeService.isDarkMode ? Brightness.dark : Brightness.light,
+            ),
+            initialRoute: '/login',
+            routes: {
+              '/login': (context) => const LoginScreen(),
+              '/register': (context) => const RegisterScreen(),
+              '/home': (context) => const HomeScreen(),
+            },
+          );
         },
       ),
     );

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:provider/provider.dart';
+import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -15,6 +17,47 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _obscurePassword = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    // Temporarily bypass form validation for testing
+    setState(() => _isLoading = true);
+
+    try {
+      // Simulate a brief loading delay
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      // Set authentication state to true
+      final authService = Provider.of<AuthService>(context, listen: false);
+      await authService.login(
+        _emailController.text.isEmpty
+            ? 'test@example.com'
+            : _emailController.text.trim(),
+        _passwordController.text.isEmpty
+            ? 'password'
+            : _passwordController.text,
+      );
+
+      if (!mounted) return;
+      // Navigate to home screen
+      Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,23 +92,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 200),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 600),
                       child: Text(
-                        'Welcome To Bible Study',
+                        'Welcome Back',
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 32,
-                          fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     const SizedBox(height: 40),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 400),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 400),
                       child: TextFormField(
                         controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           labelText: 'Email',
@@ -73,11 +115,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           prefixIcon:
                               const Icon(Icons.email, color: Colors.white70),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.white30),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white70),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(color: Colors.white),
                           ),
                         ),
@@ -94,8 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     FadeInDown(
-                      delay: const Duration(milliseconds: 600),
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 200),
                       child: TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
@@ -108,8 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               color: Colors.white70,
                             ),
                             onPressed: () {
@@ -119,11 +160,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.white30),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white70),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(color: Colors.white),
                           ),
                         ),
@@ -139,19 +180,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    FadeInDown(
-                      delay: const Duration(milliseconds: 800),
-                      duration: const Duration(milliseconds: 800),
+                    FadeInUp(
+                      duration: const Duration(milliseconds: 400),
                       child: SizedBox(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: _isLoading ? null : _handleLogin,
+                          onPressed: _isLoading ? null : _login,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.blue[900],
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           child: _isLoading
@@ -159,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               : const Text(
                                   'Login',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -167,29 +207,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    FadeInDown(
-                      delay: const Duration(milliseconds: 1000),
-                      duration: const Duration(milliseconds: 800),
+                    FadeInUp(
+                      duration: const Duration(milliseconds: 600),
                       child: TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, '/register');
                         },
                         child: const Text(
                           'Don\'t have an account? Register',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    FadeInDown(
-                      delay: const Duration(milliseconds: 1200),
-                      duration: const Duration(milliseconds: 800),
-                      child: TextButton(
-                        onPressed: () {
-                          // TODO: Implement forgot password
-                        },
-                        child: const Text(
-                          'Forgot Password?',
                           style: TextStyle(color: Colors.white70),
                         ),
                       ),
@@ -202,35 +227,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _handleLogin() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    // Simulate a short delay for better UX
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Login successful!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      Navigator.pushReplacementNamed(context, '/home');
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 }

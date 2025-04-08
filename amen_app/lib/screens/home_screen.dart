@@ -1,75 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../widgets/app_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  HomeScreenState createState() => HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
 class HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  final String _verseOfTheDay =
-      "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. - John 3:16";
-
-  final List<Map<String, dynamic>> _upcomingEvents = [
-    {
-      'title': 'Bible Study',
-      'date': 'Tomorrow, 6:00 PM',
-      'location': 'Main Chapel',
-    },
-    {
-      'title': 'Prayer Meeting',
-      'date': 'Friday, 7:00 PM',
-      'location': 'Online',
-    },
+  final List<Widget> _screens = const [
+    HomeContent(),
+    Placeholder(), // Chat Screen
+    Placeholder(), // Books & Notes
+    Placeholder(), // Profile
   ];
 
-  late final List<Widget> _screens;
-
-  @override
-  void initState() {
-    super.initState();
-    _screens = [
-      HomeContent(
-        verseOfTheDay: _verseOfTheDay,
-        upcomingEvents: _upcomingEvents,
-      ),
-      const Placeholder(), // Chat Screen
-      const Placeholder(), // Books & Notes
-      const Placeholder(), // Profile
-    ];
+  void _handleLogout(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    authService.logout().then((_) {
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context);
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Amen App',
-          style: GoogleFonts.playfairDisplay(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: const Text('Amen App'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await authService.signOut();
-              if (context.mounted) {
-                Navigator.pushReplacementNamed(context, '/login');
-              }
-            },
+            onPressed: () => _handleLogout(context),
           ),
         ],
       ),
+      drawer: const AppDrawer(),
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -78,12 +50,23 @@ class HomeScreenState extends State<HomeScreen> {
             _selectedIndex = index;
           });
         },
-        type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Books'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Books',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
     );
@@ -91,218 +74,181 @@ class HomeScreenState extends State<HomeScreen> {
 }
 
 class HomeContent extends StatelessWidget {
-  final String verseOfTheDay;
-  final List<Map<String, dynamic>> upcomingEvents;
-
-  const HomeContent({
-    Key? key,
-    required this.verseOfTheDay,
-    required this.upcomingEvents,
-  }) : super(key: key);
+  const HomeContent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Verse of the Day Card
+          // Verse of the Day Card with gradient
           Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  Colors.cyan,
-                  Colors.blue,
+                colors: [Color(0xFF1DE9B6), Color(0xFF0288D1)],
+              ),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Text(
+                              'FTS BIBLE',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: Colors.white24,
+                        child: Icon(Icons.person, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Verse of the day',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    '"In the beginning was the word, and the word was with God, and the word was God"',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'John 1:1 KJV',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.menu_book,
-                            color: Colors.white, size: 24),
-                        const SizedBox(width: 8),
-                        Text(
-                          'FTS BIBLE',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundColor:
-                          Colors.white.withAlpha((0.3 * 255).toInt()),
-                      child: const Icon(Icons.person, color: Colors.white),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  'Verse of the day',
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  verseOfTheDay.split(" - ").first,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  verseOfTheDay.split(" - ").last,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white.withAlpha((0.8 * 255).toInt()),
-                    fontSize: 14,
-                  ),
-                ),
-              ],
             ),
           ),
-
-          // Focus Section
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Focus for',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: Colors.grey[600],
+          const SizedBox(height: 24),
+          // Focus for February Month
+          const Card(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Focus for\nFebruary Month',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(
-                  'February Month',
-                  style: GoogleFonts.poppins(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  SizedBox(height: 8),
+                  Text(
+                    'Holiness',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Holiness',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // Quick Actions Grid
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 1.5,
-                  children: [
-                    _ActionCard(
-                      icon: Icons.menu_book,
-                      label: 'Read Bible',
-                      onTap: () {
-                        // TODO: Navigate to Bible reading screen
-                      },
-                    ),
-                    _ActionCard(
-                      icon: Icons.edit_note,
-                      label: 'Take Sermon Notes',
-                      onTap: () {
-                        // TODO: Navigate to notes screen
-                      },
-                    ),
-                    _ActionCard(
-                      icon: Icons.question_answer,
-                      label: "FAQ's",
-                      onTap: () {
-                        // TODO: Navigate to FAQ screen
-                      },
-                    ),
-                    _ActionCard(
-                      icon: Icons.star,
-                      label: 'App Testimonials',
-                      onTap: () {
-                        // TODO: Navigate to testimonials screen
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
+          ),
+          const SizedBox(height: 24),
+          // Action Buttons Grid
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 2,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            childAspectRatio: 1.5,
+            children: [
+              _buildActionButton(
+                context,
+                icon: Icons.book,
+                label: 'Read Bible',
+                color: Colors.orange,
+                onTap: () {},
+              ),
+              _buildActionButton(
+                context,
+                icon: Icons.favorite,
+                label: 'Make Donation',
+                color: Colors.blue,
+                onTap: () {},
+              ),
+              _buildActionButton(
+                context,
+                icon: Icons.edit_note,
+                label: 'Take Sermon Notes',
+                color: Colors.purple,
+                onTap: () {},
+              ),
+              _buildActionButton(
+                context,
+                icon: Icons.question_answer,
+                label: "FAQ's",
+                color: Colors.green,
+                onTap: () {},
+              ),
+            ],
           ),
         ],
       ),
     );
   }
-}
 
-class _ActionCard extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  const _ActionCard({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildActionButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 28,
-                color: Colors.grey[800],
+        borderRadius: BorderRadius.circular(8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 32, color: color),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
-              const SizedBox(height: 8),
-              Text(
-                label,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
