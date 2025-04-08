@@ -99,119 +99,159 @@ class HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Welcome Section
-          Text(
-            'Welcome, ${Provider.of<AuthService>(context).currentUserEmail ?? 'User'}!',
-            style: GoogleFonts.playfairDisplay(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
-
           // Verse of the Day Card
-          Card(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.bookmark, color: Colors.blue),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Verse of the Day',
-                        style: GoogleFonts.playfairDisplay(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. - John 3:16",
-                    style: const TextStyle(fontSize: 16),
-                  ),
+          Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.cyan,
+                  Colors.blue,
                 ],
               ),
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Quick Actions
-          Text(
-            'Quick Actions',
-            style: GoogleFonts.playfairDisplay(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: _QuickActionButton(
-                  icon: Icons.favorite,
-                  label: 'Prayer Request',
-                  onTap: () {
-                    // TODO: Navigate to prayer request screen
-                  },
-                ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _QuickActionButton(
-                  icon: Icons.event,
-                  label: 'Events',
-                  onTap: () {
-                    // TODO: Navigate to events screen
-                  },
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-
-          // Upcoming Events
-          Text(
-            'Upcoming Events',
-            style: GoogleFonts.playfairDisplay(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
             ),
-          ),
-          const SizedBox(height: 16),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 2,
-            itemBuilder: (context, index) {
-              return Card(
-                margin: const EdgeInsets.only(bottom: 12),
-                child: ListTile(
-                  leading: const CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child: Icon(Icons.event, color: Colors.white),
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/bible_icon.png', // Make sure to add this asset
+                          height: 24,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'FTS BIBLE',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.white.withOpacity(0.3),
+                      child: const Icon(Icons.person, color: Colors.white),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'Verse of the day',
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
                   ),
-                  title: Text('Bible Study'),
-                  subtitle: Text('Tomorrow, 6:00 PM\nMain Chapel'),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // TODO: Navigate to event details
-                  },
                 ),
-              );
-            },
+                const SizedBox(height: 12),
+                Text(
+                  "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "John 3:16",
+                  style: GoogleFonts.poppins(
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Focus Section
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Focus for',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                Text(
+                  'February Month',
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Holiness',
+                  style: GoogleFonts.poppins(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Quick Actions Grid
+                GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 1.5,
+                  children: [
+                    _ActionCard(
+                      icon: Icons.menu_book,
+                      label: 'Read Bible',
+                      onTap: () {
+                        // TODO: Navigate to Bible reading screen
+                      },
+                    ),
+                    _ActionCard(
+                      icon: Icons.edit_note,
+                      label: 'Take Sermon Notes',
+                      onTap: () {
+                        // TODO: Navigate to notes screen
+                      },
+                    ),
+                    _ActionCard(
+                      icon: Icons.question_answer,
+                      label: "FAQ's",
+                      onTap: () {
+                        // TODO: Navigate to FAQ screen
+                      },
+                    ),
+                    _ActionCard(
+                      icon: Icons.star,
+                      label: 'App Testimonials',
+                      onTap: () {
+                        // TODO: Navigate to testimonials screen
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -219,12 +259,12 @@ class HomeContent extends StatelessWidget {
   }
 }
 
-class _QuickActionButton extends StatelessWidget {
+class _ActionCard extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
 
-  const _QuickActionButton({
+  const _ActionCard({
     required this.icon,
     required this.label,
     required this.onTap,
@@ -232,27 +272,35 @@ class _QuickActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.blue[50],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 32, color: Colors.blue),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 28,
+                color: Colors.grey[800],
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
