@@ -37,47 +37,44 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final themeService = Provider.of<ThemeService>(context);
 
-    return Theme(
-      data: themeService.isDarkMode ? ThemeData.dark() : ThemeData.light(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Amen App'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () => _handleLogout(context),
-            ),
-          ],
-        ),
-        drawer: const AppDrawer(),
-        body: _screens[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Chat',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Books',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Amen App'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => _handleLogout(context),
+          ),
+        ],
+      ),
+      drawer: const AppDrawer(),
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Books',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }

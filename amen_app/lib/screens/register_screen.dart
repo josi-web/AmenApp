@@ -41,8 +41,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     'LAW'
   ];
 
-  final Color fieldTextColor = const Color(0xFFB2EBF2); // Light Cyan
-
   @override
   void dispose() {
     _emailController.dispose();
@@ -81,17 +79,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final fieldTextColor = theme.colorScheme.onBackground;
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.blue[900]!,
-              Colors.blue[700]!,
-            ],
-          ),
+          color: theme.scaffoldBackgroundColor,
         ),
         child: SafeArea(
           child: Center(
@@ -104,10 +98,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     FadeInDown(
                       duration: const Duration(milliseconds: 800),
-                      child: const Icon(
+                      child: Icon(
                         Icons.church_rounded,
                         size: 80,
-                        color: Colors.white,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -117,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Create Account',
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 32,
-                          color: Colors.white,
+                          color: theme.colorScheme.onBackground,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -142,22 +136,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       duration: const Duration(milliseconds: 400),
                       child: TextFormField(
                         controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: const TextStyle(color: Colors.white70),
-                          prefixIcon:
-                              const Icon(Icons.email, color: Colors.white70),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white70),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white),
-                          ),
-                        ),
+                        style: TextStyle(color: fieldTextColor),
+                        decoration: _inputDecoration('Email', Icons.email),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your email';
@@ -255,32 +235,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: fieldTextColor),
                         decoration: InputDecoration(
                           labelText: 'Password',
-                          labelStyle: const TextStyle(color: Colors.white70),
-                          prefixIcon:
-                              const Icon(Icons.lock, color: Colors.white70),
+                          prefixIcon: Icon(Icons.lock,
+                              color: theme.colorScheme.primary),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.white70,
+                              color: theme.colorScheme.primary,
                             ),
                             onPressed: () {
                               setState(() {
                                 _obscurePassword = !_obscurePassword;
                               });
                             },
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white70),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white),
                           ),
                         ),
                         validator: (value) {
@@ -300,18 +271,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: TextFormField(
                         controller: _confirmPasswordController,
                         obscureText: _obscureConfirmPassword,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: fieldTextColor),
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
-                          labelStyle: const TextStyle(color: Colors.white70),
-                          prefixIcon:
-                              const Icon(Icons.lock, color: Colors.white70),
+                          prefixIcon: Icon(Icons.lock,
+                              color: theme.colorScheme.primary),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureConfirmPassword
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.white70,
+                              color: theme.colorScheme.primary,
                             ),
                             onPressed: () {
                               setState(() {
@@ -319,14 +289,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     !_obscureConfirmPassword;
                               });
                             },
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white70),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white),
                           ),
                         ),
                         validator: (value) {
@@ -349,14 +311,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _register,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.blue[900],
+                            backgroundColor: theme.colorScheme.primary,
+                            foregroundColor: theme.colorScheme.onPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           child: _isLoading
-                              ? const CircularProgressIndicator()
+                              ? CircularProgressIndicator(
+                                  color: theme.colorScheme.onPrimary)
                               : const Text(
                                   'Register',
                                   style: TextStyle(
@@ -372,11 +335,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       duration: const Duration(milliseconds: 600),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushReplacementNamed(context, '/login');
                         },
-                        child: const Text(
+                        child: Text(
                           'Already have an account? Login',
-                          style: TextStyle(color: Colors.white70),
+                          style: TextStyle(
+                            color: theme.colorScheme.primary,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
@@ -391,18 +357,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   InputDecoration _inputDecoration(String label, IconData icon) {
+    final theme = Theme.of(context);
     return InputDecoration(
       labelText: label,
-      labelStyle: const TextStyle(color: Color(0xFFB2EBF2)),
-      prefixIcon: Icon(icon, color: const Color(0xFFB2EBF2)),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.white30),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.white),
-      ),
+      prefixIcon: Icon(icon, color: theme.colorScheme.primary),
     );
   }
 }

@@ -61,17 +61,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.blue[900]!,
-              Colors.blue[700]!,
-            ],
-          ),
+          color: theme.scaffoldBackgroundColor,
         ),
         child: SafeArea(
           child: Center(
@@ -84,10 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     FadeInDown(
                       duration: const Duration(milliseconds: 800),
-                      child: const Icon(
+                      child: Icon(
                         Icons.church_rounded,
                         size: 80,
-                        color: Colors.white,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -97,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'Welcome Back',
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 32,
-                          color: Colors.white,
+                          color: theme.colorScheme.onBackground,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -107,21 +102,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       duration: const Duration(milliseconds: 400),
                       child: TextFormField(
                         controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: theme.colorScheme.onBackground),
                         decoration: InputDecoration(
                           labelText: 'Email',
-                          labelStyle: const TextStyle(color: Colors.white70),
-                          prefixIcon:
-                              const Icon(Icons.email, color: Colors.white70),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white70),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white),
-                          ),
+                          prefixIcon: Icon(Icons.email,
+                              color: theme.colorScheme.primary),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -140,32 +125,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: theme.colorScheme.onBackground),
                         decoration: InputDecoration(
                           labelText: 'Password',
-                          labelStyle: const TextStyle(color: Colors.white70),
-                          prefixIcon:
-                              const Icon(Icons.lock, color: Colors.white70),
+                          prefixIcon: Icon(Icons.lock,
+                              color: theme.colorScheme.primary),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Colors.white70,
+                              color: theme.colorScheme.primary,
                             ),
                             onPressed: () {
                               setState(() {
                                 _obscurePassword = !_obscurePassword;
                               });
                             },
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white70),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white),
                           ),
                         ),
                         validator: (value) {
@@ -188,14 +164,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _login,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.blue[900],
+                            backgroundColor: theme.colorScheme.primary,
+                            foregroundColor: theme.colorScheme.onPrimary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           child: _isLoading
-                              ? const CircularProgressIndicator()
+                              ? CircularProgressIndicator(
+                                  color: theme.colorScheme.onPrimary)
                               : const Text(
                                   'Login',
                                   style: TextStyle(
@@ -211,11 +188,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       duration: const Duration(milliseconds: 600),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/register');
+                          Navigator.pushReplacementNamed(context, '/register');
                         },
-                        child: const Text(
+                        child: Text(
                           'Don\'t have an account? Register',
-                          style: TextStyle(color: Colors.white70),
+                          style: TextStyle(
+                            color: theme.colorScheme.primary,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),

@@ -29,14 +29,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Amen App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: themeService.theme.copyWith(
         textTheme: GoogleFonts.playfairDisplayTextTheme(
-          Theme.of(context).textTheme,
+          themeService.theme.textTheme,
         ),
-        useMaterial3: true,
-        brightness:
-            themeService.isDarkMode ? Brightness.dark : Brightness.light,
       ),
       initialRoute: '/login',
       routes: {
