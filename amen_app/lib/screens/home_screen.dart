@@ -115,7 +115,7 @@ class HomeContent extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              'FTS BIBLE',
+                              'BIBLE STUDY',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
