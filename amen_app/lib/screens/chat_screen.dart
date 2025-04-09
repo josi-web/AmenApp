@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'chat_conversation_screen.dart';
 
 class CustomAvatar extends StatelessWidget {
   final String imagePath;
@@ -297,7 +297,15 @@ class _ChatScreenState extends State<ChatScreen> {
             ],
           ),
           onTap: () {
-            // Handle chat item tap
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatConversationScreen(
+                  userName: '${index + 1} User',
+                  userImage: _userProfileImages[imageIndex],
+                ),
+              ),
+            );
           },
         );
       },
