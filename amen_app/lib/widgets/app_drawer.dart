@@ -35,14 +35,14 @@ class AppDrawer extends StatelessWidget {
                     size: 50, color: theme.colorScheme.primary),
               ),
               accountName: Text(
-                'John Doe',
+                'JO',
                 style: TextStyle(
                   color: theme.colorScheme.onPrimary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               accountEmail: Text(
-                'john.doe@example.com',
+                'yohannesdawit360@example.com',
                 style: TextStyle(
                     color: theme.colorScheme.onPrimary.withOpacity(0.7)),
               ),
