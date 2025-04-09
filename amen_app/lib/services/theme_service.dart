@@ -17,8 +17,6 @@ class ThemeService extends ChangeNotifier {
       primary: Color(0xFF2B5278),
       secondary: Color(0xFF242F3D),
       surface: Color(0xFF242F3D),
-      background: Color(0xFF17212B),
-      onBackground: Colors.white,
       onSurface: Colors.white,
     ),
     appBarTheme: const AppBarTheme(
@@ -64,8 +62,6 @@ class ThemeService extends ChangeNotifier {
       primary: Color(0xFF2B5278),
       secondary: Colors.white,
       surface: Colors.white,
-      background: Colors.white,
-      onBackground: Colors.black,
       onSurface: Colors.black,
     ),
     appBarTheme: const AppBarTheme(

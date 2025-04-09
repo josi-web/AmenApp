@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'Welcome Back',
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 32,
-                          color: theme.colorScheme.onBackground,
+                          color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       duration: const Duration(milliseconds: 400),
                       child: TextFormField(
                         controller: _emailController,
-                        style: TextStyle(color: theme.colorScheme.onBackground),
+                        style: TextStyle(color: theme.colorScheme.onSurface),
                         decoration: InputDecoration(
                           labelText: 'Email',
                           prefixIcon: Icon(Icons.email,
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
-                        style: TextStyle(color: theme.colorScheme.onBackground),
+                        style: TextStyle(color: theme.colorScheme.onSurface),
                         decoration: InputDecoration(
                           labelText: 'Password',
                           prefixIcon: Icon(Icons.lock,

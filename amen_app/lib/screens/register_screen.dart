@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final fieldTextColor = theme.colorScheme.onBackground;
+    final fieldTextColor = theme.colorScheme.onSurface;
 
     return Scaffold(
       body: Container(
@@ -111,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Create Account',
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 32,
-                          color: theme.colorScheme.onBackground,
+                          color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
