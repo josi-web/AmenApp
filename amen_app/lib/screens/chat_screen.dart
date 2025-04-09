@@ -1,4 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class CustomAvatar extends StatelessWidget {
+  final String imagePath;
+  final double size;
+  final bool isStory;
+
+  const CustomAvatar({
+    Key? key,
+    required this.imagePath,
+    this.size = 40.0,
+    this.isStory = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Debug: Print the image path
+    print('Loading image: $imagePath');
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: isStory ? Theme.of(context).primaryColor : Colors.grey[300]!,
+          width: isStory ? 2.0 : 1.0,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: ClipOval(
+        child: Image.asset(
+          imagePath,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            print('Error loading image $imagePath: $error');
+            return Container(
+              color: Colors.grey[200],
+              child: Icon(
+                isStory ? Icons.person : Icons.group,
+                color: Colors.grey[600],
+                size: size * 0.5,
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -9,6 +65,23 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool _showChats = true;
+
+  // Profile images
+  final List<String> _userProfileImages = [
+    'assets/images/profiles/user1.png.jpg',
+    'assets/images/profiles/user2.png.jpg',
+    'assets/images/profiles/user3.png.jpg',
+    'assets/images/profiles/user4.png.jpg',
+    'assets/images/profiles/user5.png.jpg',
+  ];
+
+  final List<String> _groupProfileImages = [
+    'assets/images/profiles/group1.png.jpg',
+    'assets/images/profiles/group2.png.jpg',
+    'assets/images/profiles/group3.png.jpg',
+    'assets/images/profiles/group4.png.jpg',
+    'assets/images/profiles/group5.png.jpg',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -78,22 +151,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       width: 60,
                       child: Column(
                         children: [
-                          Container(
-                            width: 60,
-                            height: 60,
-                            padding: const EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 2,
-                              ),
-                            ),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.grey[300],
-                              child:
-                                  Icon(Icons.person, color: Colors.grey[600]),
-                            ),
+                          CustomAvatar(
+                            imagePath: _userProfileImages[index],
+                            size: 60,
+                            isStory: true,
                           ),
                           const SizedBox(height: 4),
                           Text(
@@ -198,10 +259,11 @@ class _ChatScreenState extends State<ChatScreen> {
     return ListView.builder(
       itemCount: 10,
       itemBuilder: (context, index) {
+        final imageIndex = index % _userProfileImages.length;
         return ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.grey[300],
-            child: Icon(Icons.person, color: Colors.grey[600]),
+          leading: CustomAvatar(
+            imagePath: _userProfileImages[imageIndex],
+            size: 40,
           ),
           title: Text('${index + 1} User'),
           subtitle: const Text('Last message...'),
@@ -247,9 +309,9 @@ class _ChatScreenState extends State<ChatScreen> {
       itemCount: 5,
       itemBuilder: (context, index) {
         return ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.grey[300],
-            child: Icon(Icons.group, color: Colors.grey[600]),
+          leading: CustomAvatar(
+            imagePath: _groupProfileImages[index],
+            size: 40,
           ),
           title: Text('${index + 1} Group'),
           subtitle: const Text('Last group message...'),

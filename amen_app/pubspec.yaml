@@ -24,5 +24,13 @@ flutter:
   uses-material-design: true
   
   assets:
-    - assets/images/
-    - assets/
+    - assets/images/profiles/user1.png.jpg
+    - assets/images/profiles/user2.png.jpg
+    - assets/images/profiles/user3.png.jpg
+    - assets/images/profiles/user4.png.jpg
+    - assets/images/profiles/user5.png.jpg
+    - assets/images/profiles/group1.png.jpg
+    - assets/images/profiles/group2.png.jpg
+    - assets/images/profiles/group3.png.jpg
+    - assets/images/profiles/group4.png.jpg
+    - assets/images/profiles/group5.png.jpg
