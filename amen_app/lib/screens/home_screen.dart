@@ -21,7 +21,7 @@ class HomeScreenState extends State<HomeScreen> {
     HomeContent(),
     ChatScreen(),
     BooksScreen(),
-    ProfileScreen(),
+    ProfileScreen(isTab: true),
   ];
 
   void _handleLogout(BuildContext context) {
