@@ -24,6 +24,12 @@ flutter:
   uses-material-design: true
   
   assets:
+    - assets/images/books/rich_dad.jpg
+    - assets/images/books/lean_startup.jpg
+    - assets/images/books/4hour_week.jpg
+    - assets/images/books/subtle_art.jpg
+    - assets/images/books/modern_alphabet.jpg
+    - assets/images/books/think_grow_rich.jpg
     - assets/images/profiles/user1.png.jpg
     - assets/images/profiles/user2.png.jpg
     - assets/images/profiles/user3.png.jpg
