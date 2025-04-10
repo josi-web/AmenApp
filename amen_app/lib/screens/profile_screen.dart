@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 import '../services/theme_service.dart';
+import 'prayer_requests_screen.dart';
+import 'completed_devotions_screen.dart';
+import 'saved_notes_screen.dart';
+import 'settings_screens.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool isTab;
@@ -147,25 +151,53 @@ class ProfileContent extends StatelessWidget {
                   icon: Icons.front_hand,
                   title: 'My Prayer Requests',
                   subtitle: 'View and track your prayers',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PrayerRequestsScreen(),
+                      ),
+                    );
+                  },
                 ),
                 _buildMenuItem(
                   icon: Icons.check_circle_outline,
                   title: 'Completed Devotions',
                   subtitle: 'Track your daily devotional progress',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CompletedDevotionsScreen(),
+                      ),
+                    );
+                  },
                 ),
                 _buildMenuItem(
                   icon: Icons.book_outlined,
                   title: 'Saved Notes',
                   subtitle: 'Access your sermon and study notes',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SavedNotesScreen(),
+                      ),
+                    );
+                  },
                 ),
                 _buildMenuItem(
                   icon: Icons.event_outlined,
                   title: 'Joined Events',
                   subtitle: 'View your upcoming events',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const JoinedEventsScreen(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -176,13 +208,27 @@ class ProfileContent extends StatelessWidget {
                   icon: Icons.notifications_outlined,
                   title: 'Notifications',
                   subtitle: 'Manage your reminders',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NotificationsScreen(),
+                      ),
+                    );
+                  },
                 ),
                 _buildMenuItem(
                   icon: Icons.language,
                   title: 'Language',
                   subtitle: 'Switch between Amharic and English',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LanguageScreen(),
+                      ),
+                    );
+                  },
                 ),
                 _buildSwitchMenuItem(
                   icon: Icons.dark_mode_outlined,
@@ -197,7 +243,14 @@ class ProfileContent extends StatelessWidget {
                   icon: Icons.settings_outlined,
                   title: 'App Settings',
                   subtitle: 'Sound, font size, verse version',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AppSettingsScreen(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

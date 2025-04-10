@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 import '../services/theme_service.dart';
+import '../screens/profile_screen.dart';
+import '../screens/prayer_requests_screen.dart';
+import '../screens/completed_devotions_screen.dart';
+import '../screens/settings_screens.dart';
+import '../screens/saved_notes_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -75,55 +80,115 @@ class AppDrawer extends StatelessWidget {
                     context,
                     icon: Icons.person_outline,
                     title: 'Profile',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const ProfileScreen(isTab: false),
+                        ),
+                      );
+                    },
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.comment_outlined,
                     title: 'Commentary',
-                    onTap: () {},
+                    onTap: () {
+                      // TODO: Implement commentary screen navigation
+                    },
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.settings_outlined,
                     title: 'Settings',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AppSettingsScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.notifications_outlined,
                     title: 'Notifications',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NotificationsScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.front_hand_outlined,
                     title: 'My Prayer Requests',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PrayerRequestsScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.check_circle_outline,
                     title: 'My Completed Devotions',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const CompletedDevotionsScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.book_outlined,
                     title: 'Saved Notes',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SavedNotesScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.event_outlined,
                     title: 'Joined Events',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const JoinedEventsScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.language,
                     title: 'Language Selector',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LanguageScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _buildSwitchMenuItem(
                     context,
