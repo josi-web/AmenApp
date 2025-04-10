@@ -16,11 +16,11 @@ class AppDrawer extends StatelessWidget {
         children: [
           // Profile Section
           Container(
-            padding: const EdgeInsets.only(top: 50, bottom: 16),
+            padding: const EdgeInsets.only(top: 50, bottom: 16, left: 16),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
             ),
-            child: Column(
+            child: Row(
               children: [
                 Container(
                   width: 80,
@@ -32,26 +32,33 @@ class AppDrawer extends StatelessWidget {
                       width: 2,
                     ),
                     image: const DecorationImage(
-                      image: AssetImage('assets/images/profile_default.png'),
+                      image: AssetImage('assets/images/profiles/jo.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  'JO',
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'yohannesdawit360@example.com',
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
-                    fontSize: 14,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Jo',
+                        style: TextStyle(
+                          color: theme.colorScheme.onSurface,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'yohannesdawit360@gmail.com',
+                        style: TextStyle(
+                          color: theme.colorScheme.onSurface.withOpacity(0.7),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -128,7 +135,7 @@ class AppDrawer extends StatelessWidget {
                           .toggleTheme();
                     },
                   ),
-                  const Divider(),
+                  Divider(color: theme.dividerColor),
                   _buildMenuItem(
                     context,
                     icon: Icons.logout,
