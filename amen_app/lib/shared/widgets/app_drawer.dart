@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../services/auth_service.dart';
-import '../services/theme_service.dart';
-import '../screens/profile_screen.dart';
-import '../screens/prayer_requests_screen.dart';
-import '../screens/completed_devotions_screen.dart';
-import '../screens/settings_screens.dart';
-import '../screens/saved_notes_screen.dart';
+import 'package:amen_app/shared/services/auth_service.dart';
+import 'package:amen_app/shared/services/theme_service.dart';
+import 'package:amen_app/features/user/screens/profile_screen.dart';
+import 'package:amen_app/features/user/screens/prayer_requests_screen.dart';
+import 'package:amen_app/features/user/screens/completed_devotions_screen.dart';
+import 'package:amen_app/features/user/screens/settings_screens.dart';
+import 'package:amen_app/features/user/screens/saved_notes_screen.dart';
+import 'package:amen_app/features/user/screens/joined_events_screen.dart';
+import 'package:amen_app/features/user/screens/language_screen.dart';
+import 'package:amen_app/features/user/screens/notifications_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);

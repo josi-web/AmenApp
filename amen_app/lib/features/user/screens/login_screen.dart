@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:provider/provider.dart';
-import '../services/auth_service.dart';
+import '../../../shared/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     FadeInDown(
                       duration: const Duration(milliseconds: 600),
                       child: Text(
-                        'Welcome Back',
+                        'Welcome TO Bs',
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 32,
                           color: theme.colorScheme.onSurface,

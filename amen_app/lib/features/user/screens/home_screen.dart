@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../services/auth_service.dart';
-import '../services/theme_service.dart';
+import '../../../shared/services/auth_service.dart';
+import '../../../shared/services/theme_service.dart';
 import '../widgets/app_drawer.dart';
 import 'chat_screen.dart';
 import 'books_screen.dart';

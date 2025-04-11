@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
-import 'screens/home_screen.dart';
-import 'services/auth_service.dart';
-import 'services/theme_service.dart';
+import 'features/user/screens/login_screen.dart';
+import 'features/user/screens/register_screen.dart';
+import 'features/user/screens/home_screen.dart';
+import 'shared/services/auth_service.dart';
+import 'shared/services/theme_service.dart';
 
 void main() {
   runApp(

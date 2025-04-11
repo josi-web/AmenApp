@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../services/auth_service.dart';
-import '../services/theme_service.dart';
+import '../../../shared/services/auth_service.dart';
+import '../../../shared/services/theme_service.dart';
 import 'prayer_requests_screen.dart';
 import 'completed_devotions_screen.dart';
 import 'saved_notes_screen.dart';
 import 'settings_screens.dart';
+import 'joined_events_screen.dart';
+import 'notifications_screen.dart';
+import 'language_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool isTab;
