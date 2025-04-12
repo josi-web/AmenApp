@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'features/user/screens/login_screen.dart';
 import 'features/user/screens/register_screen.dart';
 import 'features/user/screens/home_screen.dart';
+import 'features/admin/screens/admin_home_screen.dart';
 import 'shared/services/auth_service.dart';
 import 'shared/services/theme_service.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeService = Provider.of<ThemeService>(context);
+    final authService = Provider.of<AuthService>(context);
 
     return MaterialApp(
       title: 'Amen App',
@@ -42,7 +44,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) =>
+            authService.isAdmin ? const AdminHomeScreen() : const HomeScreen(),
       },
     );
   }
