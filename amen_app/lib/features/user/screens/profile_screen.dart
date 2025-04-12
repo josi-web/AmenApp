@@ -10,6 +10,7 @@ import 'joined_events_screen.dart';
 import 'notifications_screen.dart';
 import 'language_screen.dart';
 import 'theme_screen.dart';
+import 'attendance_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool isTab;
@@ -173,6 +174,19 @@ class ProfileContent extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => const CompletedDevotionsScreen(),
+                      ),
+                    );
+                  },
+                ),
+                _buildMenuItem(
+                  icon: Icons.calendar_today_outlined,
+                  title: 'Attendance',
+                  subtitle: 'Track your church attendance',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AttendanceScreen(),
                       ),
                     );
                   },
