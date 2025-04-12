@@ -9,6 +9,7 @@ import 'package:amen_app/features/user/screens/saved_notes_screen.dart';
 import 'package:amen_app/features/user/screens/joined_events_screen.dart';
 import 'package:amen_app/features/user/screens/language_screen.dart';
 import 'package:amen_app/features/user/screens/notifications_screen.dart';
+import 'package:amen_app/features/user/screens/attendance_screen.dart';
 import 'package:amen_app/shared/services/theme_service.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -152,6 +153,17 @@ class AppDrawer extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => const JoinedEventsScreen(),
+                      ),
+                    ),
+                  ),
+                  _buildMenuItem(
+                    context,
+                    icon: Icons.calendar_today_outlined,
+                    title: 'Attendance',
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AttendanceScreen(),
                       ),
                     ),
                   ),
