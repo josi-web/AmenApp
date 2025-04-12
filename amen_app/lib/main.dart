@@ -12,7 +12,11 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
-        ChangeNotifierProvider(create: (_) => ThemeService()),
+        ChangeNotifierProvider(create: (context) {
+          final themeService = ThemeService();
+          themeService.setTheme(ThemeType.night);
+          return themeService;
+        }),
       ],
       child: const MyApp(),
     ),

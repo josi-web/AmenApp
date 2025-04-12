@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'notifications_screen.dart';
 import 'language_screen.dart';
 import 'joined_events_screen.dart';
+import 'theme_screen.dart';
 
 class AppSettingsScreen extends StatelessWidget {
   const AppSettingsScreen({Key? key}) : super(key: key);
@@ -18,7 +19,12 @@ class AppSettingsScreen extends StatelessWidget {
             title: const Text('Theme'),
             subtitle: const Text('Change app theme'),
             onTap: () {
-              // TODO: Implement theme settings
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ThemeScreen(),
+                ),
+              );
             },
           ),
           ListTile(

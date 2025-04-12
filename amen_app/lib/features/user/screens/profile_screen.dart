@@ -9,6 +9,7 @@ import 'settings_screens.dart';
 import 'joined_events_screen.dart';
 import 'notifications_screen.dart';
 import 'language_screen.dart';
+import 'theme_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final bool isTab;
@@ -233,13 +234,17 @@ class ProfileContent extends StatelessWidget {
                     );
                   },
                 ),
-                _buildSwitchMenuItem(
+                _buildMenuItem(
                   icon: Icons.dark_mode_outlined,
-                  title: 'Dark Mode',
-                  subtitle: 'Toggle dark/light theme',
-                  value: themeService.isDarkMode,
-                  onChanged: (value) {
-                    themeService.toggleTheme();
+                  title: 'Theme',
+                  subtitle: 'Change app theme',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ThemeScreen(),
+                      ),
+                    );
                   },
                 ),
                 _buildMenuItem(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../shared/services/auth_service.dart';
-import '../../../shared/services/theme_service.dart';
 import '../widgets/app_drawer.dart';
 import 'chat_screen.dart';
 import 'books_screen.dart';
@@ -35,43 +34,66 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeService = Provider.of<ThemeService>(context);
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('Amen App'),
+        backgroundColor: theme.colorScheme.surface,
+        elevation: 0,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu, color: theme.colorScheme.onSurface),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
+        title: Text(
+          'Amen App',
+          style: TextStyle(
+            color: theme.colorScheme.onSurface,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => _handleLogout(context),
+            icon: Icon(Icons.share, color: theme.colorScheme.onSurface),
+            onPressed: () {},
           ),
         ],
       ),
       drawer: const AppDrawer(),
       body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: (index) {
           setState(() {
             _selectedIndex = index;
           });
         },
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+        backgroundColor: theme.colorScheme.surface,
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home, color: theme.colorScheme.primary),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
+          NavigationDestination(
+            icon: const Icon(Icons.chat_outlined),
+            selectedIcon: Icon(Icons.chat, color: theme.colorScheme.primary),
             label: 'Chat',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
+          NavigationDestination(
+            icon: const Icon(Icons.book_outlined),
+            selectedIcon: Icon(Icons.book, color: theme.colorScheme.primary),
             label: 'Books',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+          NavigationDestination(
+            icon: const Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person, color: theme.colorScheme.primary),
             label: 'Profile',
           ),
         ],
@@ -85,6 +107,8 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -92,11 +116,12 @@ class HomeContent extends StatelessWidget {
         children: [
           // Verse of the Day Card with gradient
           Container(
+            width: double.infinity,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF1DE9B6), Color(0xFF0288D1)],
+                colors: [Color(0xFF00E5B8), Color(0xFF00B4E5)],
               ),
               borderRadius: BorderRadius.circular(16),
             ),
@@ -108,24 +133,18 @@ class HomeContent extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Text(
-                              'BIBLE STUDY',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
+                      Text(
+                        'BIBLE STUDY',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                       ),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.white24,
-                        child: Icon(Icons.person, color: Colors.white),
+                      Icon(
+                        Icons.touch_app,
+                        color: Colors.white,
+                        size: 24,
                       ),
                     ],
                   ),
@@ -160,30 +179,33 @@ class HomeContent extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           // Focus for February Month
-          const Card(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Focus for\nFebruary Month',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Focus for\nFebruary Month',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Holiness',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Holiness',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w500,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 24),
@@ -200,14 +222,14 @@ class HomeContent extends StatelessWidget {
                 context,
                 icon: Icons.calendar_month,
                 label: 'Bible Study Schedule',
-                color: Colors.indigo,
+                color: Colors.deepPurple,
                 onTap: () {},
               ),
               _buildActionButton(
                 context,
                 icon: Icons.menu_book,
                 label: 'Read Bible',
-                color: Colors.teal,
+                color: theme.colorScheme.primary,
                 onTap: () {},
               ),
               _buildActionButton(
@@ -221,7 +243,7 @@ class HomeContent extends StatelessWidget {
                 context,
                 icon: Icons.people_outline,
                 label: 'Prayer Requests',
-                color: Colors.blue,
+                color: theme.colorScheme.primary,
                 onTap: () {},
               ),
             ],
@@ -238,11 +260,16 @@ class HomeContent extends StatelessWidget {
     required Color color,
     required VoidCallback onTap,
   }) {
-    return Card(
-      elevation: 2,
+    final theme = Theme.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -250,10 +277,12 @@ class HomeContent extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
+                color: theme.colorScheme.onSurface,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

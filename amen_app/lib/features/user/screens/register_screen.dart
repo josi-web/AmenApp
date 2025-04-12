@@ -90,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -98,10 +98,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     FadeInDown(
                       duration: const Duration(milliseconds: 800),
-                      child: Icon(
+                      child: const Icon(
                         Icons.church_rounded,
                         size: 80,
-                        color: theme.colorScheme.primary,
+                        color: Color(0xFF64B5F6),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -111,8 +111,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Create Account',
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 32,
-                          color: theme.colorScheme.onSurface,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
                         ),
                       ),
                     ),
@@ -131,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     FadeInDown(
                       duration: const Duration(milliseconds: 400),
                       child: TextFormField(
@@ -149,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     FadeInDown(
                       duration: const Duration(milliseconds: 600),
                       child: TextFormField(
@@ -160,17 +161,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         keyboardType: TextInputType.phone,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     FadeInDown(
                       duration: const Duration(milliseconds: 800),
                       child: Theme(
                         data: Theme.of(context).copyWith(
-                          canvasColor: Colors.blue[800],
+                          canvasColor: theme.scaffoldBackgroundColor,
                         ),
                         child: DropdownButtonFormField<String>(
                           value: _selectedCampus,
                           style: TextStyle(color: fieldTextColor),
                           decoration: _inputDecoration('Campus', Icons.school),
+                          dropdownColor: theme.scaffoldBackgroundColor,
                           items: _campuses.map((String campus) {
                             return DropdownMenuItem<String>(
                               value: campus,
@@ -185,27 +187,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               _selectedCampus = newValue;
                             });
                           },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please select your campus';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     FadeInDown(
                       duration: const Duration(milliseconds: 1000),
                       child: Theme(
                         data: Theme.of(context).copyWith(
-                          canvasColor: Colors.blue[800],
+                          canvasColor: theme.scaffoldBackgroundColor,
                         ),
                         child: DropdownButtonFormField<String>(
                           value: _selectedDepartment,
                           style: TextStyle(color: fieldTextColor),
                           decoration:
                               _inputDecoration('Department', Icons.business),
+                          dropdownColor: theme.scaffoldBackgroundColor,
                           items: _departments.map((String department) {
                             return DropdownMenuItem<String>(
                               value: department,
@@ -220,16 +217,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               _selectedDepartment = newValue;
                             });
                           },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please select your department';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     FadeInDown(
                       duration: const Duration(milliseconds: 200),
                       child: TextFormField(
@@ -265,7 +256,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     FadeInDown(
                       duration: const Duration(milliseconds: 200),
                       child: TextFormField(
@@ -307,24 +298,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       duration: const Duration(milliseconds: 400),
                       child: SizedBox(
                         width: double.infinity,
-                        height: 50,
+                        height: 56,
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _register,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: theme.colorScheme.primary,
-                            foregroundColor: theme.colorScheme.onPrimary,
+                            backgroundColor: const Color(0xFF3B82F6),
+                            foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(12),
                             ),
+                            elevation: 0,
                           ),
                           child: _isLoading
-                              ? CircularProgressIndicator(
-                                  color: theme.colorScheme.onPrimary)
+                              ? const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.5,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  ),
+                                )
                               : const Text(
                                   'Register',
                                   style: TextStyle(
                                     fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.5,
                                   ),
                                 ),
                         ),
@@ -337,11 +337,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, '/login');
                         },
-                        child: Text(
+                        child: const Text(
                           'Already have an account? Login',
                           style: TextStyle(
-                            color: theme.colorScheme.primary,
+                            color: Color(0xFF64B5F6),
                             fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.3,
                           ),
                         ),
                       ),
@@ -360,7 +362,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final theme = Theme.of(context);
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon, color: theme.colorScheme.primary),
+      prefixIcon: Icon(
+        icon,
+        color: const Color(0xFF64B5F6),
+        size: 24,
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(
+          color: Colors.white24,
+          width: 1.5,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(
+          color: Colors.white24,
+          width: 1.5,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(
+          color: Color(0xFF64B5F6),
+          width: 2,
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(
+          color: Colors.redAccent,
+          width: 1.5,
+        ),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(
+          color: Colors.redAccent,
+          width: 2,
+        ),
+      ),
+      labelStyle: const TextStyle(
+        color: Colors.white70,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+      floatingLabelStyle: const TextStyle(
+        color: Color(0xFF64B5F6),
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 }
