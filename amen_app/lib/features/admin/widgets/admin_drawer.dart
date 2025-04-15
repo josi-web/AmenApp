@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../shared/services/auth_service.dart';
 import '../../../shared/services/theme_service.dart';
-import '../screens/admin_settings_screen.dart';
 
 class AdminDrawer extends StatelessWidget {
-  const AdminDrawer({Key? key}) : super(key: key);
+  final int selectedIndex;
+  final Function(int) onItemSelected;
+
+  const AdminDrawer({
+    Key? key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,58 +71,57 @@ class AdminDrawer extends StatelessWidget {
                 children: [
                   _buildMenuItem(
                     context,
-                    icon: Icons.dashboard,
-                    title: 'Dashboard',
-                    onTap: () => Navigator.pop(context),
+                    icon: Icons.people,
+                    title: 'User Management',
+                    index: 0,
                   ),
                   _buildMenuItem(
                     context,
-                    icon: Icons.people,
-                    title: 'User Management',
-                    onTap: () {},
+                    icon: Icons.book,
+                    title: 'Content Management',
+                    index: 1,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.event,
                     title: 'Event Management',
-                    onTap: () {},
+                    index: 2,
                   ),
                   _buildMenuItem(
                     context,
-                    icon: Icons.announcement,
-                    title: 'Announcements',
-                    onTap: () {},
+                    icon: Icons.person_pin_circle,
+                    title: 'Prayer Moderation',
+                    index: 3,
                   ),
                   _buildMenuItem(
                     context,
-                    icon: Icons.person_pin,
-                    title: 'Prayer Requests',
-                    onTap: () {},
+                    icon: Icons.comment,
+                    title: 'Commentary Moderation',
+                    index: 4,
                   ),
                   _buildMenuItem(
                     context,
-                    icon: Icons.book,
-                    title: 'Bible Studies',
-                    onTap: () {},
+                    icon: Icons.notifications,
+                    title: 'Notification Control',
+                    index: 5,
                   ),
                   _buildMenuItem(
                     context,
-                    icon: Icons.analytics,
-                    title: 'Reports & Analytics',
-                    onTap: () {},
+                    icon: Icons.feedback,
+                    title: 'Feedback Management',
+                    index: 6,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.settings,
-                    title: 'Settings',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AdminSettingsScreen(),
-                        ),
-                      );
-                    },
+                    title: 'App Settings',
+                    index: 7,
+                  ),
+                  _buildMenuItem(
+                    context,
+                    icon: Icons.analytics,
+                    title: 'Analytics Dashboard',
+                    index: 8,
                   ),
                   const Divider(),
                   _buildDarkModeSwitch(context, isDark, themeService),
@@ -148,11 +153,13 @@ class AdminDrawer extends StatelessWidget {
     BuildContext context, {
     required IconData icon,
     required String title,
-    required VoidCallback onTap,
+    int? index,
+    VoidCallback? onTap,
     Color? textColor,
     Color? iconColor,
   }) {
     final theme = Theme.of(context);
+    final isSelected = index != null && index == selectedIndex;
 
     return ListTile(
       leading: Icon(
@@ -163,13 +170,22 @@ class AdminDrawer extends StatelessWidget {
         title,
         style: TextStyle(
           color: textColor ?? theme.colorScheme.onSurface,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
       trailing: const Icon(
         Icons.chevron_right,
         size: 20,
       ),
-      onTap: onTap,
+      selected: isSelected,
+      onTap: () {
+        if (index != null) {
+          onItemSelected(index);
+          Navigator.pop(context);
+        } else if (onTap != null) {
+          onTap();
+        }
+      },
     );
   }
 
