@@ -9,6 +9,7 @@ class ThemeService extends ChangeNotifier {
   bool _autoNightMode = false;
   String _fontFamily = 'Default';
   Color _nameColor = Colors.purple;
+  ThemeData? _cachedTheme;
 
   ThemeType get currentTheme => _currentTheme;
   bool get autoNightMode => _autoNightMode;
@@ -20,39 +21,19 @@ class ThemeService extends ChangeNotifier {
   }
 
   ThemeData get theme {
-    switch (_currentTheme) {
-      case ThemeType.classic:
-        return _buildTheme(
-          primaryColor: Colors.green[200]!,
-          backgroundColor: Colors.white,
-          isDark: false,
-        );
-      case ThemeType.day:
-        return _buildTheme(
-          primaryColor: Colors.blue[200]!,
-          backgroundColor: Colors.white,
-          isDark: false,
-        );
-      case ThemeType.tinted:
-        return _buildTheme(
-          primaryColor: const Color(0xFF242F3D),
-          backgroundColor: const Color(0xFF17212B),
-          isDark: true,
-        );
-      case ThemeType.night:
-        return _buildTheme(
-          primaryColor: const Color(0xFF1E2732),
-          backgroundColor: const Color(0xFF141D26),
-          isDark: true,
-        );
+    if (_cachedTheme != null) {
+      return _cachedTheme!;
     }
+    _cachedTheme = _buildTheme();
+    return _cachedTheme!;
   }
 
-  ThemeData _buildTheme({
-    required Color primaryColor,
-    required Color backgroundColor,
-    required bool isDark,
-  }) {
+  ThemeData _buildTheme() {
+    final isDark =
+        _currentTheme == ThemeType.tinted || _currentTheme == ThemeType.night;
+    final primaryColor = _getPrimaryColor();
+    final backgroundColor = _getBackgroundColor();
+
     final base = isDark ? ThemeData.dark() : ThemeData.light();
     return base.copyWith(
       primaryColor: primaryColor,
@@ -214,20 +195,56 @@ class ThemeService extends ChangeNotifier {
     );
   }
 
+  Color _getPrimaryColor() {
+    switch (_currentTheme) {
+      case ThemeType.classic:
+        return Colors.green[200]!;
+      case ThemeType.day:
+        return Colors.blue[200]!;
+      case ThemeType.tinted:
+        return const Color(0xFF242F3D);
+      case ThemeType.night:
+        return const Color(0xFF1E2732);
+    }
+  }
+
+  Color _getBackgroundColor() {
+    switch (_currentTheme) {
+      case ThemeType.classic:
+      case ThemeType.day:
+        return Colors.white;
+      case ThemeType.tinted:
+        return const Color(0xFF17212B);
+      case ThemeType.night:
+        return const Color(0xFF141D26);
+    }
+  }
+
   Future<void> _loadThemePreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    _currentTheme = ThemeType.values[prefs.getInt('themeType') ?? 0];
-    _autoNightMode = prefs.getBool('autoNightMode') ?? false;
-    _fontFamily = prefs.getString('fontFamily') ?? 'Default';
-    _nameColor = Color(prefs.getInt('nameColor') ?? Colors.purple.value);
-    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      _currentTheme = ThemeType.values[prefs.getInt('themeType') ?? 0];
+      _autoNightMode = prefs.getBool('autoNightMode') ?? false;
+      _fontFamily = prefs.getString('fontFamily') ?? 'Default';
+      _nameColor = Color(prefs.getInt('nameColor') ?? Colors.purple.value);
+      _cachedTheme = null; // Clear cache to rebuild with new preferences
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error loading theme preferences: $e');
+    }
   }
 
   Future<void> setTheme(ThemeType theme) async {
+    if (_currentTheme == theme) return;
     _currentTheme = theme;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('themeType', theme.index);
-    notifyListeners();
+    _cachedTheme = null; // Clear cache to rebuild with new theme
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('themeType', theme.index);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error saving theme: $e');
+    }
   }
 
   Future<void> setAutoNightMode(bool value) async {

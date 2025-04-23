@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../../shared/services/auth_service.dart';
 import '../widgets/admin_drawer.dart';
 import 'user_management.dart';
 import 'content_management.dart';
@@ -255,35 +253,101 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     const AnalyticsDashboard(),
   ];
 
+  void _onItemSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Dashboard'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              final authService =
-                  Provider.of<AuthService>(context, listen: false);
-              await authService.logout();
-              if (mounted) {
-                Navigator.pushReplacementNamed(context, '/login');
-              }
-            },
-          ),
-        ],
+        title: Text(_getScreenTitle()),
+        actions: _getAppBarActions(),
       ),
       drawer: AdminDrawer(
         selectedIndex: _selectedIndex,
-        onItemSelected: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-          Navigator.pop(context); // Close drawer
-        },
+        onItemSelected: _onItemSelected,
       ),
       body: _screens[_selectedIndex],
+      floatingActionButton: _getFloatingActionButton(),
     );
+  }
+
+  String _getScreenTitle() {
+    switch (_selectedIndex) {
+      case 0:
+        return 'Admin Dashboard';
+      case 1:
+        return 'User Management';
+      case 2:
+        return 'Content Management';
+      case 3:
+        return 'Event Management';
+      case 4:
+        return 'Prayer Moderation';
+      case 5:
+        return 'Commentary Moderation';
+      case 6:
+        return 'Notification Control';
+      case 7:
+        return 'Feedback Management';
+      case 8:
+        return 'App Settings';
+      case 9:
+        return 'Analytics Dashboard';
+      default:
+        return 'Admin Dashboard';
+    }
+  }
+
+  List<Widget> _getAppBarActions() {
+    switch (_selectedIndex) {
+      case 1: // User Management
+        return [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              final userManagement = UserManagement.of(context);
+              if (userManagement != null) {
+                userManagement.refreshUsers();
+              }
+            },
+          ),
+        ];
+      default:
+        return [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              // Handle notifications
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              // Handle profile
+            },
+          ),
+        ];
+    }
+  }
+
+  Widget? _getFloatingActionButton() {
+    switch (_selectedIndex) {
+      case 1: // User Management
+        return FloatingActionButton(
+          onPressed: () {
+            final userManagement = UserManagement.of(context);
+            if (userManagement != null) {
+              userManagement.showAddUserDialog();
+            }
+          },
+          child: const Icon(Icons.add),
+        );
+      default:
+        return null;
+    }
   }
 }

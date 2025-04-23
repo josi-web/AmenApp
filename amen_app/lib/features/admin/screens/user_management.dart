@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 class UserManagement extends StatefulWidget {
   const UserManagement({Key? key}) : super(key: key);
 
+  static _UserManagementState? of(BuildContext context) {
+    return context.findAncestorStateOfType<_UserManagementState>();
+  }
+
   @override
   _UserManagementState createState() => _UserManagementState();
 }
@@ -11,6 +15,9 @@ class _UserManagementState extends State<UserManagement> {
   bool _isLoading = true;
   List<Map<String, dynamic>> _users = [];
   final TextEditingController _searchController = TextEditingController();
+  String _newUserName = '';
+  String _newUserEmail = '';
+  String _newUserRole = 'user';
 
   @override
   void initState() {
@@ -50,103 +57,151 @@ class _UserManagementState extends State<UserManagement> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Management'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadUsers,
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                labelText: 'Search Users',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                // TODO: Implement search functionality with Laravel API
-              },
-            ),
-          ),
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: _users.length,
-                    itemBuilder: (context, index) {
-                      final user = _users[index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            child: Text(user['name'][0]),
-                          ),
-                          title: Text(user['name']),
-                          subtitle: Text(user['email']),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Chip(
-                                label: Text(user['role']),
-                                backgroundColor: user['role'] == 'admin'
-                                    ? Colors.blue.withOpacity(0.1)
-                                    : Colors.grey.withOpacity(0.1),
-                              ),
-                              const SizedBox(width: 8),
-                              PopupMenuButton<String>(
-                                onSelected: (value) {
-                                  // TODO: Implement actions with Laravel API
-                                  switch (value) {
-                                    case 'edit':
-                                      _showEditUserDialog(user);
-                                      break;
-                                    case 'delete':
-                                      _showDeleteConfirmation(user);
-                                      break;
-                                  }
-                                },
-                                itemBuilder: (context) => [
-                                  const PopupMenuItem(
-                                    value: 'edit',
-                                    child: Text('Edit User'),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 'delete',
-                                    child: Text('Delete User'),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddUserDialog(),
-        child: const Icon(Icons.add),
-      ),
-    );
+  Future<void> refreshUsers() async {
+    await _loadUsers();
   }
 
-  void _showAddUserDialog() {
-    // TODO: Implement add user dialog with Laravel API
+  Future<void> showAddUserDialog() async {
+    final result = await showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add New User'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              decoration: const InputDecoration(labelText: 'Name'),
+              onChanged: (value) => _newUserName = value,
+            ),
+            TextField(
+              decoration: const InputDecoration(labelText: 'Email'),
+              onChanged: (value) => _newUserEmail = value,
+            ),
+            DropdownButtonFormField<String>(
+              decoration: const InputDecoration(labelText: 'Role'),
+              value: _newUserRole,
+              items: const [
+                DropdownMenuItem(value: 'user', child: Text('User')),
+                DropdownMenuItem(value: 'admin', child: Text('Admin')),
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  _newUserRole = value;
+                }
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              // TODO: Implement user creation with Laravel API
+              Navigator.pop(context, {
+                'name': _newUserName,
+                'email': _newUserEmail,
+                'role': _newUserRole,
+              });
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
+
+    if (result != null) {
+      // TODO: Implement user creation with Laravel API
+      setState(() {
+        _users.add({
+          'id': DateTime.now().toString(), // Temporary ID
+          ...result,
+          'status': 'active',
+        });
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: TextField(
+            controller: _searchController,
+            decoration: const InputDecoration(
+              labelText: 'Search Users',
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              // TODO: Implement search functionality with Laravel API
+            },
+          ),
+        ),
+        Expanded(
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount: _users.length,
+                  itemBuilder: (context, index) {
+                    final user = _users[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Text(user['name'][0]),
+                        ),
+                        title: Text(user['name']),
+                        subtitle: Text(user['email']),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Chip(
+                              label: Text(user['role']),
+                              backgroundColor: user['role'] == 'admin'
+                                  ? Colors.blue.withOpacity(0.1)
+                                  : Colors.grey.withOpacity(0.1),
+                            ),
+                            const SizedBox(width: 8),
+                            PopupMenuButton<String>(
+                              onSelected: (value) {
+                                // TODO: Implement actions with Laravel API
+                                switch (value) {
+                                  case 'edit':
+                                    _showEditUserDialog(user);
+                                    break;
+                                  case 'delete':
+                                    _showDeleteConfirmation(user);
+                                    break;
+                                }
+                              },
+                              itemBuilder: (context) => [
+                                const PopupMenuItem(
+                                  value: 'edit',
+                                  child: Text('Edit User'),
+                                ),
+                                const PopupMenuItem(
+                                  value: 'delete',
+                                  child: Text('Delete User'),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+        ),
+      ],
+    );
   }
 
   void _showEditUserDialog(Map<String, dynamic> user) {

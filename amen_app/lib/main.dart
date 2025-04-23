@@ -8,16 +8,19 @@ import 'features/admin/screens/admin_home_screen.dart';
 import 'shared/services/auth_service.dart';
 import 'shared/services/theme_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Preload fonts
+  await GoogleFonts.pendingFonts([
+    GoogleFonts.playfairDisplay(),
+  ]);
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService()),
-        ChangeNotifierProvider(create: (context) {
-          final themeService = ThemeService();
-          themeService.setTheme(ThemeType.night);
-          return themeService;
-        }),
+        ChangeNotifierProvider(create: (context) => ThemeService()),
       ],
       child: const MyApp(),
     ),
