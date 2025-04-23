@@ -13,13 +13,7 @@ class _CommentaryModerationState extends State<CommentaryModeration> {
   List<Map<String, dynamic>> _comments = [];
 
   @override
-/*************  ✨ Windsurf Command ⭐  *************/
-  /// Initializes the state of the widget by loading the data from the server.
-  ///
-  /// This is called when the widget is inserted into the tree.
-  ///
-  /// The data is loaded by calling the [_loadData] function.
-/*******  66bbd059-fd57-41d9-adbe-bc82c83c433a  *******/ void initState() {
+  void initState() {
     super.initState();
     _loadData();
   }
@@ -221,6 +215,7 @@ class _CommentaryModerationState extends State<CommentaryModeration> {
 
   String _formatDate(dynamic date) {
     if (date == null) return 'No date';
-    return date.toDate().toString();
+    if (date is DateTime) return date.toString();
+    return date.toString();
   }
 }
