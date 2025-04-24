@@ -338,11 +338,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     switch (_selectedIndex) {
       case 1: // User Management
         return FloatingActionButton(
+          heroTag: 'admin_add_user',
           onPressed: () {
-            final userManagement = UserManagement.of(context);
-            if (userManagement != null) {
-              userManagement.showAddUserDialog();
-            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const UserManagement(),
+              ),
+            );
           },
           child: const Icon(Icons.add),
         );
