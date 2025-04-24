@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'admin_home_screen.dart';
 
 class CommentaryModeration extends StatefulWidget {
   const CommentaryModeration({Key? key}) : super(key: key);
@@ -55,6 +56,17 @@ class _CommentaryModerationState extends State<CommentaryModeration> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AdminHomeScreen(),
+                ),
+              );
+            },
+          ),
           title: const Text('Commentary Moderation'),
           bottom: const TabBar(
             tabs: [
