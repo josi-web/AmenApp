@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'admin_home_screen.dart';
 
 class AppSettings extends StatefulWidget {
   const AppSettings({Key? key}) : super(key: key);
@@ -62,6 +63,17 @@ class _AppSettingsState extends State<AppSettings> {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AdminHomeScreen(),
+                ),
+              );
+            },
+          ),
           title: const Text('App Settings'),
           bottom: const TabBar(
             isScrollable: true,
