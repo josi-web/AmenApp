@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'admin_home_screen.dart';
 
 class ContentManagement extends StatefulWidget {
   const ContentManagement({Key? key}) : super(key: key);
@@ -58,6 +59,17 @@ class _ContentManagementState extends State<ContentManagement>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AdminHomeScreen(),
+              ),
+            );
+          },
+        ),
         title: const Text('Content Management'),
         bottom: TabBar(
           controller: _tabController,
