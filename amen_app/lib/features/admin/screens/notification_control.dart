@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'admin_home_screen.dart';
 
 class NotificationControl extends StatefulWidget {
   const NotificationControl({Key? key}) : super(key: key);
@@ -49,6 +50,17 @@ class _NotificationControlState extends State<NotificationControl> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AdminHomeScreen(),
+                ),
+              );
+            },
+          ),
           title: const Text('Notification Control'),
           bottom: const TabBar(
             tabs: [
