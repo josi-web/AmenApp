@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'admin_home_screen.dart';
 
 class EventManagement extends StatefulWidget {
   const EventManagement({Key? key}) : super(key: key);
@@ -44,6 +45,17 @@ class _EventManagementState extends State<EventManagement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AdminHomeScreen(),
+              ),
+            );
+          },
+        ),
         title: const Text('Event Management'),
       ),
       body: Column(
@@ -230,7 +242,10 @@ class _EventManagementState extends State<EventManagement> {
 
   String _formatDate(dynamic date) {
     if (date == null) return 'No date set';
-    return DateFormat('MMM dd, yyyy').format(date.toDate());
+    if (date is DateTime) {
+      return DateFormat('MMM dd, yyyy').format(date);
+    }
+    return date.toString();
   }
 
   String _formatTime(dynamic time) {
