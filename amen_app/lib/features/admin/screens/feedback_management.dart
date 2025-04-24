@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'admin_home_screen.dart';
 
 class FeedbackManagement extends StatefulWidget {
   const FeedbackManagement({Key? key}) : super(key: key);
@@ -49,6 +50,17 @@ class _FeedbackManagementState extends State<FeedbackManagement> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AdminHomeScreen(),
+                ),
+              );
+            },
+          ),
           title: const Text('Feedback Management'),
           bottom: const TabBar(
             tabs: [
