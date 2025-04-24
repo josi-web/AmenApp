@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'admin_home_screen.dart';
 
 class PrayerModeration extends StatefulWidget {
   const PrayerModeration({super.key});
@@ -43,6 +44,17 @@ class _PrayerModerationState extends State<PrayerModeration> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AdminHomeScreen(),
+              ),
+            );
+          },
+        ),
         title: const Text('Prayer Moderation'),
         actions: [
           IconButton(
