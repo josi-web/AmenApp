@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'admin_home_screen.dart';
 
 class AnalyticsDashboard extends StatefulWidget {
   const AnalyticsDashboard({Key? key}) : super(key: key);
@@ -76,6 +77,17 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AdminHomeScreen(),
+                ),
+              );
+            },
+          ),
           title: const Text('Analytics Dashboard'),
           actions: [
             PopupMenuButton<String>(
