@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'admin_home_screen.dart';
 
 class UserManagement extends StatefulWidget {
   const UserManagement({Key? key}) : super(key: key);
@@ -124,91 +125,114 @@ class _UserManagementState extends State<UserManagement> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: TextField(
-            controller: _searchController,
-            decoration: const InputDecoration(
-              labelText: 'Search Users',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (value) {
-              // TODO: Implement search functionality with Laravel API
-            },
-          ),
-        ),
-        Expanded(
-          child: _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : ListView.builder(
-                  itemCount: _users.length,
-                  itemBuilder: (context, index) {
-                    final user = _users[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          child: Text(user['name'][0]),
-                        ),
-                        title: Text(user['name']),
-                        subtitle: Text(user['email']),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Chip(
-                              label: Text(user['role']),
-                              backgroundColor: user['role'] == 'admin'
-                                  ? Colors.blue.withOpacity(0.1)
-                                  : Colors.grey.withOpacity(0.1),
-                            ),
-                            const SizedBox(width: 8),
-                            PopupMenuButton<String>(
-                              onSelected: (value) {
-                                // TODO: Implement actions with Laravel API
-                                switch (value) {
-                                  case 'edit':
-                                    _showEditUserDialog(user);
-                                    break;
-                                  case 'delete':
-                                    _showDeleteConfirmation(user);
-                                    break;
-                                }
-                              },
-                              itemBuilder: (context) => [
-                                const PopupMenuItem(
-                                  value: 'edit',
-                                  child: Text('Edit User'),
-                                ),
-                                const PopupMenuItem(
-                                  value: 'delete',
-                                  child: Text('Delete User'),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-        ),
-      ],
-    );
-  }
-
   void _showEditUserDialog(Map<String, dynamic> user) {
-    // TODO: Implement edit user dialog with Laravel API
+    // TODO: Implement edit user dialog
   }
 
   void _showDeleteConfirmation(Map<String, dynamic> user) {
-    // TODO: Implement delete confirmation with Laravel API
+    // TODO: Implement delete confirmation dialog
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AdminHomeScreen(),
+              ),
+            );
+          },
+        ),
+        title: const Text('User Management'),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  labelText: 'Search Users',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  // TODO: Implement search functionality with Laravel API
+                },
+              ),
+            ),
+            Expanded(
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: _users.length,
+                      itemBuilder: (context, index) {
+                        final user = _users[index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              child: Text(user['name'][0]),
+                            ),
+                            title: Text(user['name']),
+                            subtitle: Text(user['email']),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Chip(
+                                  label: Text(user['role']),
+                                  backgroundColor: user['role'] == 'admin'
+                                      ? Colors.blue.withOpacity(0.1)
+                                      : Colors.grey.withOpacity(0.1),
+                                ),
+                                const SizedBox(width: 8),
+                                PopupMenuButton<String>(
+                                  onSelected: (value) {
+                                    // TODO: Implement actions with Laravel API
+                                    switch (value) {
+                                      case 'edit':
+                                        _showEditUserDialog(user);
+                                        break;
+                                      case 'delete':
+                                        _showDeleteConfirmation(user);
+                                        break;
+                                    }
+                                  },
+                                  itemBuilder: (context) => [
+                                    const PopupMenuItem(
+                                      value: 'edit',
+                                      child: Text('Edit User'),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: 'delete',
+                                      child: Text('Delete User'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'user_management_fab',
+        onPressed: showAddUserDialog,
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }
