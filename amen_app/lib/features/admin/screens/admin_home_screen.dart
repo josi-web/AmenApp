@@ -176,25 +176,30 @@ class AdminHomeContent extends StatelessWidget {
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 24, color: color),
-            const SizedBox(height: 8),
+            Icon(icon, size: 20, color: color),
+            const SizedBox(height: 4),
             Text(
               value,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: color,
                     fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               title,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontSize: 11,
+                  ),
               textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
@@ -214,16 +219,21 @@ class AdminHomeContent extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 32, color: Theme.of(context).primaryColor),
-              const SizedBox(height: 8),
+              Icon(icon, size: 28, color: Theme.of(context).primaryColor),
+              const SizedBox(height: 4),
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 14,
+                    ),
                 textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
