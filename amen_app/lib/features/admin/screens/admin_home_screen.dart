@@ -9,6 +9,7 @@ import 'commentary_moderation.dart';
 import 'notification_control.dart';
 import 'feedback_management.dart';
 import 'app_settings.dart';
+import 'admin_chat_screen.dart';
 
 class AdminHomeContent extends StatelessWidget {
   const AdminHomeContent({super.key});
@@ -243,6 +244,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   final List<Widget> _screens = [
     const AdminHomeContent(),
     const UserManagement(),
+    const AdminChatScreen(),
     const ContentManagement(),
     const EventManagement(),
     const PrayerModeration(),
@@ -272,6 +274,25 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       ),
       body: _screens[_selectedIndex],
       floatingActionButton: _getFloatingActionButton(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex == 0 ? 0 : (_selectedIndex == 2 ? 1 : 0),
+        onTap: (index) {
+          setState(() {
+            _selectedIndex =
+                index == 0 ? 0 : 2; // Map 0 to 0 (Home), 1 to 2 (Chat)
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: 'Chat',
+          ),
+        ],
+      ),
     );
   }
 
@@ -282,20 +303,22 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       case 1:
         return 'User Management';
       case 2:
-        return 'Content Management';
+        return 'Admin Chat';
       case 3:
-        return 'Event Management';
+        return 'Content Management';
       case 4:
-        return 'Prayer Moderation';
+        return 'Event Management';
       case 5:
-        return 'Commentary Moderation';
+        return 'Prayer Moderation';
       case 6:
-        return 'Notification Control';
+        return 'Commentary Moderation';
       case 7:
-        return 'Feedback Management';
+        return 'Notification Control';
       case 8:
-        return 'App Settings';
+        return 'Feedback Management';
       case 9:
+        return 'App Settings';
+      case 10:
         return 'Analytics Dashboard';
       default:
         return 'Admin Dashboard';
@@ -313,6 +336,21 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               if (userManagement != null) {
                 userManagement.refreshUsers();
               }
+            },
+          ),
+        ];
+      case 2: // Chat
+        return [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              // Handle chat search
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: () {
+              // Handle chat filter
             },
           ),
         ];
@@ -344,6 +382,41 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => const UserManagement(),
+              ),
+            );
+          },
+          child: const Icon(Icons.add),
+        );
+      case 2: // Chat
+        return FloatingActionButton(
+          heroTag: 'admin_new_chat',
+          onPressed: () {
+            // Show dialog to create new chat or group
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('New Chat'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.person_add),
+                      title: const Text('New User Chat'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        // Navigate to user selection
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.group_add),
+                      title: const Text('New Group'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        // Navigate to group creation
+                      },
+                    ),
+                  ],
+                ),
               ),
             );
           },
