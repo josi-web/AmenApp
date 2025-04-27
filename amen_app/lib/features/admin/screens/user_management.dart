@@ -35,15 +35,15 @@ class _UserManagementState extends State<UserManagement> {
         _users = [
           {
             'id': '1',
-            'name': 'John Doe',
+            'name': 'John dave',
             'email': 'john@example.com',
             'role': 'user',
             'status': 'active',
           },
           {
             'id': '2',
-            'name': 'Jane Smith',
-            'email': 'jane@example.com',
+            'name': 'mule ',
+            'email': 'mule@example.com',
             'role': 'admin',
             'status': 'active',
           },
