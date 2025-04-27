@@ -11,6 +11,7 @@ import 'notification_control.dart';
 import 'feedback_management.dart';
 import 'app_settings.dart';
 import 'analytics_dashboard.dart';
+import 'attendance_management.dart';
 
 class AdminProfileScreen extends StatelessWidget {
   final bool isTab;
@@ -170,7 +171,7 @@ class AdminProfileContent extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildStatItem(context, 'Users', '1,234'),
+                      _buildStatItem(context, 'Users', '241'),
                       _buildStatItem(context, 'Content', '56'),
                       _buildStatItem(context, 'Events', '12'),
                     ],
@@ -191,6 +192,19 @@ class AdminProfileContent extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => const UserManagement(),
+                      ),
+                    );
+                  },
+                ),
+                _buildMenuItem(
+                  icon: Icons.calendar_today,
+                  title: 'Attendance Management',
+                  subtitle: 'Track and manage user attendance',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AttendanceManagement(),
                       ),
                     );
                   },
