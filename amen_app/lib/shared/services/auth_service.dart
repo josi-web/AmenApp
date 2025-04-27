@@ -15,14 +15,13 @@ class AuthService extends ChangeNotifier {
         const Duration(milliseconds: 500)); // Simulate network delay
 
     // Admin login
-    if (email.toLowerCase() == 'admin@example.com' && password == 'admin123') {
+    if (email.toLowerCase() == 'mule@example.com' && password == 'mule123') {
       _isAuthenticated = true;
       _isAdmin = true;
       _currentUserEmail = email;
     }
     // Regular user login
-    else if (email.toLowerCase() == 'user@example.com' &&
-        password == 'user123') {
+    else if (email.toLowerCase() == 'jo@example.com' && password == 'jo123') {
       _isAuthenticated = true;
       _isAdmin = false;
       _currentUserEmail = email;
@@ -31,7 +30,7 @@ class AuthService extends ChangeNotifier {
     else if (email.isEmpty && password.isEmpty) {
       _isAuthenticated = true;
       _isAdmin = true;
-      _currentUserEmail = 'admin@example.com';
+      _currentUserEmail = 'mule@example.com';
     }
     // Default test login (user)
     else if (email == 'test@example.com' && password == 'password') {
