@@ -34,7 +34,7 @@ class AdminHomeContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome to Admin Dashboard',
+                  'Welcome to Bs Admin Dashboard',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 8),
@@ -64,14 +64,14 @@ class AdminHomeContent extends StatelessWidget {
               _buildStatCard(
                 context,
                 'Total Users',
-                '1,234',
+                '241',
                 Icons.people,
                 Colors.blue,
               ),
               _buildStatCard(
                 context,
                 'Active Users',
-                '789',
+                '134',
                 Icons.people_alt,
                 Colors.green,
               ),
