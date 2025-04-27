@@ -10,6 +10,8 @@ import 'notification_control.dart';
 import 'feedback_management.dart';
 import 'app_settings.dart';
 import 'admin_chat_screen.dart';
+import 'admin_books_screen.dart';
+import 'admin_profile_screen.dart';
 
 class AdminHomeContent extends StatelessWidget {
   const AdminHomeContent({super.key});
@@ -253,6 +255,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     const FeedbackManagement(),
     const AppSettings(),
     const AnalyticsDashboard(),
+    const AdminBooksScreen(),
+    const AdminProfileScreen(),
   ];
 
   void _onItemSelected(int index) {
@@ -275,13 +279,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       body: _screens[_selectedIndex],
       floatingActionButton: _getFloatingActionButton(),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex == 0 ? 0 : (_selectedIndex == 2 ? 1 : 0),
+        currentIndex: _getBottomNavIndex(_selectedIndex),
         onTap: (index) {
           setState(() {
-            _selectedIndex =
-                index == 0 ? 0 : 2; // Map 0 to 0 (Home), 1 to 2 (Chat)
+            _selectedIndex = _getScreenIndexFromBottomNav(index);
           });
         },
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -290,6 +294,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.chat),
             label: 'Chat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Books',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
       ),
@@ -320,6 +332,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         return 'App Settings';
       case 10:
         return 'Analytics Dashboard';
+      case 11:
+        return 'Books';
+      case 12:
+        return 'Profile';
       default:
         return 'Admin Dashboard';
     }
@@ -351,6 +367,30 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
             icon: const Icon(Icons.filter_list),
             onPressed: () {
               // Handle chat filter
+            },
+          ),
+        ];
+      case 11: // Books
+        return [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              // Handle book search
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: () {
+              // Handle book filter
+            },
+          ),
+        ];
+      case 12: // Profile
+        return [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              // Handle profile settings
             },
           ),
         ];
@@ -422,8 +462,75 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           },
           child: const Icon(Icons.add),
         );
+      case 11: // Books
+        return FloatingActionButton(
+          heroTag: 'admin_add_book',
+          onPressed: () {
+            // Show dialog to add new book
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Add New Book'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.add_circle),
+                      title: const Text('Add Book Manually'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        // Navigate to add book form
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.upload_file),
+                      title: const Text('Import from CSV'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        // Navigate to import books
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+          child: const Icon(Icons.add),
+        );
       default:
         return null;
+    }
+  }
+
+  // Helper method to convert screen index to bottom nav index
+  int _getBottomNavIndex(int screenIndex) {
+    switch (screenIndex) {
+      case 0: // Home
+        return 0;
+      case 2: // Chat
+        return 1;
+      case 11: // Books (new)
+        return 2;
+      case 12: // Profile (new)
+        return 3;
+      default:
+        return 0;
+    }
+  }
+
+  // Helper method to convert bottom nav index to screen index
+  int _getScreenIndexFromBottomNav(int bottomNavIndex) {
+    switch (bottomNavIndex) {
+      case 0:
+        return 0; // Home
+      case 1:
+        return 2; // Chat
+      case 2:
+        return 11; // Books
+      case 3:
+        return 12; // Profile
+      default:
+        return 0;
     }
   }
 }
