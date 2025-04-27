@@ -259,8 +259,8 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (!_showChats) ...[
-                    TextField(
-                      decoration: const InputDecoration(
+                    const TextField(
+                      decoration: InputDecoration(
                         labelText: 'Group Name',
                       ),
                     ),
@@ -268,8 +268,8 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                     const Text('Select Members:'),
                     // Add member selection here
                   ] else ...[
-                    TextField(
-                      decoration: const InputDecoration(
+                    const TextField(
+                      decoration: InputDecoration(
                         labelText: 'Search User',
                       ),
                     ),
