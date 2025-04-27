@@ -26,8 +26,8 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
       // TODO: Replace with Laravel API call
       setState(() {
         _analytics = {
-          'totalUsers': 1234,
-          'activeUsers': 789,
+          'totalUsers': 241,
+          'activeUsers': 134,
           'totalPrayerRequests': 56,
           'totalEvents': 12,
           'userGrowth': [10, 20, 30, 40, 50, 60, 70],
