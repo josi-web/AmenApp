@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../shared/services/auth_service.dart';
 import '../../../shared/services/theme_service.dart';
+import '../screens/attendance_management.dart';
 
 class AdminDrawer extends StatelessWidget {
   final int selectedIndex;
@@ -56,7 +57,7 @@ class AdminDrawer extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Manage Church Community',
+                    'Manage Bible Study Community',
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.9),
                       fontSize: 14,
@@ -74,6 +75,19 @@ class AdminDrawer extends StatelessWidget {
                     icon: Icons.people,
                     title: 'User Management',
                     index: 1,
+                  ),
+                  _buildMenuItem(
+                    context,
+                    icon: Icons.calendar_today,
+                    title: 'Attendance Management',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AttendanceManagement(),
+                        ),
+                      );
+                    },
                   ),
                   _buildMenuItem(
                     context,
