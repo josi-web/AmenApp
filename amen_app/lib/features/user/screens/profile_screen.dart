@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../shared/services/auth_service.dart';
 import '../../../shared/services/theme_service.dart';
+import '../../../core/localization/app_localizations.dart';
 import 'prayer_requests_screen.dart';
 import 'completed_devotions_screen.dart';
 import 'saved_notes_screen.dart';
@@ -29,6 +30,7 @@ class ProfileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeService = Provider.of<ThemeService>(context);
+    final localizations = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: isTab
@@ -44,7 +46,7 @@ class ProfileContent extends StatelessWidget {
                   }
                 },
               ),
-              title: const Text('My Profile'),
+              title: Text(localizations.profile),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.settings),
@@ -72,7 +74,7 @@ class ProfileContent extends StatelessWidget {
                           children: [
                             ListTile(
                               leading: const Icon(Icons.camera_alt),
-                              title: const Text('Take Photo'),
+                              title: Text(localizations.takePhoto),
                               onTap: () {
                                 Navigator.pop(context);
                                 // Handle camera
@@ -80,7 +82,7 @@ class ProfileContent extends StatelessWidget {
                             ),
                             ListTile(
                               leading: const Icon(Icons.photo_library),
-                              title: const Text('Choose from Gallery'),
+                              title: Text(localizations.chooseFromGallery),
                               onTap: () {
                                 Navigator.pop(context);
                                 // Handle gallery selection
@@ -143,19 +145,19 @@ class ProfileContent extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Edit Profile'),
+                    child: Text(localizations.editProfile),
                   ),
                 ],
               ),
             ),
             // Profile Menu Items
             _buildSection(
-              title: 'Spiritual Journey',
+              title: localizations.spiritualJourney,
               children: [
                 _buildMenuItem(
                   icon: Icons.front_hand,
-                  title: 'My Prayer Requests',
-                  subtitle: 'View and track your prayers',
+                  title: localizations.myPrayers,
+                  subtitle: localizations.viewTrackPrayers,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -167,8 +169,8 @@ class ProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.check_circle_outline,
-                  title: 'Completed Devotions',
-                  subtitle: 'Track your daily devotional progress',
+                  title: localizations.completedDevotions,
+                  subtitle: localizations.trackDevotionProgress,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -180,8 +182,8 @@ class ProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.calendar_today_outlined,
-                  title: 'Attendance',
-                  subtitle: 'Track your church attendance',
+                  title: localizations.attendance,
+                  subtitle: localizations.trackChurchAttendance,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -193,8 +195,8 @@ class ProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.book_outlined,
-                  title: 'Saved Notes',
-                  subtitle: 'Access your sermon and study notes',
+                  title: localizations.savedNotes,
+                  subtitle: localizations.accessSermonNotes,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -206,8 +208,8 @@ class ProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.event_outlined,
-                  title: 'Joined Events',
-                  subtitle: 'View your upcoming events',
+                  title: localizations.joinedEvents,
+                  subtitle: localizations.viewUpcomingEvents,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -220,12 +222,12 @@ class ProfileContent extends StatelessWidget {
               ],
             ),
             _buildSection(
-              title: 'App Settings',
+              title: localizations.appSettings,
               children: [
                 _buildMenuItem(
                   icon: Icons.notifications_outlined,
-                  title: 'Notifications',
-                  subtitle: 'Manage your reminders',
+                  title: localizations.notifications,
+                  subtitle: localizations.manageReminders,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -237,8 +239,8 @@ class ProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.language,
-                  title: 'Language',
-                  subtitle: 'Switch between Amharic and English',
+                  title: localizations.language,
+                  subtitle: localizations.switchLanguage,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -250,8 +252,8 @@ class ProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.dark_mode_outlined,
-                  title: 'Theme',
-                  subtitle: 'Change app theme',
+                  title: localizations.theme,
+                  subtitle: localizations.changeAppTheme,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -263,8 +265,8 @@ class ProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.settings_outlined,
-                  title: 'App Settings',
-                  subtitle: 'Sound, font size, verse version',
+                  title: localizations.appSettings,
+                  subtitle: localizations.appPreferences,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -278,8 +280,8 @@ class ProfileContent extends StatelessWidget {
             ),
             _buildMenuItem(
               icon: Icons.logout,
-              title: 'Log out',
-              subtitle: 'Sign out of your account',
+              title: localizations.logout,
+              subtitle: localizations.signOut,
               onTap: () {
                 final authService =
                     Provider.of<AuthService>(context, listen: false);
