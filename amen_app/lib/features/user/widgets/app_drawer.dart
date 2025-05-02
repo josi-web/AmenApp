@@ -11,6 +11,7 @@ import 'package:amen_app/features/user/screens/language_screen.dart';
 import 'package:amen_app/features/user/screens/notifications_screen.dart';
 import 'package:amen_app/features/user/screens/attendance_screen.dart';
 import 'package:amen_app/shared/services/theme_service.dart';
+import 'package:amen_app/core/localization/app_localizations.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class AppDrawer extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final themeService = Provider.of<ThemeService>(context);
+    final localizations = AppLocalizations.of(context);
 
     return Drawer(
       child: Container(
@@ -74,7 +76,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.person_outline,
-                    title: 'Profile',
+                    title: localizations.profile,
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -85,7 +87,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.comment_outlined,
-                    title: 'Commentary',
+                    title: localizations.commentary,
                     onTap: () {
                       // TODO: Implement commentary screen navigation
                     },
@@ -93,7 +95,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.settings_outlined,
-                    title: 'Settings',
+                    title: localizations.settings,
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -104,7 +106,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.notifications_outlined,
-                    title: 'Notifications',
+                    title: localizations.notifications,
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -115,7 +117,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.front_hand_outlined,
-                    title: 'My Prayer Requests',
+                    title: localizations.myPrayers,
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -126,7 +128,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.check_circle_outline,
-                    title: 'My Completed Devotions',
+                    title: localizations.completedDevotions,
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -137,7 +139,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.book_outlined,
-                    title: 'Saved Notes',
+                    title: localizations.savedNotes,
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -148,7 +150,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.event_outlined,
-                    title: 'Joined Events',
+                    title: localizations.joinedEvents,
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -159,7 +161,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.calendar_today_outlined,
-                    title: 'Attendance',
+                    title: localizations.attendance,
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -170,7 +172,7 @@ class AppDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.language,
-                    title: 'Language Selector',
+                    title: localizations.languageSelector,
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -178,12 +180,13 @@ class AppDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  _buildDarkModeSwitch(context, isDark, themeService),
+                  _buildDarkModeSwitch(
+                      context, isDark, themeService, localizations),
                   const Divider(),
                   _buildMenuItem(
                     context,
                     icon: Icons.logout,
-                    title: 'Logout',
+                    title: localizations.logout,
                     onTap: () {
                       final authService =
                           Provider.of<AuthService>(context, listen: false);
@@ -232,8 +235,8 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildDarkModeSwitch(
-      BuildContext context, bool isDark, ThemeService themeService) {
+  Widget _buildDarkModeSwitch(BuildContext context, bool isDark,
+      ThemeService themeService, AppLocalizations localizations) {
     final theme = Theme.of(context);
     return ListTile(
       leading: Icon(
@@ -242,7 +245,7 @@ class AppDrawer extends StatelessWidget {
         size: 24,
       ),
       title: Text(
-        'Dark Mode',
+        localizations.darkMode,
         style: TextStyle(
           color: theme.colorScheme.onSurface,
           fontSize: 16,
