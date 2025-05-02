@@ -5,6 +5,7 @@ import '../widgets/app_drawer.dart';
 import 'chat_screen.dart';
 import 'books_screen.dart';
 import 'profile_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -36,6 +37,7 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final localizations = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -51,7 +53,7 @@ class HomeScreenState extends State<HomeScreen> {
           ),
         ),
         title: Text(
-          'Amen App',
+          localizations.appName,
           style: TextStyle(
             color: theme.colorScheme.onSurface,
             fontSize: 20,
@@ -79,22 +81,22 @@ class HomeScreenState extends State<HomeScreen> {
           NavigationDestination(
             icon: const Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home, color: theme.colorScheme.primary),
-            label: 'Home',
+            label: localizations.home,
           ),
           NavigationDestination(
             icon: const Icon(Icons.chat_outlined),
             selectedIcon: Icon(Icons.chat, color: theme.colorScheme.primary),
-            label: 'Chat',
+            label: localizations.chat,
           ),
           NavigationDestination(
             icon: const Icon(Icons.book_outlined),
             selectedIcon: Icon(Icons.book, color: theme.colorScheme.primary),
-            label: 'Books',
+            label: localizations.books,
           ),
           NavigationDestination(
             icon: const Icon(Icons.person_outline),
             selectedIcon: Icon(Icons.person, color: theme.colorScheme.primary),
-            label: 'Profile',
+            label: localizations.profile,
           ),
         ],
       ),
@@ -108,6 +110,7 @@ class HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localizations = AppLocalizations.of(context);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -125,8 +128,8 @@ class HomeContent extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(20.0),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -134,39 +137,39 @@ class HomeContent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'BIBLE STUDY',
-                        style: TextStyle(
+                        localizations.bibleStudy,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.touch_app,
                         color: Colors.white,
                         size: 24,
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
-                    'Verse of the day',
-                    style: TextStyle(
+                    localizations.verseOfDay,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     '"In the beginning was the word, and the word was with God, and the word was God"',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Text(
+                  const SizedBox(height: 4),
+                  const Text(
                     'John 1:1 KJV',
                     style: TextStyle(
                       color: Colors.white70,
@@ -189,7 +192,7 @@ class HomeContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Focus for\nFebruary Month',
+                  localizations.focusForMonth,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -198,7 +201,7 @@ class HomeContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Holiness',
+                  localizations.holiness,
                   style: TextStyle(
                     fontSize: 24,
                     color: theme.colorScheme.primary,
@@ -221,28 +224,28 @@ class HomeContent extends StatelessWidget {
               _buildActionButton(
                 context,
                 icon: Icons.calendar_month,
-                label: 'Bible Study Schedule',
+                label: localizations.bibleStudySchedule,
                 color: Colors.deepPurple,
                 onTap: () {},
               ),
               _buildActionButton(
                 context,
                 icon: Icons.menu_book,
-                label: 'Read Bible',
+                label: localizations.readBible,
                 color: theme.colorScheme.primary,
                 onTap: () {},
               ),
               _buildActionButton(
                 context,
                 icon: Icons.check_circle_outline,
-                label: 'Daily Devotion',
+                label: localizations.dailyDevotion,
                 color: Colors.deepPurple,
                 onTap: () {},
               ),
               _buildActionButton(
                 context,
                 icon: Icons.people_outline,
-                label: 'Prayer Requests',
+                label: localizations.prayerRequests,
                 color: theme.colorScheme.primary,
                 onTap: () {},
               ),
