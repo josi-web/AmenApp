@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/localization/app_localizations.dart';
 import 'admin_home_screen.dart';
 
 class ContentManagement extends StatefulWidget {
@@ -57,6 +58,8 @@ class _ContentManagementState extends State<ContentManagement>
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -70,13 +73,13 @@ class _ContentManagementState extends State<ContentManagement>
             );
           },
         ),
-        title: const Text('Content Management'),
+        title: Text(localizations.contentManagement),
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'Verses of the Day'),
-            Tab(text: 'Commentaries'),
-            Tab(text: 'Devotionals'),
+          tabs: [
+            Tab(text: localizations.versesOfDay),
+            Tab(text: localizations.commentaries),
+            Tab(text: localizations.devotionals),
           ],
         ),
       ),
@@ -187,21 +190,23 @@ class _ContentManagementState extends State<ContentManagement>
   }
 
   void _showAddContentDialog() {
+    final localizations = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Add ${_getCurrentContentType()}'),
+        title: Text(
+            '${localizations.add} ${_getCurrentContentType(localizations)}'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              decoration: const InputDecoration(labelText: 'Title'),
+              decoration: InputDecoration(labelText: localizations.title),
               onChanged: (value) {
                 // Handle title input
               },
             ),
             TextField(
-              decoration: const InputDecoration(labelText: 'Content'),
+              decoration: InputDecoration(labelText: localizations.content),
               maxLines: 3,
               onChanged: (value) {
                 // Handle content input
@@ -212,28 +217,28 @@ class _ContentManagementState extends State<ContentManagement>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(localizations.cancel),
           ),
           TextButton(
             onPressed: () {
               // Handle save
               Navigator.pop(context);
             },
-            child: const Text('Save'),
+            child: Text(localizations.save),
           ),
         ],
       ),
     );
   }
 
-  String _getCurrentContentType() {
+  String _getCurrentContentType(AppLocalizations localizations) {
     switch (_tabController.index) {
       case 0:
-        return 'Verse of the Day';
+        return localizations.versesOfDay;
       case 1:
-        return 'Commentary';
+        return localizations.commentaries;
       case 2:
-        return 'Devotional';
+        return localizations.devotionals;
       default:
         return '';
     }

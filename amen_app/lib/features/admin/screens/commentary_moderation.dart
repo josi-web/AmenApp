@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'admin_home_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class CommentaryModeration extends StatefulWidget {
   const CommentaryModeration({Key? key}) : super(key: key);
@@ -25,26 +26,22 @@ class _CommentaryModerationState extends State<CommentaryModeration> {
       _notes = [
         {
           'id': '1',
-          'title': 'Study Note 1',
-          'userName': 'John Doe',
+          'title': 'Matthew 5 Commentary',
+          'content': 'This passage talks about the beatitudes...',
+          'author': 'John Doe',
           'status': 'pending',
-          'content': 'This is a study note',
-          'createdAt': DateTime.now(),
           'reportCount': 0,
+          'createdAt': DateTime.now(),
         },
       ];
       _comments = [
         {
           'id': '1',
-          'userName': 'Jane Smith',
-          'status': 'reported',
-          'content': 'This is a comment',
+          'content': 'Great insight on this verse!',
+          'author': 'Jane Smith',
+          'status': 'pending',
+          'reportCount': 0,
           'createdAt': DateTime.now(),
-          'reportCount': 2,
-          'reports': [
-            {'reason': 'Inappropriate content'},
-            {'reason': 'Spam'},
-          ],
         },
       ];
     });
@@ -52,6 +49,8 @@ class _CommentaryModerationState extends State<CommentaryModeration> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -67,11 +66,11 @@ class _CommentaryModerationState extends State<CommentaryModeration> {
               );
             },
           ),
-          title: const Text('Commentary Moderation'),
-          bottom: const TabBar(
+          title: Text(localizations.commentaryModeration),
+          bottom: TabBar(
             tabs: [
-              Tab(text: 'Notes'),
-              Tab(text: 'Comments'),
+              Tab(text: localizations.notes),
+              Tab(text: localizations.comments),
             ],
           ),
           actions: [
@@ -80,21 +79,21 @@ class _CommentaryModerationState extends State<CommentaryModeration> {
                 setState(() => _filter = value);
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'all',
-                  child: Text('All Content'),
+                  child: Text(localizations.allContent),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'reported',
-                  child: Text('Reported'),
+                  child: Text(localizations.reported),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'approved',
-                  child: Text('Approved'),
+                  child: Text(localizations.approved),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'removed',
-                  child: Text('Removed'),
+                  child: Text(localizations.removed),
                 ),
               ],
             ),
@@ -102,132 +101,210 @@ class _CommentaryModerationState extends State<CommentaryModeration> {
         ),
         body: TabBarView(
           children: [
-            _buildNotesTab(),
-            _buildCommentsTab(),
+            _buildNotesTab(localizations),
+            _buildCommentsTab(localizations),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNotesTab() {
-    return ListView.builder(
-      itemCount: _notes.length,
-      itemBuilder: (context, index) {
-        final note = _notes[index];
-        return _buildContentCard(
-          note['id'],
-          note,
-          isNote: true,
-        );
-      },
-    );
-  }
+  Widget _buildNotesTab(AppLocalizations localizations) {
+    final filteredNotes = _filter == 'all'
+        ? _notes
+        : _notes.where((note) => note['status'] == _filter).toList();
 
-  Widget _buildCommentsTab() {
     return ListView.builder(
-      itemCount: _comments.length,
+      padding: const EdgeInsets.all(16),
+      itemCount: filteredNotes.length,
       itemBuilder: (context, index) {
-        final comment = _comments[index];
-        return _buildContentCard(
-          comment['id'],
-          comment,
-          isNote: false,
-        );
-      },
-    );
-  }
-
-  Widget _buildContentCard(String id, Map<String, dynamic> content,
-      {required bool isNote}) {
-    return Card(
-      margin: const EdgeInsets.all(8),
-      child: ExpansionTile(
-        title: Text(isNote ? content['title'] ?? 'Untitled Note' : 'Comment'),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('By: ${content['userName'] ?? 'Anonymous'}'),
-            Text('Status: ${content['status'] ?? 'pending'}'),
-            if (content['reportCount'] != null && content['reportCount'] > 0)
-              Text('Reports: ${content['reportCount']}'),
-          ],
-        ),
-        children: [
-          Padding(
+        final note = filteredNotes[index];
+        return Card(
+          margin: const EdgeInsets.only(bottom: 16),
+          child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Content: ${content['content']}'),
-                const SizedBox(height: 8),
-                Text('Created: ${_formatDate(content['createdAt'])}'),
-                if (content['reports'] != null &&
-                    (content['reports'] as List).isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  const Text('Report Reasons:'),
-                  ...List.from(content['reports']).map(
-                    (report) => Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: Text('- ${report['reason']}'),
+                Row(
+                  children: [
+                    CircleAvatar(
+                      child: Text(note['author'][0]),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          note['author'],
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          _formatDate(note['createdAt']),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    if (note['reportCount'] > 0)
+                      Chip(
+                        label: Text(
+                          '${note['reportCount']} ${localizations.reportCount}',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  note['title'],
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  note['content'],
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: () => _updateContentStatus(
-                        id,
-                        'approved',
-                        isNote: isNote,
-                      ),
-                      child: const Text('Approve'),
+                      onPressed: () => _removeNote(note['id']),
+                      child: Text(localizations.remove),
                     ),
-                    TextButton(
-                      onPressed: () => _updateContentStatus(
-                        id,
-                        'removed',
-                        isNote: isNote,
-                      ),
-                      child: const Text('Remove'),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () => _approveNote(note['id']),
+                      child: Text(localizations.approve),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Future<void> _updateContentStatus(String id, String status,
-      {required bool isNote}) async {
-    try {
-      // TODO: Replace with Laravel API call
-      final list = isNote ? _notes : _comments;
-      final index = list.indexWhere((item) => item['id'] == id);
-      if (index != -1) {
-        setState(() {
-          list[index]['status'] = status;
-          list[index]['moderatedAt'] = DateTime.now();
-        });
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Content $status successfully')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating content: $e')),
-      );
-    }
+  Widget _buildCommentsTab(AppLocalizations localizations) {
+    final filteredComments = _filter == 'all'
+        ? _comments
+        : _comments.where((comment) => comment['status'] == _filter).toList();
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: filteredComments.length,
+      itemBuilder: (context, index) {
+        final comment = filteredComments[index];
+        return Card(
+          margin: const EdgeInsets.only(bottom: 16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      child: Text(comment['author'][0]),
+                    ),
+                    const SizedBox(width: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          comment['author'],
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          _formatDate(comment['createdAt']),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    if (comment['reportCount'] > 0)
+                      Chip(
+                        label: Text(
+                          '${comment['reportCount']} ${localizations.reportCount}',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: Colors.red,
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  comment['content'],
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => _removeComment(comment['id']),
+                      child: Text(localizations.remove),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () => _approveComment(comment['id']),
+                      child: Text(localizations.approve),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
-  String _formatDate(dynamic date) {
-    if (date == null) return 'No date';
-    if (date is DateTime) return date.toString();
-    return date.toString();
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}';
+  }
+
+  void _approveNote(String id) {
+    // TODO: Implement Laravel API call
+    setState(() {
+      final index = _notes.indexWhere((n) => n['id'] == id);
+      if (index != -1) {
+        _notes[index]['status'] = 'approved';
+      }
+    });
+  }
+
+  void _removeNote(String id) {
+    // TODO: Implement Laravel API call
+    setState(() {
+      final index = _notes.indexWhere((n) => n['id'] == id);
+      if (index != -1) {
+        _notes[index]['status'] = 'removed';
+      }
+    });
+  }
+
+  void _approveComment(String id) {
+    // TODO: Implement Laravel API call
+    setState(() {
+      final index = _comments.indexWhere((c) => c['id'] == id);
+      if (index != -1) {
+        _comments[index]['status'] = 'approved';
+      }
+    });
+  }
+
+  void _removeComment(String id) {
+    // TODO: Implement Laravel API call
+    setState(() {
+      final index = _comments.indexWhere((c) => c['id'] == id);
+      if (index != -1) {
+        _comments[index]['status'] = 'removed';
+      }
+    });
   }
 }

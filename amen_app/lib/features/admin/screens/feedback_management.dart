@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'admin_home_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class FeedbackManagement extends StatefulWidget {
   const FeedbackManagement({Key? key}) : super(key: key);
@@ -46,6 +47,8 @@ class _FeedbackManagementState extends State<FeedbackManagement> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -61,11 +64,11 @@ class _FeedbackManagementState extends State<FeedbackManagement> {
               );
             },
           ),
-          title: const Text('Feedback Management'),
-          bottom: const TabBar(
+          title: Text(localizations.feedbackManagement),
+          bottom: TabBar(
             tabs: [
-              Tab(text: 'Testimonials'),
-              Tab(text: 'App Feedback'),
+              Tab(text: localizations.testimonials),
+              Tab(text: localizations.appFeedback),
             ],
           ),
           actions: [
@@ -74,17 +77,17 @@ class _FeedbackManagementState extends State<FeedbackManagement> {
                 setState(() => _filter = value);
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'pending',
-                  child: Text('Pending'),
+                  child: Text(localizations.pending),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'approved',
-                  child: Text('Approved'),
+                  child: Text(localizations.approved),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'rejected',
-                  child: Text('Rejected'),
+                  child: Text(localizations.rejected),
                 ),
               ],
             ),
@@ -92,181 +95,155 @@ class _FeedbackManagementState extends State<FeedbackManagement> {
         ),
         body: TabBarView(
           children: [
-            _buildTestimonialsTab(),
-            _buildAppFeedbackTab(),
+            _buildTestimonialsTab(localizations),
+            _buildAppFeedbackTab(localizations),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTestimonialsTab() {
-    return ListView.builder(
-      itemCount: _testimonials.length,
-      itemBuilder: (context, index) {
-        final testimonial = _testimonials[index];
-        return _buildTestimonialCard(testimonial['id'], testimonial);
-      },
-    );
-  }
+  Widget _buildTestimonialsTab(AppLocalizations localizations) {
+    final filteredTestimonials =
+        _testimonials.where((t) => t['status'] == _filter).toList();
 
-  Widget _buildAppFeedbackTab() {
     return ListView.builder(
-      itemCount: _appFeedback.length,
+      padding: const EdgeInsets.all(16),
+      itemCount: filteredTestimonials.length,
       itemBuilder: (context, index) {
-        final feedback = _appFeedback[index];
-        return _buildFeedbackCard(feedback['id'], feedback);
-      },
-    );
-  }
-
-  Widget _buildTestimonialCard(String id, Map<String, dynamic> testimonial) {
-    return Card(
-      margin: const EdgeInsets.all(8),
-      child: ExpansionTile(
-        title: Text(testimonial['title'] ?? 'Untitled Testimonial'),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('By: ${testimonial['userName'] ?? 'Anonymous'}'),
-            Text('Status: ${testimonial['status']}'),
-          ],
-        ),
-        children: [
-          Padding(
+        final testimonial = filteredTestimonials[index];
+        return Card(
+          margin: const EdgeInsets.only(bottom: 16),
+          child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Testimony: ${testimonial['content']}'),
-                const SizedBox(height: 8),
-                Text('Created: ${_formatDate(testimonial['createdAt'])}'),
+                Row(
+                  children: [
+                    CircleAvatar(
+                      child: Text(testimonial['userName'][0]),
+                    ),
+                    const SizedBox(width: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          testimonial['userName'],
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          _formatDate(testimonial['createdAt']),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 16),
-                if (testimonial['status'] == 'pending')
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () =>
-                            _updateTestimonialStatus(id, 'approved'),
-                        child: const Text('Approve'),
-                      ),
-                      TextButton(
-                        onPressed: () =>
-                            _updateTestimonialStatus(id, 'rejected'),
-                        child: const Text('Reject'),
-                      ),
-                    ],
-                  ),
-                if (testimonial['status'] == 'approved')
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () => _toggleFeatured(
-                          id,
-                          !(testimonial['isFeatured'] ?? false),
-                        ),
-                        child: Text(
-                          testimonial['isFeatured'] == true
-                              ? 'Remove from Featured'
-                              : 'Feature Testimonial',
-                        ),
-                      ),
-                    ],
-                  ),
+                Text(
+                  testimonial['title'],
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  testimonial['content'],
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => _rejectTestimonial(testimonial['id']),
+                      child: Text(localizations.reject),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () => _approveTestimonial(testimonial['id']),
+                      child: Text(localizations.approve),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildFeedbackCard(String id, Map<String, dynamic> feedback) {
-    return Card(
-      margin: const EdgeInsets.all(8),
-      child: ListTile(
-        title: Text('${feedback['category'] ?? 'General'} Feedback'),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(feedback['content'] ?? ''),
-            Text('Rating: ${feedback['rating']?.toString() ?? 'N/A'}'),
-            Text('Submitted: ${_formatDate(feedback['createdAt'])}'),
-          ],
-        ),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete),
-          onPressed: () => _deleteFeedback(id),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _updateTestimonialStatus(String id, String status) async {
-    try {
-      // TODO: Replace with Laravel API call
-      setState(() {
-        final index = _testimonials.indexWhere((t) => t['id'] == id);
-        if (index != -1) {
-          _testimonials[index]['status'] = status;
-          _testimonials[index]['moderatedAt'] = DateTime.now();
-        }
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Testimonial $status successfully')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating testimonial: $e')),
-      );
-    }
-  }
-
-  Future<void> _toggleFeatured(String id, bool isFeatured) async {
-    try {
-      // TODO: Replace with Laravel API call
-      setState(() {
-        final index = _testimonials.indexWhere((t) => t['id'] == id);
-        if (index != -1) {
-          _testimonials[index]['isFeatured'] = isFeatured;
-        }
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            isFeatured
-                ? 'Testimonial added to featured'
-                : 'Testimonial removed from featured',
+  Widget _buildAppFeedbackTab(AppLocalizations localizations) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: _appFeedback.length,
+      itemBuilder: (context, index) {
+        final feedback = _appFeedback[index];
+        return Card(
+          margin: const EdgeInsets.only(bottom: 16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      feedback['category'],
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.amber),
+                        const SizedBox(width: 4),
+                        Text(
+                          feedback['rating'].toString(),
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  feedback['content'],
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  _formatDate(feedback['createdAt']),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating testimonial: $e')),
-      );
-    }
+        );
+      },
+    );
   }
 
-  Future<void> _deleteFeedback(String id) async {
-    try {
-      // TODO: Replace with Laravel API call
-      setState(() {
-        _appFeedback.removeWhere((f) => f['id'] == id);
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Feedback deleted successfully')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error deleting feedback: $e')),
-      );
-    }
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}';
   }
 
-  String _formatDate(dynamic date) {
-    if (date == null) return 'No date';
-    return date.toString();
+  void _approveTestimonial(String id) {
+    // TODO: Implement Laravel API call
+    setState(() {
+      final index = _testimonials.indexWhere((t) => t['id'] == id);
+      if (index != -1) {
+        _testimonials[index]['status'] = 'approved';
+      }
+    });
+  }
+
+  void _rejectTestimonial(String id) {
+    // TODO: Implement Laravel API call
+    setState(() {
+      final index = _testimonials.indexWhere((t) => t['id'] == id);
+      if (index != -1) {
+        _testimonials[index]['status'] = 'rejected';
+      }
+    });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'admin_home_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class EventManagement extends StatefulWidget {
   const EventManagement({Key? key}) : super(key: key);
@@ -43,6 +44,8 @@ class _EventManagementState extends State<EventManagement> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -56,7 +59,7 @@ class _EventManagementState extends State<EventManagement> {
             );
           },
         ),
-        title: const Text('Event Management'),
+        title: Text(localizations.eventManagement),
       ),
       body: Column(
         children: [
@@ -84,10 +87,12 @@ class _EventManagementState extends State<EventManagement> {
                         IconButton(
                           icon: const Icon(Icons.edit),
                           onPressed: () => _editEvent(event['id'], event),
+                          tooltip: localizations.edit,
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () => _deleteEvent(event['id']),
+                          tooltip: localizations.delete,
                         ),
                         IconButton(
                           icon: const Icon(Icons.people),
@@ -107,17 +112,17 @@ class _EventManagementState extends State<EventManagement> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddEventDialog(),
+        onPressed: () => _showAddEventDialog(localizations),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void _showAddEventDialog() {
+  void _showAddEventDialog(AppLocalizations localizations) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add New Event'),
+        title: Text(localizations.addNew),
         content: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -125,7 +130,12 @@ class _EventManagementState extends State<EventManagement> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Event Title'),
+                  decoration: InputDecoration(
+                    labelText: localizations.title,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a title';
@@ -135,17 +145,23 @@ class _EventManagementState extends State<EventManagement> {
                   onSaved: (value) => _eventTitle = value!,
                 ),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Description'),
+                  decoration: InputDecoration(
+                    labelText: localizations.content,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                   maxLines: 3,
                   onSaved: (value) => _eventDescription = value!,
                 ),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Location'),
+                  decoration:
+                      InputDecoration(labelText: localizations.location),
                   onSaved: (value) => _eventLocation = value!,
                 ),
                 ListTile(
                   title: Text(_selectedDate == null
-                      ? 'Select Date'
+                      ? localizations.selectDate
                       : 'Date: ${DateFormat('MMM dd, yyyy').format(_selectedDate!)}'),
                   trailing: const Icon(Icons.calendar_today),
                   onTap: () async {
@@ -162,7 +178,7 @@ class _EventManagementState extends State<EventManagement> {
                 ),
                 ListTile(
                   title: Text(_selectedTime == null
-                      ? 'Select Time'
+                      ? localizations.selectTime
                       : 'Time: ${_selectedTime!.format(context)}'),
                   trailing: const Icon(Icons.access_time),
                   onTap: () async {
@@ -182,7 +198,7 @@ class _EventManagementState extends State<EventManagement> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(localizations.cancel),
           ),
           TextButton(
             onPressed: () {
@@ -192,7 +208,7 @@ class _EventManagementState extends State<EventManagement> {
                 Navigator.pop(context);
               }
             },
-            child: const Text('Save'),
+            child: Text(localizations.save),
           ),
         ],
       ),
