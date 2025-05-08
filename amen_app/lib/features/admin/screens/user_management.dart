@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:amen_app/core/localization/app_localizations.dart';
+import '../../../shared/services/auth_service.dart';
 import 'admin_home_screen.dart';
 
 class UserManagement extends StatefulWidget {
-  const UserManagement({Key? key}) : super(key: key);
+  const UserManagement({super.key});
 
-  static _UserManagementState? of(BuildContext context) {
-    return context.findAncestorStateOfType<_UserManagementState>();
+  static void refreshUsers(BuildContext context) {
+    final state = context.findAncestorStateOfType<_UserManagementState>();
+    state?._loadUsers();
   }
 
   @override
-  _UserManagementState createState() => _UserManagementState();
+  State<UserManagement> createState() => _UserManagementState();
 }
 
 class _UserManagementState extends State<UserManagement> {
-  bool _isLoading = true;
-  List<Map<String, dynamic>> _users = [];
   final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  bool _isLoading = false;
+  List<Map<String, dynamic>> _users = [];
   String _newUserName = '';
   String _newUserEmail = '';
   String _newUserRole = 'user';
@@ -26,64 +31,61 @@ class _UserManagementState extends State<UserManagement> {
     _loadUsers();
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadUsers() async {
-    setState(() => _isLoading = true);
-    try {
-      // TODO: Replace with Laravel API call
-      // Example mock data
-      setState(() {
-        _users = [
-          {
-            'id': '1',
-            'name': 'John dave',
-            'email': 'john@example.com',
-            'role': 'user',
-            'status': 'active',
-          },
-          {
-            'id': '2',
-            'name': 'mule ',
-            'email': 'mule@example.com',
-            'role': 'admin',
-            'status': 'active',
-          },
-        ];
-        _isLoading = false;
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading users: $e')),
-      );
-      setState(() => _isLoading = false);
-    }
+    setState(() {
+      _isLoading = true;
+    });
+
+    // TODO: Replace with actual API call
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      _users = [
+        {'name': 'John Doe', 'email': 'john@example.com', 'role': 'admin'},
+        {'name': 'Jane Smith', 'email': 'jane@example.com', 'role': 'user'},
+      ];
+      _isLoading = false;
+    });
   }
 
-  Future<void> refreshUsers() async {
-    await _loadUsers();
+  void _showEditUserDialog(Map<String, dynamic> user) {
+    // TODO: Implement edit user dialog
   }
 
-  Future<void> showAddUserDialog() async {
+  void _showDeleteConfirmation(Map<String, dynamic> user) {
+    // TODO: Implement delete confirmation dialog
+  }
+
+  void showAddUserDialog() async {
+    final localizations = AppLocalizations.of(context);
     final result = await showDialog<Map<String, dynamic>>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add New User'),
+        title: Text(localizations.addNew),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              decoration: const InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(labelText: localizations.userName),
               onChanged: (value) => _newUserName = value,
             ),
             TextField(
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(labelText: localizations.email),
               onChanged: (value) => _newUserEmail = value,
             ),
             DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: 'Role'),
+              decoration: InputDecoration(labelText: localizations.status),
               value: _newUserRole,
-              items: const [
-                DropdownMenuItem(value: 'user', child: Text('User')),
-                DropdownMenuItem(value: 'admin', child: Text('Admin')),
+              items: [
+                DropdownMenuItem(
+                    value: 'user', child: Text(localizations.user)),
+                DropdownMenuItem(
+                    value: 'admin', child: Text(localizations.admin)),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -96,80 +98,61 @@ class _UserManagementState extends State<UserManagement> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(localizations.cancel),
           ),
           TextButton(
             onPressed: () {
-              // TODO: Implement user creation with Laravel API
               Navigator.pop(context, {
                 'name': _newUserName,
                 'email': _newUserEmail,
                 'role': _newUserRole,
               });
             },
-            child: const Text('Add'),
+            child: Text(localizations.add),
           ),
         ],
       ),
     );
 
     if (result != null) {
-      // TODO: Implement user creation with Laravel API
+      // TODO: Implement user creation with API
       setState(() {
-        _users.add({
-          'id': DateTime.now().toString(), // Temporary ID
-          ...result,
-          'status': 'active',
-        });
+        _users.add(result);
       });
     }
   }
 
-  void _showEditUserDialog(Map<String, dynamic> user) {
-    // TODO: Implement edit user dialog
-  }
-
-  void _showDeleteConfirmation(Map<String, dynamic> user) {
-    // TODO: Implement delete confirmation dialog
-  }
-
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AdminHomeScreen(),
-              ),
-            );
-          },
-        ),
-        title: const Text('User Management'),
+        title: Text(localizations.userManagement),
       ),
       body: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16.0),
               child: TextField(
                 controller: _searchController,
-                decoration: const InputDecoration(
-                  labelText: 'Search Users',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: localizations.search,
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 onChanged: (value) {
-                  // TODO: Implement search functionality with Laravel API
+                  setState(() {
+                    _searchQuery = value;
+                  });
                 },
               ),
             ),
             Expanded(
               child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? Center(child: Text(localizations.loading))
                   : ListView.builder(
                       itemCount: _users.length,
                       itemBuilder: (context, index) {
@@ -197,7 +180,6 @@ class _UserManagementState extends State<UserManagement> {
                                 const SizedBox(width: 8),
                                 PopupMenuButton<String>(
                                   onSelected: (value) {
-                                    // TODO: Implement actions with Laravel API
                                     switch (value) {
                                       case 'edit':
                                         _showEditUserDialog(user);
@@ -208,13 +190,13 @@ class _UserManagementState extends State<UserManagement> {
                                     }
                                   },
                                   itemBuilder: (context) => [
-                                    const PopupMenuItem(
+                                    PopupMenuItem(
                                       value: 'edit',
-                                      child: Text('Edit User'),
+                                      child: Text(localizations.edit),
                                     ),
-                                    const PopupMenuItem(
+                                    PopupMenuItem(
                                       value: 'delete',
-                                      child: Text('Delete User'),
+                                      child: Text(localizations.delete),
                                     ),
                                   ],
                                 ),

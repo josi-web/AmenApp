@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'admin_home_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class NotificationControl extends StatefulWidget {
   const NotificationControl({Key? key}) : super(key: key);
@@ -46,6 +47,8 @@ class _NotificationControlState extends State<NotificationControl> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -61,25 +64,25 @@ class _NotificationControlState extends State<NotificationControl> {
               );
             },
           ),
-          title: const Text('Notification Control'),
-          bottom: const TabBar(
+          title: Text(localizations.notificationControl),
+          bottom: TabBar(
             tabs: [
-              Tab(text: 'Send Notifications'),
-              Tab(text: 'Notification History'),
+              Tab(text: localizations.sendNotifications),
+              Tab(text: localizations.notificationHistory),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            _buildSendNotificationTab(),
-            _buildNotificationHistoryTab(),
+            _buildSendNotificationTab(localizations),
+            _buildNotificationHistoryTab(localizations),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSendNotificationTab() {
+  Widget _buildSendNotificationTab(AppLocalizations localizations) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Form(
@@ -89,36 +92,44 @@ class _NotificationControlState extends State<NotificationControl> {
           children: [
             DropdownButtonFormField<String>(
               value: _selectedType,
-              decoration: const InputDecoration(
-                labelText: 'Notification Type',
+              decoration: InputDecoration(
+                labelText: localizations.notificationType,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
-              items: const [
+              items: [
                 DropdownMenuItem(
                   value: 'announcement',
-                  child: Text('Announcement'),
+                  child: Text(localizations.announcement),
                 ),
                 DropdownMenuItem(
-                  value: 'devotion_reminder',
-                  child: Text('Daily Devotion Reminder'),
+                  value: 'reminder',
+                  child: Text(localizations.reminder),
                 ),
                 DropdownMenuItem(
-                  value: 'prayer_reminder',
-                  child: Text('Prayer Time Reminder'),
+                  value: 'alert',
+                  child: Text(localizations.alert),
                 ),
               ],
               onChanged: (value) {
-                setState(() => _selectedType = value!);
+                setState(() {
+                  _selectedType = value!;
+                });
               },
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
+              decoration: InputDecoration(
+                labelText: localizations.title,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a title';
+                  return localizations.requiredField;
                 }
                 return null;
               },
@@ -126,13 +137,16 @@ class _NotificationControlState extends State<NotificationControl> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _messageController,
-              decoration: const InputDecoration(
-                labelText: 'Message',
+              decoration: InputDecoration(
+                labelText: localizations.message,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               maxLines: 3,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a message';
+                  return localizations.requiredField;
                 }
                 return null;
               },
@@ -141,7 +155,7 @@ class _NotificationControlState extends State<NotificationControl> {
               const SizedBox(height: 16),
               ListTile(
                 title: Text(_selectedTime == null
-                    ? 'Select Time'
+                    ? localizations.selectTime
                     : 'Time: ${_selectedTime!.format(context)}'),
                 trailing: const Icon(Icons.access_time),
                 onTap: () async {
@@ -158,7 +172,7 @@ class _NotificationControlState extends State<NotificationControl> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _sendNotification,
-              child: const Text('Send Notification'),
+              child: Text(localizations.send),
             ),
           ],
         ),
@@ -166,26 +180,22 @@ class _NotificationControlState extends State<NotificationControl> {
     );
   }
 
-  Widget _buildNotificationHistoryTab() {
+  Widget _buildNotificationHistoryTab(AppLocalizations localizations) {
     return ListView.builder(
+      padding: const EdgeInsets.all(16),
       itemCount: _notifications.length,
       itemBuilder: (context, index) {
         final notification = _notifications[index];
         return Card(
-          margin: const EdgeInsets.all(8),
           child: ListTile(
-            title: Text(notification['title'] ?? ''),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(notification['message'] ?? ''),
-                Text('Type: ${notification['type']}'),
-                Text('Sent: ${_formatDate(notification['sentAt'])}'),
-              ],
-            ),
+            title: Text(notification['title']),
+            subtitle: Text(notification['message']),
             trailing: IconButton(
               icon: const Icon(Icons.delete),
-              onPressed: () => _deleteNotification(notification['id']),
+              onPressed: () {
+                // Handle delete notification
+              },
+              tooltip: localizations.delete,
             ),
           ),
         );
@@ -197,6 +207,7 @@ class _NotificationControlState extends State<NotificationControl> {
     if (!_formKey.currentState!.validate()) return;
 
     try {
+      final localizations = AppLocalizations.of(context);
       // TODO: Replace with Laravel API call
       setState(() {
         _notifications.add({
@@ -214,33 +225,13 @@ class _NotificationControlState extends State<NotificationControl> {
       setState(() => _selectedTime = null);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Notification sent successfully')),
+        SnackBar(content: Text(localizations.notificationSent)),
       );
     } catch (e) {
+      final localizations = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error sending notification: $e')),
+        SnackBar(content: Text('${localizations.error}: $e')),
       );
     }
-  }
-
-  Future<void> _deleteNotification(String id) async {
-    try {
-      // TODO: Replace with Laravel API call
-      setState(() {
-        _notifications.removeWhere((n) => n['id'] == id);
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Notification deleted successfully')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error deleting notification: $e')),
-      );
-    }
-  }
-
-  String _formatDate(dynamic date) {
-    if (date == null) return 'No date';
-    return date.toString();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'admin_home_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class PrayerModeration extends StatefulWidget {
   const PrayerModeration({super.key});
@@ -42,6 +43,8 @@ class _PrayerModerationState extends State<PrayerModeration> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -55,7 +58,7 @@ class _PrayerModerationState extends State<PrayerModeration> {
             );
           },
         ),
-        title: const Text('Prayer Moderation'),
+        title: Text(localizations.prayerModeration),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -64,41 +67,58 @@ class _PrayerModerationState extends State<PrayerModeration> {
         ],
       ),
       body: ListView.builder(
+        padding: const EdgeInsets.all(16),
         itemCount: _prayers.length,
         itemBuilder: (context, index) {
           final prayer = _prayers[index];
           return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ListTile(
-              title: Text(prayer['userName']),
-              subtitle: Column(
+            margin: const EdgeInsets.only(bottom: 16),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(prayer['prayerText']),
-                  Text(
-                    _formatDate(prayer['timestamp']),
-                    style: Theme.of(context).textTheme.bodySmall,
+                  Row(
+                    children: [
+                      const CircleAvatar(
+                        child: Icon(Icons.person),
+                      ),
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            prayer['userName'],
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          Text(
+                            _formatDate(prayer['timestamp']),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (prayer['status'] == 'pending')
-                    IconButton(
-                      icon: const Icon(Icons.check),
-                      onPressed: () =>
-                          _updatePrayerStatus(prayer['id'], 'approved'),
-                    ),
-                  if (prayer['status'] == 'pending')
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () =>
-                          _updatePrayerStatus(prayer['id'], 'rejected'),
-                    ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => _deletePrayer(prayer['id']),
+                  const SizedBox(height: 16),
+                  Text(
+                    prayer['prayerText'],
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () => _deletePrayer(prayer['id']),
+                        child: Text(localizations.delete),
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: () =>
+                            _updatePrayerStatus(prayer['id'], 'approved'),
+                        child: Text(localizations.approve),
+                      ),
+                    ],
                   ),
                 ],
               ),
