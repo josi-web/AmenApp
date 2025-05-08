@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:provider/provider.dart';
 import '../../../shared/services/auth_service.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -81,6 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final fieldTextColor = theme.colorScheme.onSurface;
+    final localizations = AppLocalizations.of(context);
 
     return Scaffold(
       body: Container(
@@ -108,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     FadeInDown(
                       duration: const Duration(milliseconds: 600),
                       child: Text(
-                        'Create Account',
+                        localizations.welcomeBack,
                         style: GoogleFonts.playfairDisplay(
                           fontSize: 32,
                           color: Colors.white,
@@ -123,10 +125,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: TextFormField(
                         controller: _nameController,
                         style: TextStyle(color: fieldTextColor),
-                        decoration: _inputDecoration('Full Name', Icons.person),
+                        decoration: _inputDecoration(
+                            localizations.fullName, Icons.person),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your name';
+                            return localizations.pleaseEnterName;
                           }
                           return null;
                         },
@@ -138,13 +141,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: TextFormField(
                         controller: _emailController,
                         style: TextStyle(color: fieldTextColor),
-                        decoration: _inputDecoration('Email', Icons.email),
+                        decoration:
+                            _inputDecoration(localizations.email, Icons.email),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
+                            return localizations.pleaseEnterEmail;
                           }
                           if (!value.contains('@')) {
-                            return 'Please enter a valid email';
+                            return localizations.pleaseEnterValidEmail;
                           }
                           return null;
                         },
@@ -157,7 +161,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: _phoneController,
                         style: TextStyle(color: fieldTextColor),
                         decoration: _inputDecoration(
-                            'Phone Number (Optional)', Icons.phone),
+                            '${localizations.phoneNumber} (${localizations.optional})',
+                            Icons.phone),
                         keyboardType: TextInputType.phone,
                       ),
                     ),
@@ -171,7 +176,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: DropdownButtonFormField<String>(
                           value: _selectedCampus,
                           style: TextStyle(color: fieldTextColor),
-                          decoration: _inputDecoration('Campus', Icons.school),
+                          decoration: _inputDecoration(
+                              localizations.campus, Icons.school),
                           dropdownColor: theme.scaffoldBackgroundColor,
                           items: _campuses.map((String campus) {
                             return DropdownMenuItem<String>(
@@ -200,8 +206,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: DropdownButtonFormField<String>(
                           value: _selectedDepartment,
                           style: TextStyle(color: fieldTextColor),
-                          decoration:
-                              _inputDecoration('Department', Icons.business),
+                          decoration: _inputDecoration(
+                              localizations.department, Icons.business),
                           dropdownColor: theme.scaffoldBackgroundColor,
                           items: _departments.map((String department) {
                             return DropdownMenuItem<String>(
@@ -228,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         obscureText: _obscurePassword,
                         style: TextStyle(color: fieldTextColor),
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: localizations.password,
                           prefixIcon: Icon(Icons.lock,
                               color: theme.colorScheme.primary),
                           suffixIcon: IconButton(
@@ -247,10 +253,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return localizations.pleaseEnterPassword;
                           }
                           if (value.length < 6) {
-                            return 'Password must be at least 6 characters';
+                            return localizations.passwordLengthError;
                           }
                           return null;
                         },
@@ -264,7 +270,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         obscureText: _obscureConfirmPassword,
                         style: TextStyle(color: fieldTextColor),
                         decoration: InputDecoration(
-                          labelText: 'Confirm Password',
+                          labelText: localizations.confirmPassword,
                           prefixIcon: Icon(Icons.lock,
                               color: theme.colorScheme.primary),
                           suffixIcon: IconButton(
@@ -284,10 +290,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please confirm your password';
+                            return localizations.pleaseConfirmPassword;
                           }
                           if (value != _passwordController.text) {
-                            return 'Passwords do not match';
+                            return localizations.passwordsDoNotMatch;
                           }
                           return null;
                         },
@@ -319,9 +325,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         Colors.white),
                                   ),
                                 )
-                              : const Text(
-                                  'Register',
-                                  style: TextStyle(
+                              : Text(
+                                  localizations.register,
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: 0.5,
@@ -337,9 +343,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, '/login');
                         },
-                        child: const Text(
-                          'Already have an account? Login',
-                          style: TextStyle(
+                        child: Text(
+                          '${localizations.registrationAlreadyHaveAccount} ${localizations.login}',
+                          style: const TextStyle(
                             color: Color(0xFF64B5F6),
                             fontSize: 16,
                             fontWeight: FontWeight.w500,

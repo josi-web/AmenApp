@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:provider/provider.dart';
 import '../../../core/localization/app_localizations.dart';
+import '../../../shared/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,10 +30,16 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
       try {
-        // TODO: Implement login logic
-        await Future.delayed(const Duration(seconds: 2)); // Simulated delay
+        final authService = Provider.of<AuthService>(context, listen: false);
+        await authService.login(
+            _emailController.text, _passwordController.text);
         if (mounted) {
-          Navigator.pushReplacementNamed(context, '/home');
+          // Check if the user is an admin and redirect accordingly
+          if (authService.isAdmin) {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else {
+            Navigator.pushReplacementNamed(context, '/home');
+          }
         }
       } catch (e) {
         if (mounted) {
@@ -186,6 +194,34 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(localizations.signUp),
                           ),
                         ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    FadeInDown(
+                      duration: const Duration(milliseconds: 100),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Login Credentials:',
+                              style: TextStyle(
+                                color: fieldTextColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Admin Login:\nEmail: admin@example.com\nPassword: admin123\n\nUser Login:\nEmail: user@example.com\nPassword: user123',
+                              style: TextStyle(color: fieldTextColor),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
