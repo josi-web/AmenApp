@@ -12,12 +12,15 @@ import 'app_settings.dart';
 import 'admin_chat_screen.dart';
 import 'admin_books_screen.dart';
 import 'admin_profile_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class AdminHomeContent extends StatelessWidget {
   const AdminHomeContent({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -34,12 +37,12 @@ class AdminHomeContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome to Bs Admin Dashboard',
+                  localizations.welcomeAdmin,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Manage your app content and users efficiently',
+                  localizations.manageEfficiently,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
@@ -49,7 +52,7 @@ class AdminHomeContent extends StatelessWidget {
 
           // Quick Stats
           Text(
-            'Quick Stats',
+            localizations.quickStats,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 16),
@@ -63,28 +66,28 @@ class AdminHomeContent extends StatelessWidget {
             children: [
               _buildStatCard(
                 context,
-                'Total Users',
+                localizations.totalUsers,
                 '241',
                 Icons.people,
                 Colors.blue,
               ),
               _buildStatCard(
                 context,
-                'Active Users',
+                localizations.activeUsers,
                 '134',
                 Icons.people_alt,
                 Colors.green,
               ),
               _buildStatCard(
                 context,
-                'Prayer Requests',
+                localizations.prayerRequests,
                 '56',
                 Icons.person_pin_circle,
                 Colors.orange,
               ),
               _buildStatCard(
                 context,
-                'Events',
+                localizations.events,
                 '12',
                 Icons.event,
                 Colors.purple,
@@ -95,7 +98,7 @@ class AdminHomeContent extends StatelessWidget {
 
           // Quick Actions
           Text(
-            'Quick Actions',
+            localizations.quickActions,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 16),
@@ -109,7 +112,7 @@ class AdminHomeContent extends StatelessWidget {
             children: [
               _buildActionButton(
                 context,
-                'Manage Users',
+                localizations.userManagement,
                 Icons.people,
                 () {
                   Navigator.push(
@@ -122,7 +125,7 @@ class AdminHomeContent extends StatelessWidget {
               ),
               _buildActionButton(
                 context,
-                'Manage Content',
+                localizations.contentManagement,
                 Icons.article,
                 () {
                   Navigator.push(
@@ -135,7 +138,7 @@ class AdminHomeContent extends StatelessWidget {
               ),
               _buildActionButton(
                 context,
-                'Moderate Prayers',
+                localizations.prayerModeration,
                 Icons.person_pin_circle,
                 () {
                   Navigator.push(
@@ -148,7 +151,7 @@ class AdminHomeContent extends StatelessWidget {
               ),
               _buildActionButton(
                 context,
-                'View Analytics',
+                localizations.analyticsDashboard,
                 Icons.analytics,
                 () {
                   Navigator.push(
@@ -256,7 +259,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   final List<Widget> _screens = [
     const AdminHomeContent(),
     const UserManagement(),
-    const AdminChatScreen(),
     const ContentManagement(),
     const EventManagement(),
     const PrayerModeration(),
@@ -265,7 +267,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     const FeedbackManagement(),
     const AppSettings(),
     const AnalyticsDashboard(),
-    const AdminBooksScreen(),
+    const AdminChatScreen(),
+    AdminBooksScreen(),
     const AdminProfileScreen(),
   ];
 
@@ -277,9 +280,12 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    print('Building AdminHomeScreen with _selectedIndex: $_selectedIndex');
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(_getScreenTitle()),
+        title: Text(_getScreenTitle(localizations)),
         actions: _getAppBarActions(),
       ),
       drawer: AdminDrawer(
@@ -291,63 +297,74 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _getBottomNavIndex(_selectedIndex),
         onTap: (index) {
-          setState(() {
-            _selectedIndex = _getScreenIndexFromBottomNav(index);
-          });
+          print('Bottom nav tab $index tapped');
+          if (index == 2) {
+            // Books tab
+            print('Books tab clicked, directly setting to AdminBooksScreen');
+            setState(() {
+              _selectedIndex = 11; // AdminBooksScreen
+            });
+          } else {
+            final screenIndex = _getScreenIndexFromBottomNav(index);
+            print('Setting _selectedIndex to $screenIndex');
+            setState(() {
+              _selectedIndex = screenIndex;
+            });
+          }
         },
         type: BottomNavigationBarType.fixed,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home),
+            label: localizations.home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chat',
+            icon: const Icon(Icons.chat),
+            label: localizations.chat,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Books',
+            icon: const Icon(Icons.book),
+            label: localizations.books,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: const Icon(Icons.person),
+            label: localizations.profile,
           ),
         ],
       ),
     );
   }
 
-  String _getScreenTitle() {
+  String _getScreenTitle(AppLocalizations localizations) {
     switch (_selectedIndex) {
       case 0:
-        return 'Admin Dashboard';
+        return localizations.adminDashboard;
       case 1:
-        return 'User Management';
+        return localizations.userManagement;
       case 2:
-        return 'Admin Chat';
+        return localizations.contentManagement;
       case 3:
-        return 'Content Management';
+        return localizations.eventManagement;
       case 4:
-        return 'Event Management';
+        return localizations.prayerModeration;
       case 5:
-        return 'Prayer Moderation';
+        return localizations.commentaryModeration;
       case 6:
-        return 'Commentary Moderation';
+        return localizations.notificationControl;
       case 7:
-        return 'Notification Control';
+        return localizations.feedbackManagement;
       case 8:
-        return 'Feedback Management';
+        return localizations.appSettings;
       case 9:
-        return 'App Settings';
+        return localizations.analyticsDashboard;
       case 10:
-        return 'Analytics Dashboard';
+        return localizations.chat;
       case 11:
-        return 'Books';
+        return localizations.books;
       case 12:
-        return 'Profile';
+        return localizations.profile;
       default:
-        return 'Admin Dashboard';
+        return localizations.adminDashboard;
     }
   }
 
@@ -358,155 +375,19 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              final userManagement = UserManagement.of(context);
-              if (userManagement != null) {
-                userManagement.refreshUsers();
-              }
-            },
-          ),
-        ];
-      case 2: // Chat
-        return [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // Handle chat search
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: () {
-              // Handle chat filter
-            },
-          ),
-        ];
-      case 11: // Books
-        return [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // Handle book search
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: () {
-              // Handle book filter
-            },
-          ),
-        ];
-      case 12: // Profile
-        return [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Handle profile settings
+              UserManagement.refreshUsers(context);
             },
           ),
         ];
       default:
-        return [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {
-              // Handle notifications
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              // Handle profile
-            },
-          ),
-        ];
+        return [];
     }
   }
 
   Widget? _getFloatingActionButton() {
+    final localizations = AppLocalizations.of(context);
+
     switch (_selectedIndex) {
-      case 1: // User Management
-        return FloatingActionButton(
-          heroTag: 'admin_add_user',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const UserManagement(),
-              ),
-            );
-          },
-          child: const Icon(Icons.add),
-        );
-      case 2: // Chat
-        return FloatingActionButton(
-          heroTag: 'admin_new_chat',
-          onPressed: () {
-            // Show dialog to create new chat or group
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('New Chat'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.person_add),
-                      title: const Text('New User Chat'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        // Navigate to user selection
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.group_add),
-                      title: const Text('New Group'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        // Navigate to group creation
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-          child: const Icon(Icons.add),
-        );
-      case 11: // Books
-        return FloatingActionButton(
-          heroTag: 'admin_add_book',
-          onPressed: () {
-            // Show dialog to add new book
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Add New Book'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.add_circle),
-                      title: const Text('Add Book Manually'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        // Navigate to add book form
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.upload_file),
-                      title: const Text('Import from CSV'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        // Navigate to import books
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-          child: const Icon(Icons.add),
-        );
       default:
         return null;
     }
@@ -517,11 +398,11 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     switch (screenIndex) {
       case 0: // Home
         return 0;
-      case 2: // Chat
+      case 10: // Chat
         return 1;
-      case 11: // Books (new)
+      case 11: // Books
         return 2;
-      case 12: // Profile (new)
+      case 12: // Profile
         return 3;
       default:
         return 0;
@@ -530,12 +411,15 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
   // Helper method to convert bottom nav index to screen index
   int _getScreenIndexFromBottomNav(int bottomNavIndex) {
+    print('Converting bottom nav index $bottomNavIndex to screen index');
     switch (bottomNavIndex) {
       case 0:
         return 0; // Home
       case 1:
-        return 2; // Chat
+        return 10; // Chat
       case 2:
+        print(
+            'Books tab clicked, returning screen index 11 (AdminBooksScreen)');
         return 11; // Books
       case 3:
         return 12; // Profile

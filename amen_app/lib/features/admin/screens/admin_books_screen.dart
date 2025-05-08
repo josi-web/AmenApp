@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class Book {
   final String title;
@@ -19,7 +20,9 @@ class Book {
 }
 
 class AdminBooksScreen extends StatefulWidget {
-  const AdminBooksScreen({Key? key}) : super(key: key);
+  AdminBooksScreen({Key? key}) : super(key: key) {
+    print('AdminBooksScreen constructor called');
+  }
 
   @override
   State<AdminBooksScreen> createState() => _AdminBooksScreenState();
@@ -30,11 +33,17 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
   int _selectedCategoryIndex = 0;
   bool _showApprovedOnly = false;
 
+  @override
+  void initState() {
+    super.initState();
+    print('AdminBooksScreen initState called');
+  }
+
   final List<String> _categories = [
-    'All Books',
-    'Pending Approval',
-    'Categories',
-    'Authors'
+    'all_books',
+    'pending_approval',
+    'categories',
+    'authors'
   ];
 
   final List<Book> _books = [
@@ -120,6 +129,8 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -139,12 +150,12 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
                       child: TextField(
                         controller: _searchController,
                         onChanged: (value) => setState(() {}),
-                        decoration: const InputDecoration(
-                          hintText: 'Search books...',
-                          prefixIcon: Icon(Icons.search, size: 20),
+                        decoration: InputDecoration(
+                          hintText: localizations.search,
+                          prefixIcon: const Icon(Icons.search, size: 20),
                           border: InputBorder.none,
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                         ),
                       ),
                     ),
@@ -180,6 +191,24 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
                 itemCount: _categories.length,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemBuilder: (context, index) {
+                  String categoryText;
+                  switch (_categories[index]) {
+                    case 'all_books':
+                      categoryText = localizations.books;
+                      break;
+                    case 'pending_approval':
+                      categoryText = localizations.pending;
+                      break;
+                    case 'categories':
+                      categoryText = localizations.categories;
+                      break;
+                    case 'authors':
+                      categoryText = localizations.authors;
+                      break;
+                    default:
+                      categoryText = _categories[index];
+                  }
+
                   return Padding(
                     padding: const EdgeInsets.only(right: 24),
                     child: GestureDetector(
@@ -189,7 +218,7 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            _categories[index],
+                            categoryText,
                             style: TextStyle(
                               color: _selectedCategoryIndex == index
                                   ? Colors.green
@@ -222,9 +251,9 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Row(
                 children: [
-                  const Text(
-                    'Show Approved Only',
-                    style: TextStyle(fontSize: 14),
+                  Text(
+                    localizations.showApprovedOnly,
+                    style: const TextStyle(fontSize: 14),
                   ),
                   const Spacer(),
                   Switch(
@@ -254,9 +283,9 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Book Management',
-                          style: TextStyle(
+                        Text(
+                          localizations.bookManagement,
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.teal,
@@ -264,7 +293,7 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Manage and approve books for your community.',
+                          localizations.manageBooks,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.teal[700],
@@ -280,9 +309,9 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
                       color: Colors.teal,
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Text(
-                      'Add New',
-                      style: TextStyle(
+                    child: Text(
+                      localizations.addNew,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -336,9 +365,9 @@ class _AdminBooksScreenState extends State<AdminBooksScreen> {
                                     color: Colors.red,
                                     borderRadius: BorderRadius.circular(4),
                                   ),
-                                  child: const Text(
-                                    'Pending',
-                                    style: TextStyle(
+                                  child: Text(
+                                    localizations.pending,
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 8,
                                       fontWeight: FontWeight.bold,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../user/screens/chat_conversation_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class CustomAvatar extends StatelessWidget {
   final String imagePath;
@@ -81,9 +82,11 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Messages'),
+        title: Text(localizations.chat),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -128,9 +131,9 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        const Text(
-                          'Add Story',
-                          style: TextStyle(fontSize: 12),
+                        Text(
+                          localizations.add,
+                          style: const TextStyle(fontSize: 12),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -154,7 +157,7 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${index + 1} User',
+                            '${index + 1} ${localizations.user}',
                             style: const TextStyle(fontSize: 12),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -193,7 +196,7 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                           ),
                         ),
                         child: Text(
-                          'Groups',
+                          localizations.groups,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: !_showChats
@@ -223,7 +226,7 @@ class _AdminChatScreenState extends State<AdminChatScreen> {
                           ),
                         ),
                         child: Text(
-                          'Users',
+                          localizations.users,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: _showChats
