@@ -33,6 +33,9 @@ class AppLocalizations {
       'filter': 'Filter',
       'refresh': 'Refresh',
       'loading': 'Loading...',
+      'admin': 'Admin',
+      'attendanceList': 'Attendance List',
+      'trackAttendance': 'Track and manage user attendance',
 
       // Navigation
       'home': 'Home',
@@ -40,6 +43,11 @@ class AppLocalizations {
       'books': 'Books',
       'commentary': 'Commentary',
       'language_selector': 'Language Selector',
+      'groups': 'Groups',
+      'users': 'Users',
+      'categories': 'Categories',
+      'authors': 'Authors',
+      'showApprovedOnly': 'Show Approved Only',
 
       // Auth Screens
       'welcome_back': 'Welcome Back',
@@ -106,6 +114,7 @@ class AppLocalizations {
       'welcome_admin': 'Welcome to Bs Admin Dashboard',
       'manage_efficiently': 'Manage your app content and users efficiently',
       'quick_stats': 'Quick Stats',
+      'quick_actions': 'Quick Actions',
       'user_management': 'User Management',
       'content_management': 'Content Management',
       'event_management': 'Event Management',
@@ -114,6 +123,18 @@ class AppLocalizations {
       'notification_control': 'Notification Control',
       'feedback_management': 'Feedback Management',
       'analytics_dashboard': 'Analytics Dashboard',
+      'admin_statistics': 'Admin Statistics',
+      'manage_user_accounts': 'Manage user accounts and permissions',
+      'track_attendance': 'Track and manage user attendance',
+      'moderate_prayers': 'Moderate prayer requests',
+      'moderate_comments': 'Moderate user comments',
+      'manage_content': 'Manage app content and resources',
+      'create_manage_events': 'Create and manage church events',
+      'send_manage_notifications': 'Send and manage notifications',
+      'view_respond_feedback': 'View and respond to user feedback',
+      'configure_preferences': 'Configure app settings and preferences',
+      'view_usage_statistics': 'View app usage statistics',
+      'sign_out_account': 'Sign out of your admin account',
 
       // Books
       'soulful_bookshelf': 'Soulful Bookshelf',
@@ -124,6 +145,7 @@ class AppLocalizations {
       'add_new': 'Add New',
       'author': 'Author',
       'category': 'Category',
+      'import': 'Import',
 
       // Content Management
       'verses_of_day': 'Verses of the Day',
@@ -162,6 +184,87 @@ class AppLocalizations {
       'add_note': 'Add Note',
       'note_title': 'Note Title',
       'note_content': 'Note Content',
+
+      // New translations
+      'location': 'Location',
+      'selectDate': 'Select Date',
+      'selectTime': 'Select Time',
+
+      // Analytics
+      'analytics': 'Analytics',
+      'totalUsers': 'Total Users',
+      'activeUsers': 'Active Users',
+      'dailyActiveUsers': 'Daily Active Users',
+      'averageSessionDuration': 'Average Session Duration',
+      'totalDevotionals': 'Total Devotionals',
+      'totalComments': 'Total Comments',
+      'mostAccessedVerses': 'Most Accessed Verses',
+      'popularDevotionals': 'Popular Devotionals',
+      'upcomingEvents': 'Upcoming Events',
+      'averageAttendance': 'Average Attendance',
+      'popularEvents': 'Popular Events',
+      'weeklyActivity': 'Weekly Activity',
+      'chartPlaceholder': 'Chart will be displayed here',
+
+      // New notification-related translations
+      'sendNotifications': 'Send Notifications',
+      'notificationHistory': 'Notification History',
+      'notificationType': 'Notification Type',
+      'reminder': 'Reminder',
+      'alert': 'Alert',
+      'requiredField': 'This field is required',
+      'send': 'Send',
+
+      // New settings-related translations
+      'themeSettings': 'Theme Settings',
+      'darkModeDesc': 'Enable dark mode for the app',
+      'dailyVerseNotifications': 'Daily Verse Notifications',
+      'prayerTimeReminders': 'Prayer Time Reminders',
+      'bibleVersions': 'Bible Versions',
+      'addBibleVersion': 'Add Bible Version',
+      'addLanguage': 'Add Language',
+      'faq': 'FAQ',
+      'addFAQ': 'Add FAQ',
+      'editFAQ': 'Edit FAQ',
+
+      // Feedback-related translations
+      'feedback': 'Feedback',
+      'testimonials': 'Testimonials',
+      'appFeedback': 'App Feedback',
+      'pending': 'Pending',
+      'approved': 'Approved',
+      'rejected': 'Rejected',
+      'user': 'User',
+      'approve': 'Approve',
+      'reject': 'Reject',
+      'rating': 'Rating',
+
+      'notes': 'Notes',
+      'comments': 'Comments',
+      'allContent': 'All Content',
+      'reported': 'Reported',
+      'removed': 'Removed',
+      'reportCount': 'Report Count',
+      'remove': 'Remove',
+      'notificationSent': 'Notification sent successfully',
+      'error': 'Error',
+      'languages': 'Languages',
+
+      // Registration
+      'fullName': 'Full Name',
+      'pleaseEnterName': 'Please enter your name',
+      'pleaseEnterEmail': 'Please enter your email',
+      'pleaseEnterValidEmail': 'Please enter a valid email',
+      'phoneNumber': 'Phone Number',
+      'optional': 'Optional',
+      'campus': 'Campus',
+      'department': 'Department',
+      'pleaseEnterPassword': 'Please enter your password',
+      'passwordLengthError': 'Password must be at least 6 characters',
+      'pleaseConfirmPassword': 'Please confirm your password',
+      'passwordsDoNotMatch': 'Passwords do not match',
+      'createAccount': 'Create Account',
+      'alreadyHaveAccount': 'Already have an account? Login',
     },
     'am': {
       // App General
@@ -184,13 +287,21 @@ class AppLocalizations {
       'filter': 'አጣራ',
       'refresh': 'አድስ',
       'loading': 'በመጫን ላይ...',
+      'admin': 'አስተዳዳሪ',
+      'attendanceList': 'የተገኙ ሰዎች ዝርዝር',
+      'trackAttendance': 'የተጠቃሚ መገኘትን ይከታተሉ እና ያስተዳድሩ',
 
       // Navigation
       'home': 'መነሻ',
-      'chat': 'ውይይት',
+      'chat': 'ቻት',
       'books': 'መጽሐፍት',
-      'commentary': 'ማብራሪያ',
-      'language_selector': 'የቋንቋ መምረጫ',
+      'commentary': 'አስተያየት',
+      'language_selector': 'ቋንቋ መምረጫ',
+      'groups': 'ቡድኖች',
+      'users': 'ተጠቃሚዎች',
+      'categories': 'ምድቦች',
+      'authors': 'ደራሲዎች',
+      'showApprovedOnly': 'የተጽዕኖ ብቻ አሳይ',
 
       // Auth Screens
       'welcome_back': 'እንኳን በደህና ተመለሱ',
@@ -253,18 +364,31 @@ class AppLocalizations {
       'choose_from_gallery': 'ከጋለሪ ይምረጡ',
 
       // Admin Dashboard
-      'admin_dashboard': 'የአስተዳዳሪ ዳሽቦርድ',
-      'welcome_admin': 'እንኳን ወደ Bs አስተዳዳሪ ዳሽቦርድ በደህና መጡ',
-      'manage_efficiently': 'የመተግበሪያዎን ይዘትና ተጠቃሚዎች በብቃት ያስተዳድሩ',
-      'quick_stats': 'ፈጣን ስታቲስቲክስ',
+      'admin_dashboard': 'የአስተዳደር ዳሽቦርድ',
+      'welcome_admin': 'ወደ Bs አስተዳደር ዳሽቦርድ እንኳን በደህና መጡ',
+      'manage_efficiently': 'የመተግበሪያውን ይዘት እና ተጠቃሚዎችን በብቃት ያስተዳድሩ',
+      'quick_stats': 'የቅልጡፍ ስታትስቲክስ',
+      'quick_actions': 'የቅልጡፍ ተግባራት',
       'user_management': 'የተጠቃሚ አስተዳደር',
       'content_management': 'የይዘት አስተዳደር',
       'event_management': 'የዝግጅት አስተዳደር',
-      'prayer_moderation': 'የጸሎት ማጣሪያ',
-      'commentary_moderation': 'የአስተያየት ማጣሪያ',
+      'prayer_moderation': 'የጸሎት ቁጥጥር',
+      'commentary_moderation': 'የአስተያየት ቁጥጥር',
       'notification_control': 'የማሳወቂያ ቁጥጥር',
       'feedback_management': 'የግብረመልስ አስተዳደር',
       'analytics_dashboard': 'የትንታኔ ዳሽቦርድ',
+      'admin_statistics': 'የአስተዳደር ስታትስቲክስ',
+      'manage_user_accounts': 'የተጠቃሚ መለያዎችን እና ፈቃዶችን ያስተዳድሩ',
+      'track_attendance': 'የተጠቃሚ መገኘትን ይከታተሉ እና ያስተዳድሩ',
+      'moderate_prayers': 'የጸሎት ጥያቄዎችን ያስተዳድሩ',
+      'moderate_comments': 'የተጠቃሚ አስተያየቶችን ያስተዳድሩ',
+      'manage_content': 'የመተግበሪያ ይዘትን እና ሀብቶችን ያስተዳድሩ',
+      'create_manage_events': 'የቤተክርስቲያን ዝግጅቶችን ይፍጠሩ እና ያስተዳድሩ',
+      'send_manage_notifications': 'ማሳወቂያዎችን ይላኩ እና ያስተዳድሩ',
+      'view_respond_feedback': 'የተጠቃሚ ግብረመልስን ይመልከቱ እና ይመልሱ',
+      'configure_preferences': 'የመተግበሪያ ቅንብሮችን እና ምርጫዎችን ያዋቅሩ',
+      'view_usage_statistics': 'የመተግበሪያ አጠቃቀም ስታትስቲክስን ይመልከቱ',
+      'sign_out_account': 'ከአስተዳደር መለያዎ ይውጡ',
 
       // Books
       'soulful_bookshelf': 'መንፈሳዊ መጽሐፍት',
@@ -275,6 +399,7 @@ class AppLocalizations {
       'add_new': 'አዲስ ጨምር',
       'author': 'ደራሲ',
       'category': 'ምድብ',
+      'import': 'አስገባ',
 
       // Content Management
       'verses_of_day': 'የዕለቱ ጥቅሶች',
@@ -313,6 +438,87 @@ class AppLocalizations {
       'add_note': 'ማስታወሻ ጨምር',
       'note_title': 'የማስታወሻ ርዕስ',
       'note_content': 'የማስታወሻ ይዘት',
+
+      // New translations
+      'location': 'ቦታ',
+      'selectDate': 'ቀን ይምረጡ',
+      'selectTime': 'ሰዓት ይምረጡ',
+
+      // Analytics
+      'analytics': 'ትንታኔ',
+      'totalUsers': 'ጠቅላላ ተጠቃሚዎች',
+      'activeUsers': 'ንቁ ተጠቃሚዎች',
+      'dailyActiveUsers': 'ዕለታዊ ንቁ ተጠቃሚዎች',
+      'averageSessionDuration': 'አማካይ የስራ ጊዜ ቆይታ',
+      'totalDevotionals': 'ጠቅላላ የሃይማኖት ጽሑፎች',
+      'totalComments': 'ጠቅላላ አስተያየቶች',
+      'mostAccessedVerses': 'በብዛት የሚያዩት ጥቅሶች',
+      'popularDevotionals': 'ታዋቂ የሃይማኖት ጽሑፎች',
+      'upcomingEvents': 'የሚመጡ ክስተቶች',
+      'averageAttendance': 'አማካይ ስብሰባ',
+      'popularEvents': 'ታዋቂ ክስተቶች',
+      'weeklyActivity': 'የሳምንት እንቅስቃሴ',
+      'chartPlaceholder': 'ግራፍ እዚህ ይታያል',
+
+      // New notification-related getters
+      'sendNotifications': 'ማስታወቂያ ላክ',
+      'notificationHistory': 'የማስታወቂያ ታሪክ',
+      'notificationType': 'የማስታወቂያ አይነት',
+      'reminder': 'ማስታወሻ',
+      'alert': 'ማስጠንቀቂያ',
+      'requiredField': 'ይህ መስክ ያስፈልጋል',
+      'send': 'ላክ',
+
+      // New settings-related getters
+      'themeSettings': 'የገጽታ ቅንብሮች',
+      'darkModeDesc': 'ለአፕ ጨለማ ሁነታ ያንቁ',
+      'dailyVerseNotifications': 'ዕለታዊ ጥቅስ ማስታወቂያዎች',
+      'prayerTimeReminders': 'የጸሎት ሰዓት ማስታወሻዎች',
+      'bibleVersions': 'የመጽሐፍ ቅዱስ ስሪቶች',
+      'addBibleVersion': 'የመጽሐፍ ቅዱስ ስሪት ያክሉ',
+      'addLanguage': 'ቋንቋ ያክሉ',
+      'faq': 'ተደጋግሞ የሚጠየቁ ጥያቄዎች',
+      'addFAQ': 'ጥያቄ ያክሉ',
+      'editFAQ': 'ጥያቄ ያርትዑ',
+
+      // Feedback-related getters
+      'feedback': 'ግብረ መልስ',
+      'testimonials': 'ምስክርነቶች',
+      'appFeedback': 'የአፕ ግብረ መልስ',
+      'pending': 'በጥበቃ ላይ',
+      'approved': 'ተፈቅዷል',
+      'rejected': 'ተቀባይነት አላገኘም',
+      'user': 'ተጠቃሚ',
+      'approve': 'ይፈቅዱ',
+      'reject': 'ይተዉ',
+      'rating': 'ደረጃ',
+
+      'notes': 'ማስታወሻዎች',
+      'comments': 'አስተያየቶች',
+      'allContent': 'ሁሉም ይዘት',
+      'reported': 'ተሰጥቷል',
+      'removed': 'ተወግዷል',
+      'reportCount': 'የሪፖርት ብዛት',
+      'remove': 'አስወግድ',
+      'notificationSent': 'ማሳወቂያ በተሳካ ሁኔታ ተልኳል',
+      'error': 'ስህተት',
+      'languages': 'ቋንቋዎች',
+
+      // Registration
+      'fullName': 'ሙሉ ስም',
+      'pleaseEnterName': 'እባክዎ ስምዎን ያስገቡ',
+      'pleaseEnterEmail': 'እባክዎ ኢሜይልዎን ያስገቡ',
+      'pleaseEnterValidEmail': 'እባክዎ ትክክለኛ ኢሜይል ያስገቡ',
+      'phoneNumber': 'ስልክ ቁጥር',
+      'optional': 'አማራጭ',
+      'campus': 'ካምፓስ',
+      'department': 'ክፍል',
+      'pleaseEnterPassword': 'እባክዎ የይለፍ ቃልዎን ያስገቡ',
+      'passwordLengthError': 'የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት',
+      'pleaseConfirmPassword': 'እባክዎ የይለፍ ቃልዎን ያረጋግጡ',
+      'passwordsDoNotMatch': 'የይለፍ ቃሎች አይገጥሙም',
+      'createAccount': 'መለያ ይፍጠሩ',
+      'alreadyHaveAccount': 'አስቀድመው መለያ አለዎት? ይግቡ',
     },
   };
 
@@ -337,6 +543,7 @@ class AppLocalizations {
   String get filter => _localizedValues[locale.languageCode]!['filter']!;
   String get refresh => _localizedValues[locale.languageCode]!['refresh']!;
   String get loading => _localizedValues[locale.languageCode]!['loading']!;
+  String get admin => _localizedValues[locale.languageCode]!['admin']!;
 
   // Auth Screen Getters
   String get welcomeBack =>
@@ -413,6 +620,16 @@ class AppLocalizations {
       _localizedValues[locale.languageCode]!['completed_devotions']!;
   String get attendance =>
       _localizedValues[locale.languageCode]!['attendance']!;
+  String get attendanceList =>
+      _localizedValues[locale.languageCode]!['attendanceList']!;
+  String get present => _localizedValues[locale.languageCode]!['present']!;
+  String get absent => _localizedValues[locale.languageCode]!['absent']!;
+  String get addAttendance =>
+      _localizedValues[locale.languageCode]!['addAttendance']!;
+  String get userName => _localizedValues[locale.languageCode]!['userName']!;
+  String get status => _localizedValues[locale.languageCode]!['status']!;
+  String get eventType =>
+      _localizedValues[locale.languageCode]?['eventType'] ?? 'Event Type';
   String get achievements =>
       _localizedValues[locale.languageCode]!['achievements']!;
   String get spiritualJourney =>
@@ -449,6 +666,8 @@ class AppLocalizations {
       _localizedValues[locale.languageCode]!['manage_efficiently']!;
   String get quickStats =>
       _localizedValues[locale.languageCode]!['quick_stats']!;
+  String get quickActions =>
+      _localizedValues[locale.languageCode]!['quick_actions']!;
   String get userManagement =>
       _localizedValues[locale.languageCode]!['user_management']!;
   String get contentManagement =>
@@ -537,6 +756,170 @@ class AppLocalizations {
   String get noteTitle => _localizedValues[locale.languageCode]!['note_title']!;
   String get noteContent =>
       _localizedValues[locale.languageCode]!['note_content']!;
+
+  // New translations
+  String get location =>
+      _localizedValues[locale.languageCode]!['location'] ?? 'Location';
+  String get selectDate =>
+      _localizedValues[locale.languageCode]!['selectDate'] ?? 'Select Date';
+  String get selectTime =>
+      _localizedValues[locale.languageCode]!['selectTime'] ?? 'Select Time';
+
+  // Analytics Getters
+  String get analytics =>
+      _localizedValues[locale.languageCode]!['analytics'] ?? 'Analytics';
+  String get totalUsers =>
+      _localizedValues[locale.languageCode]!['totalUsers'] ?? 'Total Users';
+  String get activeUsers =>
+      _localizedValues[locale.languageCode]!['activeUsers'] ?? 'Active Users';
+  String get dailyActiveUsers =>
+      _localizedValues[locale.languageCode]!['dailyActiveUsers'] ??
+      'Daily Active Users';
+  String get averageSessionDuration =>
+      _localizedValues[locale.languageCode]!['averageSessionDuration'] ??
+      'Average Session Duration';
+  String get totalDevotionals =>
+      _localizedValues[locale.languageCode]!['totalDevotionals'] ??
+      'Total Devotionals';
+  String get totalComments =>
+      _localizedValues[locale.languageCode]!['totalComments'] ??
+      'Total Comments';
+  String get mostAccessedVerses =>
+      _localizedValues[locale.languageCode]!['mostAccessedVerses'] ??
+      'Most Accessed Verses';
+  String get popularDevotionals =>
+      _localizedValues[locale.languageCode]!['popularDevotionals'] ??
+      'Popular Devotionals';
+  String get upcomingEvents =>
+      _localizedValues[locale.languageCode]!['upcomingEvents'] ??
+      'Upcoming Events';
+  String get averageAttendance =>
+      _localizedValues[locale.languageCode]!['averageAttendance'] ??
+      'Average Attendance';
+  String get popularEvents =>
+      _localizedValues[locale.languageCode]!['popularEvents'] ??
+      'Popular Events';
+  String get weeklyActivity =>
+      _localizedValues[locale.languageCode]!['weeklyActivity'] ??
+      'Weekly Activity';
+  String get chartPlaceholder =>
+      _localizedValues[locale.languageCode]!['chartPlaceholder'] ??
+      'Chart will be displayed here';
+
+  // New notification-related getters
+  String get sendNotifications =>
+      _localizedValues[locale.languageCode]!['sendNotifications']!;
+  String get notificationHistory =>
+      _localizedValues[locale.languageCode]!['notificationHistory']!;
+  String get reminder => _localizedValues[locale.languageCode]!['reminder']!;
+  String get alert => _localizedValues[locale.languageCode]!['alert']!;
+  String get requiredField =>
+      _localizedValues[locale.languageCode]!['requiredField']!;
+  String get send => _localizedValues[locale.languageCode]!['send']!;
+
+  // New settings-related getters
+  String get themeSettings =>
+      _localizedValues[locale.languageCode]!['themeSettings']!;
+  String get darkModeDesc =>
+      _localizedValues[locale.languageCode]!['darkModeDesc']!;
+  String get dailyVerseNotifications =>
+      _localizedValues[locale.languageCode]!['dailyVerseNotifications']!;
+  String get prayerTimeReminders =>
+      _localizedValues[locale.languageCode]!['prayerTimeReminders']!;
+  String get bibleVersions =>
+      _localizedValues[locale.languageCode]!['bibleVersions']!;
+  String get addBibleVersion =>
+      _localizedValues[locale.languageCode]!['addBibleVersion']!;
+  String get addLanguage =>
+      _localizedValues[locale.languageCode]!['addLanguage']!;
+  String get faq => _localizedValues[locale.languageCode]!['faq']!;
+  String get addFAQ => _localizedValues[locale.languageCode]!['addFAQ']!;
+  String get editFAQ => _localizedValues[locale.languageCode]!['editFAQ']!;
+
+  // Feedback-related getters
+  String get feedback => _localizedValues[locale.languageCode]!['feedback']!;
+  String get testimonials =>
+      _localizedValues[locale.languageCode]!['testimonials']!;
+  String get appFeedback =>
+      _localizedValues[locale.languageCode]!['appFeedback']!;
+  String get pending => _localizedValues[locale.languageCode]!['pending']!;
+  String get approved => _localizedValues[locale.languageCode]!['approved']!;
+  String get rejected => _localizedValues[locale.languageCode]!['rejected']!;
+  String get user => _localizedValues[locale.languageCode]!['user']!;
+  String get approve => _localizedValues[locale.languageCode]!['approve']!;
+  String get reject => _localizedValues[locale.languageCode]!['reject']!;
+  String get rating => _localizedValues[locale.languageCode]!['rating']!;
+
+  String get notes => _localizedValues[locale.languageCode]!['notes']!;
+  String get comments => _localizedValues[locale.languageCode]!['comments']!;
+  String get allContent =>
+      _localizedValues[locale.languageCode]!['allContent']!;
+  String get reported => _localizedValues[locale.languageCode]!['reported']!;
+  String get removed => _localizedValues[locale.languageCode]!['removed']!;
+  String get reportCount =>
+      _localizedValues[locale.languageCode]!['reportCount']!;
+  String get remove => _localizedValues[locale.languageCode]!['remove']!;
+  String get notificationSent =>
+      _localizedValues[locale.languageCode]!['notificationSent']!;
+  String get error => _localizedValues[locale.languageCode]!['error']!;
+  String get languages => _localizedValues[locale.languageCode]!['languages']!;
+  String get categories =>
+      _localizedValues[locale.languageCode]!['categories']!;
+  String get groups => _localizedValues[locale.languageCode]!['groups']!;
+  String get users => _localizedValues[locale.languageCode]!['users']!;
+  String get authors => _localizedValues[locale.languageCode]!['authors']!;
+  String get showApprovedOnly =>
+      _localizedValues[locale.languageCode]!['showApprovedOnly']!;
+
+  String get trackAttendance =>
+      _localizedValues[locale.languageCode]!['trackAttendance']!;
+
+  // Registration getters
+  // Note: createAccount and alreadyHaveAccount getters are renamed to registrationCreateAccount and registrationAlreadyHaveAccount
+  // to avoid conflicts with the Auth Screens getters
+  String get fullName => _localizedValues[locale.languageCode]!['fullName']!;
+  String get pleaseEnterName =>
+      _localizedValues[locale.languageCode]!['pleaseEnterName']!;
+  String get pleaseEnterEmail =>
+      _localizedValues[locale.languageCode]!['pleaseEnterEmail']!;
+  String get pleaseEnterValidEmail =>
+      _localizedValues[locale.languageCode]!['pleaseEnterValidEmail']!;
+  String get phoneNumber =>
+      _localizedValues[locale.languageCode]!['phoneNumber']!;
+  String get optional => _localizedValues[locale.languageCode]!['optional']!;
+  String get campus => _localizedValues[locale.languageCode]!['campus']!;
+  String get department =>
+      _localizedValues[locale.languageCode]!['department']!;
+  String get pleaseEnterPassword =>
+      _localizedValues[locale.languageCode]!['pleaseEnterPassword']!;
+  String get passwordLengthError =>
+      _localizedValues[locale.languageCode]!['passwordLengthError']!;
+  String get pleaseConfirmPassword =>
+      _localizedValues[locale.languageCode]!['pleaseConfirmPassword']!;
+  String get passwordsDoNotMatch =>
+      _localizedValues[locale.languageCode]!['passwordsDoNotMatch']!;
+  String get registrationCreateAccount =>
+      _localizedValues[locale.languageCode]!['create_account']!;
+  String get registrationAlreadyHaveAccount =>
+      _localizedValues[locale.languageCode]!['already_have_account']!;
+
+  // Auth verification getters
+  String get verifyCode =>
+      _localizedValues[locale.languageCode]!['verifyCode']!;
+  String get resendCode =>
+      _localizedValues[locale.languageCode]!['resendCode']!;
+  String get verificationSuccessful =>
+      _localizedValues[locale.languageCode]!['verificationSuccessful']!;
+  String get verificationFailed =>
+      _localizedValues[locale.languageCode]!['verificationFailed']!;
+  String get resetPassword =>
+      _localizedValues[locale.languageCode]!['resetPassword']!;
+  String get doNotHaveAccount =>
+      _localizedValues[locale.languageCode]!['doNotHaveAccount']!;
+  String get emailNotRegistered =>
+      _localizedValues[locale.languageCode]!['emailNotRegistered']!;
+  String get invalidCredentials =>
+      _localizedValues[locale.languageCode]!['invalidCredentials']!;
 
   static Future<void> setLocale(String languageCode) async {
     if (!['en', 'am'].contains(languageCode)) {
