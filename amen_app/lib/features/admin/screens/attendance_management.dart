@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'admin_home_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class AttendanceRecord {
   final String userId;
@@ -21,7 +21,7 @@ class AttendanceRecord {
 }
 
 class AttendanceManagement extends StatefulWidget {
-  const AttendanceManagement({Key? key}) : super(key: key);
+  AttendanceManagement({Key? key}) : super(key: key);
 
   @override
   _AttendanceManagementState createState() => _AttendanceManagementState();
@@ -104,20 +104,17 @@ class _AttendanceManagementState extends State<AttendanceManagement> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AdminHomeScreen(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
-        title: const Text('Attendance Management'),
+        title: Text(localizations.attendanceList),
         actions: [
           IconButton(
             icon: const Icon(Icons.file_download),
@@ -127,11 +124,11 @@ class _AttendanceManagementState extends State<AttendanceManagement> {
       ),
       body: Column(
         children: [
-          _buildFilters(),
+          _buildFilters(localizations),
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : _buildAttendanceList(),
+                : _buildAttendanceList(localizations),
           ),
         ],
       ),
@@ -142,7 +139,7 @@ class _AttendanceManagementState extends State<AttendanceManagement> {
     );
   }
 
-  Widget _buildFilters() {
+  Widget _buildFilters(AppLocalizations localizations) {
     return Card(
       margin: const EdgeInsets.all(8),
       child: Padding(
@@ -154,9 +151,9 @@ class _AttendanceManagementState extends State<AttendanceManagement> {
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: _selectedEventType,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Event Type',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                     items: _eventTypes.map((type) {
                       return DropdownMenuItem(
@@ -165,7 +162,9 @@ class _AttendanceManagementState extends State<AttendanceManagement> {
                       );
                     }).toList(),
                     onChanged: (value) {
-                      setState(() => _selectedEventType = value!);
+                      if (value != null) {
+                        setState(() => _selectedEventType = value);
+                      }
                     },
                   ),
                 ),
@@ -190,7 +189,7 @@ class _AttendanceManagementState extends State<AttendanceManagement> {
     );
   }
 
-  Widget _buildAttendanceList() {
+  Widget _buildAttendanceList(AppLocalizations localizations) {
     if (_filteredRecords.isEmpty) {
       return const Center(
         child: Text('No attendance records found'),
@@ -268,7 +267,7 @@ class _AttendanceManagementState extends State<AttendanceManagement> {
   Future<void> _showAddAttendanceDialog() async {
     final result = await showDialog<AttendanceRecord>(
       context: context,
-      builder: (context) => const AttendanceDialog(),
+      builder: (context) => AttendanceDialog(),
     );
 
     if (result != null) {
@@ -317,7 +316,7 @@ class _AttendanceManagementState extends State<AttendanceManagement> {
 }
 
 class AttendanceDialog extends StatefulWidget {
-  const AttendanceDialog({Key? key}) : super(key: key);
+  AttendanceDialog({Key? key}) : super(key: key);
 
   @override
   _AttendanceDialogState createState() => _AttendanceDialogState();
@@ -449,14 +448,14 @@ class _AttendanceDialogState extends State<AttendanceDialog> {
         ),
         TextButton(
           onPressed: () {
-            if (_formKey.currentState!.validate()) {
+            if (_formKey.currentState!.validate() && _selectedDate != null) {
               final user = _users.firstWhere((u) => u['id'] == _selectedUserId);
               Navigator.pop(
                 context,
                 AttendanceRecord(
                   userId: _selectedUserId!,
                   userName: user['name']!,
-                  date: _selectedDate ?? DateTime.now(),
+                  date: _selectedDate!,
                   eventType: _selectedEventType!,
                   isPresent: _isPresent,
                   notes: _notesController.text.isEmpty
