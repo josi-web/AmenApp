@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../shared/services/auth_service.dart';
 import '../../../shared/services/theme_service.dart';
+import '../../../core/localization/app_localizations.dart';
 import '../screens/attendance_management.dart';
+import '../screens/language_management.dart';
 
 class AdminDrawer extends StatelessWidget {
   final int selectedIndex;
@@ -19,6 +21,7 @@ class AdminDrawer extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final themeService = Provider.of<ThemeService>(context);
+    final localizations = AppLocalizations.of(context);
 
     return Drawer(
       backgroundColor: theme.colorScheme.surface,
@@ -47,17 +50,13 @@ class AdminDrawer extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Admin Panel',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Text(
+                    localizations.adminDashboard,
+                    style: theme.textTheme.titleLarge,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Manage Bible Study Community',
+                    localizations.manageEfficiently,
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.9),
                       fontSize: 14,
@@ -73,18 +72,18 @@ class AdminDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.people,
-                    title: 'User Management',
+                    title: localizations.userManagement,
                     index: 1,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.calendar_today,
-                    title: 'Attendance Management',
+                    title: localizations.attendanceList,
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AttendanceManagement(),
+                          builder: (context) => AttendanceManagement(),
                         ),
                       );
                     },
@@ -92,56 +91,79 @@ class AdminDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.book,
-                    title: 'Content Management',
+                    title: localizations.contentManagement,
                     index: 3,
                   ),
                   _buildMenuItem(
                     context,
+                    icon: Icons.library_books,
+                    title: localizations.books,
+                    onTap: () {
+                      print('Books menu item clicked in drawer');
+                      onItemSelected(11);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  _buildMenuItem(
+                    context,
                     icon: Icons.chat,
-                    title: 'Admin Chat',
-                    index: 2,
+                    title: localizations.chat,
+                    index: 10,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.event,
-                    title: 'Event Management',
+                    title: localizations.eventManagement,
                     index: 4,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.person_pin_circle,
-                    title: 'Prayer Moderation',
+                    title: localizations.prayerModeration,
                     index: 5,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.comment,
-                    title: 'Commentary Moderation',
+                    title: localizations.commentaryModeration,
                     index: 6,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.notifications,
-                    title: 'Notification Control',
+                    title: localizations.notificationControl,
                     index: 7,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.feedback,
-                    title: 'Feedback Management',
+                    title: localizations.feedbackManagement,
                     index: 8,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.settings,
-                    title: 'App Settings',
+                    title: localizations.appSettings,
                     index: 9,
                   ),
                   _buildMenuItem(
                     context,
                     icon: Icons.analytics,
-                    title: 'Analytics Dashboard',
+                    title: localizations.analyticsDashboard,
                     index: 10,
+                  ),
+                  _buildMenuItem(
+                    context,
+                    icon: Icons.language,
+                    title: localizations.languages,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LanguageManagement(),
+                        ),
+                      );
+                    },
                   ),
                   const Divider(),
                   _buildDarkModeSwitch(context, isDark, themeService),
@@ -149,7 +171,7 @@ class AdminDrawer extends StatelessWidget {
                   _buildMenuItem(
                     context,
                     icon: Icons.logout,
-                    title: 'Logout',
+                    title: localizations.signOut,
                     onTap: () {
                       final authService =
                           Provider.of<AuthService>(context, listen: false);
@@ -184,13 +206,16 @@ class AdminDrawer extends StatelessWidget {
     return ListTile(
       leading: Icon(
         icon,
-        color: iconColor ?? theme.colorScheme.onSurface,
+        color: iconColor ??
+            (isSelected ? theme.primaryColor : theme.iconTheme.color),
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: textColor ?? theme.colorScheme.onSurface,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          color: textColor ??
+              (isSelected
+                  ? theme.primaryColor
+                  : theme.textTheme.bodyLarge?.color),
         ),
       ),
       trailing: const Icon(
@@ -214,8 +239,9 @@ class AdminDrawer extends StatelessWidget {
     bool isDark,
     ThemeService themeService,
   ) {
+    final localizations = AppLocalizations.of(context);
     return SwitchListTile(
-      title: const Text('Dark Mode'),
+      title: Text(localizations.darkMode),
       value: isDark,
       onChanged: (value) {
         themeService.setTheme(
