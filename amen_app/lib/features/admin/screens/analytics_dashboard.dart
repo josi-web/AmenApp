@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'admin_home_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class AnalyticsDashboard extends StatefulWidget {
   const AnalyticsDashboard({Key? key}) : super(key: key);
@@ -69,6 +70,8 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -88,7 +91,7 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
               );
             },
           ),
-          title: const Text('Analytics Dashboard'),
+          title: Text(localizations.analytics),
           actions: [
             PopupMenuButton<String>(
               onSelected: (value) {
@@ -134,33 +137,35 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
   }
 
   Widget _buildOverviewTab() {
+    final localizations = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           _buildMetricCard(
-            'Total Users',
+            localizations.totalUsers,
             _analytics['totalUsers']?.toString() ?? '0',
             Icons.people,
             Colors.blue,
           ),
           const SizedBox(height: 16),
           _buildMetricCard(
-            'Active Users',
+            localizations.activeUsers,
             _analytics['activeUsers']?.toString() ?? '0',
             Icons.person_outline,
             Colors.green,
           ),
           const SizedBox(height: 16),
           _buildMetricCard(
-            'Prayer Requests',
+            localizations.prayerRequests,
             _analytics['totalPrayerRequests']?.toString() ?? '0',
             Icons.person_pin_circle,
             Colors.purple,
           ),
           const SizedBox(height: 16),
           _buildMetricCard(
-            'Events',
+            localizations.events,
             _analytics['totalEvents']?.toString() ?? '0',
             Icons.event,
             Colors.orange,
@@ -177,19 +182,21 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
   }
 
   Widget _buildUserActivityTab() {
+    final localizations = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           _buildMetricCard(
-            'Daily Active Users',
+            localizations.dailyActiveUsers,
             _analytics['dailyActiveUsers']?.toString() ?? '0',
             Icons.trending_up,
             Colors.green,
           ),
           const SizedBox(height: 16),
           _buildMetricCard(
-            'Average Session Duration',
+            localizations.averageSessionDuration,
             _formatDuration(_analytics['avgSessionDuration'] ?? 0),
             Icons.timer,
             Colors.blue,
@@ -212,19 +219,21 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
   }
 
   Widget _buildContentTab() {
+    final localizations = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           _buildMetricCard(
-            'Total Devotionals',
+            localizations.totalDevotionals,
             _analytics['totalDevotionals']?.toString() ?? '0',
             Icons.book,
             Colors.indigo,
           ),
           const SizedBox(height: 16),
           _buildMetricCard(
-            'Total Comments',
+            localizations.totalComments,
             _analytics['totalComments']?.toString() ?? '0',
             Icons.comment,
             Colors.teal,
@@ -232,13 +241,13 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
           const SizedBox(height: 24),
           if (_analytics['popularVerses'] != null)
             _buildPopularContentList(
-              'Most Accessed Verses',
+              localizations.mostAccessedVerses,
               _analytics['popularVerses'],
             ),
           const SizedBox(height: 24),
           if (_analytics['popularDevotionals'] != null)
             _buildPopularContentList(
-              'Popular Devotionals',
+              localizations.popularDevotionals,
               _analytics['popularDevotionals'],
             ),
         ],
@@ -247,19 +256,21 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
   }
 
   Widget _buildEventsTab() {
+    final localizations = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           _buildMetricCard(
-            'Upcoming Events',
+            localizations.upcomingEvents,
             _analytics['upcomingEvents']?.toString() ?? '0',
             Icons.event,
             Colors.orange,
           ),
           const SizedBox(height: 16),
           _buildMetricCard(
-            'Average Attendance',
+            localizations.averageAttendance,
             _analytics['avgEventAttendance']?.toString() ?? '0',
             Icons.groups,
             Colors.deepPurple,
@@ -273,7 +284,7 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
           const SizedBox(height: 24),
           if (_analytics['popularEvents'] != null)
             _buildPopularContentList(
-              'Popular Events',
+              localizations.popularEvents,
               _analytics['popularEvents'],
             ),
         ],
@@ -283,6 +294,8 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
 
   Widget _buildMetricCard(
       String title, String value, IconData icon, Color color) {
+    final localizations = AppLocalizations.of(context);
+
     return Card(
       elevation: 4,
       child: Padding(
@@ -443,6 +456,8 @@ class _AnalyticsDashboardState extends State<AnalyticsDashboard> {
   }
 
   Widget _buildPopularContentList(String title, List<dynamic> items) {
+    final localizations = AppLocalizations.of(context);
+
     return Card(
       elevation: 4,
       child: Padding(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../shared/services/auth_service.dart';
 import '../../../shared/services/theme_service.dart';
+import '../../../core/localization/app_localizations.dart';
 import 'user_management.dart';
 import 'content_management.dart';
 import 'event_management.dart';
@@ -30,6 +31,7 @@ class AdminProfileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeService = Provider.of<ThemeService>(context);
+    final localizations = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: isTab
@@ -45,7 +47,7 @@ class AdminProfileContent extends StatelessWidget {
                   }
                 },
               ),
-              title: const Text('Admin Profile'),
+              title: Text(localizations.profile),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.settings),
@@ -73,7 +75,7 @@ class AdminProfileContent extends StatelessWidget {
                           children: [
                             ListTile(
                               leading: const Icon(Icons.camera_alt),
-                              title: const Text('Take Photo'),
+                              title: Text(localizations.takePhoto),
                               onTap: () {
                                 Navigator.pop(context);
                                 // Handle camera
@@ -81,7 +83,7 @@ class AdminProfileContent extends StatelessWidget {
                             ),
                             ListTile(
                               leading: const Icon(Icons.photo_library),
-                              title: const Text('Choose from Gallery'),
+                              title: Text(localizations.chooseFromGallery),
                               onTap: () {
                                 Navigator.pop(context);
                                 // Handle gallery selection
@@ -118,9 +120,9 @@ class AdminProfileContent extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Admin',
-                    style: TextStyle(
+                  Text(
+                    localizations.admin,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -144,7 +146,7 @@ class AdminProfileContent extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Edit Profile'),
+                    child: Text(localizations.editProfile),
                   ),
                 ],
               ),
@@ -160,9 +162,9 @@ class AdminProfileContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Admin Statistics',
-                    style: TextStyle(
+                  Text(
+                    localizations.adminDashboard,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -171,9 +173,9 @@ class AdminProfileContent extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildStatItem(context, 'Users', '241'),
-                      _buildStatItem(context, 'Content', '56'),
-                      _buildStatItem(context, 'Events', '12'),
+                      _buildStatItem(context, localizations.totalUsers, '241'),
+                      _buildStatItem(context, localizations.content, '56'),
+                      _buildStatItem(context, localizations.events, '12'),
                     ],
                   ),
                 ],
@@ -181,12 +183,12 @@ class AdminProfileContent extends StatelessWidget {
             ),
             // Admin Menu Items
             _buildSection(
-              title: 'User Management',
+              title: localizations.userManagement,
               children: [
                 _buildMenuItem(
                   icon: Icons.people,
-                  title: 'User Management',
-                  subtitle: 'Manage user accounts and permissions',
+                  title: localizations.userManagement,
+                  subtitle: localizations.manageEfficiently,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -198,21 +200,21 @@ class AdminProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.calendar_today,
-                  title: 'Attendance Management',
-                  subtitle: 'Track and manage user attendance',
+                  title: localizations.attendanceList,
+                  subtitle: localizations.trackAttendance,
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AttendanceManagement(),
+                        builder: (context) => AttendanceManagement(),
                       ),
                     );
                   },
                 ),
                 _buildMenuItem(
                   icon: Icons.person_pin_circle,
-                  title: 'Prayer Moderation',
-                  subtitle: 'Moderate prayer requests',
+                  title: localizations.prayerModeration,
+                  subtitle: localizations.prayerRequests,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -224,8 +226,8 @@ class AdminProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.comment,
-                  title: 'Commentary Moderation',
-                  subtitle: 'Moderate user comments',
+                  title: localizations.commentaryModeration,
+                  subtitle: localizations.commentary,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -238,12 +240,12 @@ class AdminProfileContent extends StatelessWidget {
               ],
             ),
             _buildSection(
-              title: 'Content Management',
+              title: localizations.contentManagement,
               children: [
                 _buildMenuItem(
                   icon: Icons.book,
-                  title: 'Content Management',
-                  subtitle: 'Manage app content and resources',
+                  title: localizations.contentManagement,
+                  subtitle: localizations.content,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -255,8 +257,8 @@ class AdminProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.event,
-                  title: 'Event Management',
-                  subtitle: 'Create and manage church events',
+                  title: localizations.eventManagement,
+                  subtitle: localizations.events,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -268,8 +270,8 @@ class AdminProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.notifications,
-                  title: 'Notification Control',
-                  subtitle: 'Send and manage notifications',
+                  title: localizations.notificationControl,
+                  subtitle: localizations.notifications,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -282,12 +284,12 @@ class AdminProfileContent extends StatelessWidget {
               ],
             ),
             _buildSection(
-              title: 'App Settings',
+              title: localizations.appSettings,
               children: [
                 _buildMenuItem(
                   icon: Icons.feedback,
-                  title: 'Feedback Management',
-                  subtitle: 'View and respond to user feedback',
+                  title: localizations.feedbackManagement,
+                  subtitle: localizations.feedback,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -299,8 +301,8 @@ class AdminProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.settings,
-                  title: 'App Settings',
-                  subtitle: 'Configure app settings and preferences',
+                  title: localizations.appSettings,
+                  subtitle: localizations.settings,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -312,8 +314,8 @@ class AdminProfileContent extends StatelessWidget {
                 ),
                 _buildMenuItem(
                   icon: Icons.analytics,
-                  title: 'Analytics Dashboard',
-                  subtitle: 'View app usage statistics',
+                  title: localizations.analyticsDashboard,
+                  subtitle: localizations.analytics,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -327,8 +329,8 @@ class AdminProfileContent extends StatelessWidget {
             ),
             _buildMenuItem(
               icon: Icons.logout,
-              title: 'Log out',
-              subtitle: 'Sign out of your admin account',
+              title: localizations.logout,
+              subtitle: localizations.logout,
               onTap: () {
                 final authService =
                     Provider.of<AuthService>(context, listen: false);

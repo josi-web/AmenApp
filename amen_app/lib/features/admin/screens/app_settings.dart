@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'admin_home_screen.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class AppSettings extends StatefulWidget {
   const AppSettings({Key? key}) : super(key: key);
@@ -12,6 +13,9 @@ class _AppSettingsState extends State<AppSettings> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = true;
   Map<String, dynamic> _settings = {};
+  List<Map<String, dynamic>> _bibleVersions = [];
+  List<Map<String, dynamic>> _languages = [];
+  List<Map<String, dynamic>> _faqs = [];
 
   @override
   void initState() {
@@ -28,21 +32,36 @@ class _AppSettingsState extends State<AppSettings> {
           'useSystemTheme': true,
           'dailyVerseNotifications': true,
           'prayerTimeReminders': true,
-          'bibleVersions': [
-            {'name': 'NIV', 'language': 'English', 'isEnabled': true},
-            {'name': 'KJV', 'language': 'English', 'isEnabled': true},
-          ],
-          'languages': [
-            {'name': 'English', 'code': 'en', 'isEnabled': true},
-            {'name': 'Spanish', 'code': 'es', 'isEnabled': true},
-          ],
-          'faqs': [
-            {
-              'question': 'How do I change my password?',
-              'answer': 'Go to Settings > Account > Change Password',
-            },
-          ],
         };
+        _bibleVersions = [
+          {
+            'id': '1',
+            'name': 'King James Version',
+            'code': 'KJV',
+            'isActive': true,
+          },
+        ];
+        _languages = [
+          {
+            'id': '1',
+            'name': 'English',
+            'code': 'en',
+            'isActive': true,
+          },
+          {
+            'id': '2',
+            'name': 'Amharic',
+            'code': 'am',
+            'isActive': true,
+          },
+        ];
+        _faqs = [
+          {
+            'id': '1',
+            'question': 'How do I reset my password?',
+            'answer': 'You can reset your password from the login screen.',
+          },
+        ];
         _isLoading = false;
       });
     } catch (e) {
@@ -55,6 +74,8 @@ class _AppSettingsState extends State<AppSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -74,7 +95,10 @@ class _AppSettingsState extends State<AppSettings> {
               );
             },
           ),
-          title: const Text('App Settings'),
+          title: Text(
+            localizations.appSettings,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           bottom: const TabBar(
             isScrollable: true,
             tabs: [
@@ -90,9 +114,9 @@ class _AppSettingsState extends State<AppSettings> {
           child: TabBarView(
             children: [
               _buildGeneralSettings(),
-              _buildBibleVersionSettings(),
-              _buildLanguageSettings(),
-              _buildFAQSettings(),
+              _buildBibleVersionsTab(),
+              _buildLanguagesTab(),
+              _buildFAQTab(),
             ],
           ),
         ),
@@ -105,45 +129,48 @@ class _AppSettingsState extends State<AppSettings> {
   }
 
   Widget _buildGeneralSettings() {
+    final localizations = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Theme Settings',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            localizations.themeSettings,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 16),
           SwitchListTile(
-            title: const Text('Dark Mode'),
+            title: Text(localizations.darkMode),
+            subtitle: Text(localizations.darkModeDesc),
             value: _settings['darkMode'] ?? false,
             onChanged: (value) {
               setState(() => _settings['darkMode'] = value);
             },
           ),
           SwitchListTile(
-            title: const Text('System Theme'),
+            title: Text(localizations.systemTheme),
             value: _settings['useSystemTheme'] ?? true,
             onChanged: (value) {
               setState(() => _settings['useSystemTheme'] = value);
             },
           ),
           const Divider(),
-          const Text(
-            'Notification Settings',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            localizations.notificationSettings,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 16),
           SwitchListTile(
-            title: const Text('Daily Verse Notifications'),
+            title: Text(localizations.dailyVerseNotifications),
             value: _settings['dailyVerseNotifications'] ?? true,
             onChanged: (value) {
               setState(() => _settings['dailyVerseNotifications'] = value);
             },
           ),
           SwitchListTile(
-            title: const Text('Prayer Time Reminders'),
+            title: Text(localizations.prayerTimeReminders),
             value: _settings['prayerTimeReminders'] ?? true,
             onChanged: (value) {
               setState(() => _settings['prayerTimeReminders'] = value);
@@ -154,188 +181,141 @@ class _AppSettingsState extends State<AppSettings> {
     );
   }
 
-  Widget _buildBibleVersionSettings() {
-    final bibleVersions = List<Map<String, dynamic>>.from(
-      _settings['bibleVersions'] ?? [],
-    );
+  Widget _buildBibleVersionsTab() {
+    final localizations = AppLocalizations.of(context);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: bibleVersions.length,
+    return Column(
+      children: [
+        ListTile(
+          title: Text(localizations.bibleVersions),
+          trailing: IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              _showAddBibleVersionDialog();
+            },
+            tooltip: localizations.addBibleVersion,
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _bibleVersions.length,
             itemBuilder: (context, index) {
-              final version = bibleVersions[index];
-              return Card(
-                child: ListTile(
-                  title: Text(version['name'] ?? ''),
-                  subtitle: Text(version['language'] ?? ''),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Switch(
-                        value: version['isEnabled'] ?? true,
-                        onChanged: (value) {
-                          setState(() {
-                            bibleVersions[index]['isEnabled'] = value;
-                            _settings['bibleVersions'] = bibleVersions;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          setState(() {
-                            bibleVersions.removeAt(index);
-                            _settings['bibleVersions'] = bibleVersions;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+              final version = _bibleVersions[index];
+              return SwitchListTile(
+                title: Text(version['name']),
+                subtitle: Text(version['code']),
+                value: version['isActive'],
+                onChanged: (value) {
+                  setState(() {
+                    _bibleVersions[index]['isActive'] = value;
+                  });
+                },
               );
             },
           ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _showAddBibleVersionDialog,
-            child: const Text('Add Bible Version'),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _buildLanguageSettings() {
-    final languages = List<Map<String, dynamic>>.from(
-      _settings['languages'] ?? [],
-    );
+  Widget _buildLanguagesTab() {
+    final localizations = AppLocalizations.of(context);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: languages.length,
+    return Column(
+      children: [
+        ListTile(
+          title: Text(localizations.languages),
+          trailing: IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              _showAddLanguageDialog();
+            },
+            tooltip: localizations.addLanguage,
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _languages.length,
             itemBuilder: (context, index) {
-              final language = languages[index];
-              return Card(
-                child: ListTile(
-                  title: Text(language['name'] ?? ''),
-                  subtitle: Text(language['code'] ?? ''),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Switch(
-                        value: language['isEnabled'] ?? true,
-                        onChanged: (value) {
-                          setState(() {
-                            languages[index]['isEnabled'] = value;
-                            _settings['languages'] = languages;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          setState(() {
-                            languages.removeAt(index);
-                            _settings['languages'] = languages;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+              final language = _languages[index];
+              return SwitchListTile(
+                title: Text(language['name']),
+                subtitle: Text(language['code']),
+                value: language['isActive'],
+                onChanged: (value) {
+                  setState(() {
+                    _languages[index]['isActive'] = value;
+                  });
+                },
               );
             },
           ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _showAddLanguageDialog,
-            child: const Text('Add Language'),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _buildFAQSettings() {
-    final faqs = List<Map<String, dynamic>>.from(
-      _settings['faqs'] ?? [],
-    );
+  Widget _buildFAQTab() {
+    final localizations = AppLocalizations.of(context);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: faqs.length,
+    return Column(
+      children: [
+        ListTile(
+          title: Text(localizations.faq),
+          trailing: IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              _showEditFAQDialog(-1, null);
+            },
+            tooltip: localizations.addFAQ,
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _faqs.length,
             itemBuilder: (context, index) {
-              final faq = faqs[index];
-              return Card(
-                child: ExpansionTile(
-                  title: Text(faq['question'] ?? ''),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(faq['answer'] ?? ''),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () => _showEditFAQDialog(index, faq),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  setState(() {
-                                    faqs.removeAt(index);
-                                    _settings['faqs'] = faqs;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
+              final faq = _faqs[index];
+              return ExpansionTile(
+                title: Text(faq['question']),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(faq['answer']),
+                  ),
+                  ButtonBar(
+                    children: [
+                      TextButton(
+                        onPressed: () => _showEditFAQDialog(index, faq),
+                        child: Text(localizations.editFAQ),
                       ),
-                    ),
-                  ],
-                ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _faqs.removeAt(index);
+                          });
+                        },
+                        child: Text(localizations.delete),
+                      ),
+                    ],
+                  ),
+                ],
               );
             },
           ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () => _showEditFAQDialog(-1, null),
-            child: const Text('Add FAQ'),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   void _showAddBibleVersionDialog() {
+    final localizations = AppLocalizations.of(context);
     final nameController = TextEditingController();
-    final languageController = TextEditingController();
+    final codeController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add Bible Version'),
+        title: Text(localizations.addBibleVersion),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -344,30 +324,28 @@ class _AppSettingsState extends State<AppSettings> {
               decoration: const InputDecoration(labelText: 'Version Name'),
             ),
             TextField(
-              controller: languageController,
-              decoration: const InputDecoration(labelText: 'Language'),
+              controller: codeController,
+              decoration: const InputDecoration(labelText: 'Language Code'),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(localizations.cancel),
           ),
           TextButton(
             onPressed: () {
-              final bibleVersions = List<Map<String, dynamic>>.from(
-                _settings['bibleVersions'] ?? [],
-              );
-              bibleVersions.add({
+              final newVersion = {
+                'id': DateTime.now().millisecondsSinceEpoch.toString(),
                 'name': nameController.text,
-                'language': languageController.text,
-                'isEnabled': true,
-              });
-              setState(() => _settings['bibleVersions'] = bibleVersions);
+                'code': codeController.text,
+                'isActive': true,
+              };
+              setState(() => _bibleVersions.add(newVersion));
               Navigator.pop(context);
             },
-            child: const Text('Add'),
+            child: Text(localizations.add),
           ),
         ],
       ),
@@ -375,13 +353,14 @@ class _AppSettingsState extends State<AppSettings> {
   }
 
   void _showAddLanguageDialog() {
+    final localizations = AppLocalizations.of(context);
     final nameController = TextEditingController();
     final codeController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add Language'),
+        title: Text(localizations.addLanguage),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -398,22 +377,20 @@ class _AppSettingsState extends State<AppSettings> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(localizations.cancel),
           ),
           TextButton(
             onPressed: () {
-              final languages = List<Map<String, dynamic>>.from(
-                _settings['languages'] ?? [],
-              );
-              languages.add({
+              final newLanguage = {
+                'id': DateTime.now().millisecondsSinceEpoch.toString(),
                 'name': nameController.text,
                 'code': codeController.text,
-                'isEnabled': true,
-              });
-              setState(() => _settings['languages'] = languages);
+                'isActive': true,
+              };
+              setState(() => _languages.add(newLanguage));
               Navigator.pop(context);
             },
-            child: const Text('Add'),
+            child: Text(localizations.add),
           ),
         ],
       ),
@@ -421,6 +398,7 @@ class _AppSettingsState extends State<AppSettings> {
   }
 
   void _showEditFAQDialog(int index, Map<String, dynamic>? faq) {
+    final localizations = AppLocalizations.of(context);
     final questionController =
         TextEditingController(text: faq?['question'] ?? '');
     final answerController = TextEditingController(text: faq?['answer'] ?? '');
@@ -428,7 +406,7 @@ class _AppSettingsState extends State<AppSettings> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(index == -1 ? 'Add FAQ' : 'Edit FAQ'),
+        title: Text(index == -1 ? localizations.addFAQ : localizations.editFAQ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -446,14 +424,13 @@ class _AppSettingsState extends State<AppSettings> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(localizations.cancel),
           ),
           TextButton(
             onPressed: () {
-              final faqs = List<Map<String, dynamic>>.from(
-                _settings['faqs'] ?? [],
-              );
+              final faqs = List<Map<String, dynamic>>.from(_faqs);
               final newFaq = {
+                'id': DateTime.now().millisecondsSinceEpoch.toString(),
                 'question': questionController.text,
                 'answer': answerController.text,
               };
@@ -462,10 +439,10 @@ class _AppSettingsState extends State<AppSettings> {
               } else {
                 faqs[index] = newFaq;
               }
-              setState(() => _settings['faqs'] = faqs);
+              setState(() => _faqs = faqs);
               Navigator.pop(context);
             },
-            child: Text(index == -1 ? 'Add' : 'Save'),
+            child: Text(index == -1 ? localizations.add : localizations.save),
           ),
         ],
       ),

@@ -10,6 +10,7 @@ import 'package:amen_app/features/admin/screens/app_settings.dart';
 import 'package:amen_app/features/admin/screens/analytics_dashboard.dart';
 import 'package:amen_app/features/admin/widgets/admin_drawer.dart';
 import 'package:amen_app/features/admin/screens/admin_home_screen.dart';
+import 'package:amen_app/core/localization/app_localizations.dart';
 
 class AdminPanel extends StatefulWidget {
   const AdminPanel({Key? key}) : super(key: key);
@@ -35,9 +36,11 @@ class _AdminPanelState extends State<AdminPanel> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Panel'),
+        title: Text(localizations.adminDashboard),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       drawer: AdminDrawer(
